@@ -1,0 +1,18 @@
+{
+  "name": "pillars.docs",
+  "description": "Pillars.js docs & reference",
+  "version": "0.0.1",
+  "author": {
+    "name": "Javier Gallego Martín",
+    "email": "bifuer@gmail.com"
+  },
+  "dependencies": {
+    "pillars": "*",
+    "jade": "*",
+    "marked": "*",
+    "highlight.js": "*",
+    "nodemailer": "*"
+  },
+  "main": "./app.js",
+  "license": "MIT"
+}
