@@ -1,0 +1,119 @@
+`https`: objeto con los parámetros `.key` y `.crt` que definen los ficheros .key y .cert necesarios para activar el protocolo https. También se puede definir el puerto con `.port`, pero no es necesario ya que por defecto es el puerto 443. Para más información sobre montar un servidor seguro consulta el [tutorial HTTPS](/pillars/docs/tutorials/https.jade). 
+						
+
+					:highlight(lang='javascript')
+						ENV.server={
+							hostname:'127.0.0.1',
+							port:80,
+							timeout:100*1000,
+							maxUploadSize:20*1024*1024,
+							maxZipSize:10*1024*1024,
+							https:{
+								key:'./localhost.key',
+								cert:'./localhost.crt',
+								host: '443'
+							}
+						};
+
+					:markdown
+						> Nota: El servidor HTTP comprime previamente los envíos a cliente. Esta compresión la realiza dependiendo de los compresores que tenga disponibles el cliente, por defecto si está disponible usa deflate. Con la propiedad `ENV.server.maxZipSize` establecemos a partir de qué tamaño el servidor no comprimirá los archivos.
+
+
+
+
+							//- Property
+			section.property
+				h3#property-templates: code 
+					small ENV
+					| .templates
+
+				//- Property description
+				section.description
+					:markdown
+						La propiedad `.templates` es un conjunto de propiedades para configurar opciones de templates y templates en concreto que utilizará el sistema:
+						+ `cache`: Tipo **Boolean** determina si está activa la caché de templates o no. Por defecto está activa en **true**.
+						+ `directory`: Tipo **String** para determinar la plantilla estática a utilizar al servir directorios estáticos. Por defecto es: **./templates/directory.jade**. Hay que tener en cuenta que el Plugin Directory debe estar activo.
+						+ `error`: Tipo **String** para determinarla plantilla de errores. Se utiliza en cualquier página de error del sistema, por ejemplo un error 404. Por defecto es: **./templates/error.jade**.
+
+					:highlight(lang='javascript')
+						ENV.templates={
+							cache: false,
+							directory:'./templates/directory.jade',
+							error: './templates/error.jade'
+						};
+
+					:markdown
+						> Nota: Pillars.js cuenta por defecto con Jade como lenguaje de templating. Se pueden añadir más motores con renderer.addEngine().
+
+
+
+
+
+						--------------
+
+							//- Property
+			section.property
+				h3#property-https: code
+					small Route.prototype
+					| .https
+
+				//- Property description
+				section.description
+					:markdown
+						Esta propiedad define si el route responderá en https, http o ambas.
+						La propiedad `https` podrá tomar 2 valores: 
+						+ **true**: el objeto route sólo responde en https.
+						+ **false**: el objeto route sólo responde en http.
+
+						Si no se define la propiedad https el valor será undefined, por lo que el objeto route responderá tanto para http como para https.
+
+					:highlight(lang='javascript')
+						route.https = true;
+
+
+
+	
+		
+			//- Method
+			section.method
+				h3#method-encrypt: code
+					small ENV
+					| .encrypt()
+
+				//- Method description
+				section.description
+					:markdown
+						Método para encriptar datos. Devuelve el parámetro encriptado.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					codesyntax.
+						ENV.encrypt(string);
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var encryptedData = ENV.encrypt( decryptedData );
+
+			//- Method
+			section.method
+				h3#method-decrypt: code
+					small ENV
+					| .decrypt()
+
+				//- Method description
+				section.description
+					:markdown
+						Método para desencriptar datos. Devuelve el parámetro desencriptado.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					codesyntax.
+						ENV.decrypt(string);
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var decryptedData = ENV.decrypt( encryptedData );

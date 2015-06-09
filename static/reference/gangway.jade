@@ -22,7 +22,7 @@ html(lang=gw.language)
 		section.syntax
 			h2#syntax Sintaxis
 			:highlight(lang='javascript')
-				var home = new Route(function(gw){
+				var myRoute = new Route(function(gw){
 
 					var POST = gw.content.params; 
 
@@ -502,9 +502,11 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Contiene un objeto con los parámetros y valores que han llegado al servidor a través de larRuta parametrizada. 
-						En Pillars.js puedes configurar los path de los objetos route con parámetros libres. /:var , /*:var , /:var1/:var2
+						En Pillars.js puedes configurar los path de los objetos route con parámetros libres. /:var,/*:var, /:var1/:var
 
-				:highlight(lang='javascript')
+
+					:highlight(lang='javascript')
+						/**/
 						var route = new Route({path:'/:var1/:var2'},function(gw){
 							console.log(gw.params);
 							gw.send("end");
@@ -779,7 +781,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.setCookie(name, value, config);
 					:markdown
 						+ name: **String** nombre de la cookie.
@@ -820,7 +822,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.i18n(nodo, params);
 					:markdown
 						+ nodo: **String**, nodo al que hace referencia.
@@ -851,7 +853,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.file(filename, clientname, download);
 
 					:markdown
@@ -881,7 +883,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.cacheck( date );
 					:markdown
 						+ date: **String** con la fecha de la última modificación.
@@ -942,7 +944,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.authenticate(msg);
 
 					:markdown
@@ -980,7 +982,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.redirect(urlToRedirect);
 
 					:markdown
@@ -1023,7 +1025,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.send(data,type);
 
 					:markdown
@@ -1051,7 +1053,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.json(data);
 
 					:markdown
@@ -1084,7 +1086,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.text(data);
 
 					:markdown
@@ -1111,7 +1113,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.html(data);
 
 					:markdown
@@ -1140,7 +1142,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.render( template, locals ) 
 
 					:markdown
@@ -1184,7 +1186,7 @@ html(lang=gw.language)
 				//- Method syntax
 				section.syntax
 					h4 Sintaxis
-					codesyntax.
+					:codesyntax
 						.error(errorCode [, text]) 
 
 					:markdown
