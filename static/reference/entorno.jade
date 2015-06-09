@@ -27,13 +27,11 @@ html(lang=gw.language)
 			:markdown
 				La librería consiste en la creación de un entorno que ofrece una serie de **propiedades** y **funciones** que nos permiten trabajar con el framework para la creación de una aplicación web. 
 
-				Las propiedades más destacables son: 
-				+ `project.services`, servicios instalados en el proyecto. Por defecto el framework trae instalado un servicio http en el puerto 80. 
-				+ `project.routes` o cadena de routes. Contiene todos los controladores/manejadores disponibles en el proyecto.
-				+ `project.plugins` o cadena de plugins. Es un objeto de tipo ObjectArray que contiene todos los Plugins instaldos en el proyecto. Por defecto Pillars.js tiene instalados una serie de plugins. [Ver Plugins nativos en Pillars.js](plugins.jade).
-
-				>Realmente hay que visualizar el framework como una cadena de Plugins ordenados, al primer plugin le llega la petición de usuario, y pasa al siguiente plugin; tanto la petición de usuario como información adicional. Obviamente, dependiendo del contenido de la petición de usuario, se ejecutarán unos plugins u otros, pero siempre de forma ordenada. El plugin más importante es el **plugin routes**, encargado de gestionar la **cadena de routes**.
-				
+				Las propiedades más destacables son:
+				+ `project.config`, propiedad en la que se establecen las variables de entorno para el proyecto.
+				+ `project.services`, servicios instalados en el proyecto. Por defecto el framework trae instalado un servicio http en el puerto 8080.
+				+ `project.routes`, contiene el árbol de controladores/manejadores disponibles en el proyecto.
+				+ `project.plugins` o cadena de plugins. Contiene todos los Plugins instalados en el proyecto. Por defecto Pillars.js tiene instalados una serie de plugins. [Ver Plugins nativos en Pillars.js](plugins.jade).
 
 
 		//- Properties
@@ -65,24 +63,24 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						La propiedad `.config` contiene las variables de entorno del proyecto:
-						+ `cors`: **Boolean** por defecto es **false**. 						
-						+ `maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud. Por defecto 5\*1024\*1024 (5MB).
-						+ `maxCacheFileSize`: **Integer** por defecto es 5*1024*1024 (5MB).
-						+ `cacheMaxSamples`: **Integer** por defecto es 100.
-						+ `cacheMaxSize`: **Integer** por defecto es 250*1024*1024.
-						+ `cacheMaxItems`: **Integer** por defecto es 5000.
-						+ `fileMaxAge`: **Integer** por defecto es 7*24*60*60. 
-						+ `renderReload`: **Boolean** por defecto es **false**.
+						+ `cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, sirve para definir si otros sitios web van a poder utilizar recursos de mi dominio. *false* indica que no acepta solicitudes cors de ningún origen. *true* indica que acepta solicitudes cors de cualquier origen, y si especificamos un Array de strings, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
+						+ `maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud. Por defecto 5\*1024\*1024 (5MB). 
+						+ `maxCacheFileSize`: **Integer** por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
+						+ `cacheMaxSamples`: **Integer** por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se realiza del fichero.
+						+ `cacheMaxSize`: **Integer** por defecto es 250\*1024\*1024. Tamaño máximo de la caché.
+						+ `cacheMaxItems`: **Integer** por defecto es 5000. Número máximo de elementos en la caché.
+						+ `fileMaxAge`: **Integer** por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son cache-control y expires.
+						+ `renderReload`: **Boolean** por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
 
 
 					:markdown
-						> También podemos setear las **variables de entorno** a través del método `project.configure()`.
+						> También podemos setear las **variables de entorno** a través del método `project.configure()`, en ese caso podremos configurar varias a la vez.
 
 						Configuración a través de seteo de propiedades: 
 
 					:highlight(lang='javascript')
-						project.cors = true;
-						project.cacheMaxSize = 25*1024*1024;
+						project.config.cors = true;
+						project.config.cacheMaxSize = 25*1024*1024;
 
 					:markdown
 						Configuración a través del método `project.configure()`:
@@ -103,14 +101,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Propiedad que contiene los servicios disponibles en la aplicación. Es una instancia de la [Clase ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponemos de métodos para añadir, eliminar, buscar, etc. los servicios: 
-
-						+ `.add(service)`: 
-						+ `.get(id)`: 
-						+ `.remove(id)`: 
-						+ `.move(id, pos)`: 
-						+ `.moveBefore()`:  
-						+ `.moveAfter()`: 
+						 
 
 					:highlight(lang='javascript')
 						
@@ -127,10 +118,8 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Es la cadena de routes. Es una instancia de la [Clase ObjectArray](https://github.com/bifuer/ObjectArray), por lo que es un Array de Objetos, donde **cada objeto es un objeto tipo Route**.
-
-
-						Por lo tanto, en la propiedad`.routes` se encuentran los objetos route que están disponibles en la aplicación, y además ofrece una serie de métodos, de la clase ObjectArray, para trabajar con los objetos del array, o lo que es lo mismo, para trabajar con la cadena de routes:
+						Arbol de controladores. Tiempo real.
+						referencia a route y a objectarray.
 
 						+ `.add(route)`: añade un *objeto route* previamente creado.
 						+ `.get(id)`: obtiene un objeto route dado un identificador *id*. 
@@ -153,6 +142,8 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
+						Referencia a la clase plugin
+
 						Es la cadena de plugins. Propiedad de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). Contiene todos los plugins instalados en la aplicación, para trabajar con los objetos del array disponemos de los siguientes métodos: 
 
 						+ `.add(plugin)`: añade un *objeto plugin* previamente creado.
@@ -189,31 +180,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						La propiedad `.path` es de solo lectura y devuelve el path absoluto de la librería pillars.
-
-
-			//- Property
-			section.property
-				h3#property-status: code 
-					small project
-					| .logFile
-
-				//- Property description
-				section.description
-					:markdown
-						La propiedad `.logFile` ???
-
-			//- Property
-			section.property
-				h3#property-status: code 
-					small project
-					| .logCleaner
-
-				//- Property description
-				section.description
-					:markdown
-						La propiedad `.logCleaner` ???
-
+						La propiedad `.path` es de solo lectura y devuelve el path absoluto de la librería pillars.	
 
 
 		//- Methods

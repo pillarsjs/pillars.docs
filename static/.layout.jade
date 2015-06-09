@@ -160,10 +160,23 @@ mixin reference-layout(title,path)
 				h2 Reference index
 				ul
 					li: a(href="/reference/introduccion.jade") Introducción
-					li: a(href="/reference/entorno.jade") Entorno
-					li: a(href="/reference/route.jade") Clase Route
-					li: a(href="/reference/gangway.jade") Objeto Gangway
-					li: a(href="/reference/plugin.jade") Clase Plugin
+					li
+						a(href="#") Funcionamiento
+						ul
+							li: a(href="#") Entorno
+							li: a(href="#") Controladores
+							li: a(href="#") Solicitud y respuesta
+							li: a(href="#") Plugins
+							li: a(href="#") Servicios
+
+					li
+						a(href="#") Referencia
+						ul
+							li: a(href="/reference/entorno.jade") project
+							li: a(href="/reference/route.jade") Clase Route
+							li: a(href="/reference/gangway.jade") Objeto Gangway
+							li: a(href="/reference/plugin.jade") Clase Plugin
+							li: a(href="#") Clase HttpService
 					li
 						a(href="#") Librerías
 						ul
