@@ -22,22 +22,7 @@ html(lang=gw.language)
 		//- Properties
 		section.properties
 			h2#properties Propiedades
-
-			//- Property
-			section.property
-				h3#property-debug: code
-					small project
-					| .debug
-
-				//- Property description
-				section.description
-					:markdown
-						 La propiedad `.debug` establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. 
-
-						 Es de tipo **Boolean**.
-						 Por defecto es: **true**.
-
-
+			
 			//- Property
 			section.property
 				h3#property-config: code 
@@ -48,17 +33,19 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						La propiedad `.config` contiene las variables de entorno del proyecto:
-						+ `cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio. 
+						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio. 
 							+ *false* indica que no acepta solicitudes cors de ningún origen. 
 							+ *true* indica que acepta solicitudes cors de cualquier origen.
 							+ Si se especifica un Array de string, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
-						+ `maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud. Por defecto 5\*1024\*1024 (5MB). 
-						+ `maxCacheFileSize`: **Integer** por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
-						+ `cacheMaxSamples`: **Integer** por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se realiza del fichero.
-						+ `cacheMaxSize`: **Integer** por defecto es 250\*1024\*1024. Tamaño máximo de la caché.
-						+ `cacheMaxItems`: **Integer** por defecto es 5000. Número máximo de elementos en la caché.
-						+ `fileMaxAge`: **Integer** por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son cache-control y expires.
-						+ `renderReload`: **Boolean** por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
+						+ `.maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud. Por defecto 5\*1024\*1024 (5MB). 
+						+ `.maxCacheFileSize`: **Integer** por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
+						+ `.cacheMaxSamples`: **Integer** por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se realiza del fichero.
+						+ `.cacheMaxSize`: **Integer** por defecto es 250\*1024\*1024. Tamaño máximo de la caché.
+						+ `.cacheMaxItems`: **Integer** por defecto es 5000. Número máximo de elementos en la caché.
+						+ `.fileMaxAge`: **Integer** por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son cache-control y expires.
+						+ `.renderReload`: **Boolean** por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
+						+ `.favicon`: **String**, ruta del fichero favicon.ico del sitio. 
+						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
 
 
 					:markdown

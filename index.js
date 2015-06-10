@@ -1,7 +1,9 @@
 // Pillars.js load
 var project = require('pillars').configure({
-  renderReload: true
+  renderReload: true,
+  debug: true
 });
+
 
 
 // HTTP service start

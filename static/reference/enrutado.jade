@@ -15,7 +15,8 @@ html(lang=gw.language)
 			h2#summary Sumario
 			:markdown
 				El **sistema de enrutado** de Pillars.js se basa en: 
-				+ Objetos de la [Clase Route](route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un objeto route.
+				+ Objetos de la [Clase Route](route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un objeto route. Hay que resaltar que cada objeto route se crea con una *configuración determinada* y el *handler*. 
+
 			:highlight(lang='javascript')
 				var myRoute = new Route({
 					id: 'hello',
@@ -78,16 +79,15 @@ html(lang=gw.language)
 			:markdown
 		//- Description
 		section.integracion
-			h2#description Integración/Tipo ObjectArray
+			h2#description Uso
 			:markdown
 				 Tanto `project.routes` como `Route.prototype.routes` son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y ordenar objetos en su estructura:
 				 
 				+ `.add(route)`: añade un *objeto route* previamente creado.
 				+ `.get(id)`: obtiene un *objeto route* dado un identificador *id*. 
 				+ `.remove(id)`: elimina el *objeto route* con identificador *id*.
-				+ `.move(id, pos)`: mueve el *objeto route* con identificador *id* a la posición *pos*.
-				+ `.moveBefore()`:  
-				+ `.moveAfter()`: 
+				+ `.move(id, pos)`: mueve el *objeto route* con identificador *id* a la posición *pos*. Ver [.move()](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.				
+				+ `.moveAfter(id, pos)`: mueve el objeto con identificador *id*, a la posición después de *pos*. Ver [.moveAfter()](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 	
 
 		section.plugin-router

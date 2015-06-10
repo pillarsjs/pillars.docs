@@ -16,26 +16,19 @@ html(lang=gw.language)
 			:markdown
 				El **funcionamiento y flujo de trabajo** en Pillars.js se basa en la **Cadena de Plugins**, que está formada por objetos de la [Clase Plugin](clase-plugin.jade).
 
-		section.summary
-			h2#summary Cadena de Plugins
+		section.cadena-de-plugins
+			h2#cadena-de-plugins Cadena de Plugins
 			:markdown
 				La Cadena de Plugins es una variable de tipo [ObjectArray](), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins en el Array. Así, se conforma una lista ordenada de Plugins que se ejecutan de manera secuencial en cada petición de usuario.
 
 
 
-				Estas funcionalidades pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
+				Las funcionalidades añadidas por los plugins pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
 
-				
-
-				[Dibujo-------------------------------]
-
-				Pillars.js incorpora una serie de [Plugins nativos]. El más importante de todos ellos es el **plugin Router**, que es el encargado de enroutar la petición del usuario, haciendo por lo tanto que dada una petición ésta la ejecute el *handler* del objeto route pertinente.
-
-				Dicho de otra forma, todas las rutas que atiende el proyecto web, se construyen mediante objetos route. Todos estos objetos route están contenidos en la **Cadena de Routes**, que es de tipo ObjectArray, dando de esta forma la versatilidad de añadir o eliminar rutas de la aplicación incluso en funcionamiento.
-
-				En Pillars.js hay dos objetos que no forman parte en sí mismos de las herramientas de desarrollo, pero que dotan de funcionalidades excepcionales al framework, estos objetos son: 
-				+ La Cadena de Routes. La cadena de routes es una variable de tipo ObjectArray que contiene objetos de tipo Route.
-				+ La Cadena de Plugins. La cadena de plugins es una variable de tipo ObjectArray que contiene objetos de tipo Plugin. 
+		
+		section.flujo-funcionamiento
+			h2#flujo-funcionamiento Flujo funcionamiento
+			:markdown
 				
 				El **flujo** que sigue Pillars.js, así como su interacción con Node.js, es la siguiente: 
 
@@ -75,12 +68,193 @@ html(lang=gw.language)
 
 
 				**4**. Una vez finalice toda la cadena de Plugins, se ejecuta el handler del objeto route que coincidió con la petición de usuario. Este handler es el que realiza el response al cliente.
-					
-	
-		//- Description
-		section.description
-			h2#description Descripción
-			:markdown
-				La Clase Plugin es primordial en el funcionamiento del framework, ya que éste está construido a base de Plugins que realizan diversas funciones. 	
 
-				Ver [Plugins integrados](plugins.jade) en Pillars.js. 		
+
+
+
+
+
+		section.plugins-nativos
+			h2#plugins-nativos Plugins nativos
+			:markdown
+				Pillars.js incorpora una serie de **Plugins nativos**. El más importante de todos ellos es el **plugin Router**, que es el encargado de enroutar la petición del usuario.
+
+				Se listan a continuación en orden de ejecución:
+				
+				+ Plugin **langPath**, para la gestión de la ruta en múltiples idiomas. `http://www.pillarsjs.com/en/entorno/` `http://www.pillarsjs/de/entorno`. Este plugin detecta si la ruta de la petición de usuario coincide con algún idioma de los declarados y que no sea el idioma por defecto. Si hay coincidencia, elimina de *gw.path* el idioma correspondiente (/es/tools -> /tools). Una vez hecho esto, setea *gw.languages* al idioma que se ha eliminado.
+				+ Plugin **encoding**, para Codificaciones no válidas, **error 406**.
+				+ Plugin **router**, Plugin de enrutado y responsable de todo el sistema de enrutado de Pillars.js.
+				+ Plugin **maxUploadSize**, que controla el tamaño máximo permitido de la petición HTTP. Además permite añadir para un controlador concreto (objeto route) el tamaño máximo de petición permitido para ese mismo route.
+				+ Plugin **CORS**, que establece compatibilidad con CORS.
+				+ Plugin **OPTIONS**, compatibilidad con el método *OPTIONS* del protocolo HTTP.
+				+ Plugin **sessions**, permite establecer sesiones de usuario.
+				+ Plugin **directory**, Ofrece el soporte de directorio estático de ficheros. 
+				+ Plugin **bodyReader**, lee el cuerpo de la petición y lo setea en **gw**.
+
+		
+			section.plugin
+				h3#plugin-langpath 1. Gestión de la ruta para múltiples idiomas
+				
+				:markdown
+					Plugin: [langPath.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/langPath.js)
+
+					Este plugin lee la ruta que llega del request y detecta si en el comienzo de la ruta existe algún identificador de idioma de los declarados en [ENV.languages](/pillars/docs/reference/entorno.jade#property-languages), y que éste no sea el primero.
+
+					Este plugin actúa sobre gangway y se ejecuta el primero de la [Cadena de Plugins](/pillars/docs/reference/vision-global.jade#description-plugins), por lo que actúa antes que el plugin router.js.
+					Una vez hecho eso setea [gw.language](/pillars/docs/reference/gangway.jade#property-language) al idioma que ha eliminado.
+
+
+			section.plugin
+				h3#plugin-encoding Codificaciones no válidas
+				
+				:markdown
+					 Plugin: [encoding.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/encoding.js). 
+
+					 Plugin que devuelve un error 406 en caso de que la codificación no [gw.encoding](/pillars/docs/reference/gangway.jade#property-encoding) tenga una codificación no válida.
+
+			section.plugin
+				h3#plugin-router Plugin de enrutado
+				
+				:markdown
+					 Plugin: [router.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/router.js).
+
+					 Este plugin comprueba qué objeto route de los añadidos a ENV coincide con la petición de usuario. 
+
+					 Las propiedades que comprueba son: **path**, **host**, **method** y **protocolo http o https**.
+
+					 Si los *parámetros de configuración* de alguno de los objetos route añadidos directamente a `ENV` coindice con la petición del usuario, el plugin routes sigue comparando con los hijos.
+
+					 Este plugin guarda una referencia a todos los objetos route por los que va pasando en **gw.routing**, propiedad no nativa en el objeto gangway y que añade este plugin al objeto gangway.
+
+					 A medida que pasa por la estructura arbórea de objetos route, guarda (manteniendo la herencia) la configuración de cada route. En gw.routing encontramos: 
+					 + **options**:  configuración de cada route. Finalmente queda un listado de propiedades heredadas. 
+					 + **Check**: chequeo rápido de los options. 
+					 + **Routes**: array de route por los que pasa. 
+					 + **handlers**: handler del route que atiende finalmente la petición.
+
+
+					 Hay que tener en cuenta los siguientes casos: 
+					 + **Propiedad host** definida en los parámetros de configuración del route. Si no hay coincidencia en el host definido con el host de la petición de usuario, el plugin no seguirá buscando coincidencias en la descendencia de este nodo.
+					 + **Propiedad method** definida en los parámetros de configuración del route. Si hay coincidencia en el path, aunque el método definido en la configuración del route no coincida con el método de la petición de usuario, el plugin seguirá buscando coincidencias en la descendencia de este nodo. Esta propiedad se hereda en la estructura arbórea de objetos route, de forma que si el padre tiene definido el método, el hijo lo heredará en caso de no tenerlo definido. En caso de que padre e hijo tengan definidos ambos la propiedad method prevalecerá la del hijo.  
+
+
+			section.plugin
+				h3#plugin-maxUploadSize Máximo tamaño permitido de la petición HTTP
+				
+				:markdown
+					Plugin [maxUploadSize.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/maxUploadSize.js) 
+
+					Para cualquier petición de usuario se comprueba que el tamaño del cuerpo de la petición no supere el tamaño declarado en [ENV.server.maxUploadSize](http://localhost:3000/pillars/docs/reference/entorno.jade#property-server). 
+
+					Este plugin permite definir para un objeto route concreto el tamaño máximo de la petición, obviando por lo tanto el declarado en ENV.server.maxUploadSize. 
+
+					Si el route tiene en su configuración la propiedad `maxsize` seteada a un valor, será este valor el tamaño máximo permitido de la petición para ese route.
+
+					El error devuelto en el caso de superar el tamaño es un 413.
+
+				:highlight(lang='javascript')
+					var route = new Route({maxsize:10*1024*1024}, function(gw){...}); 
+
+			section.plugin
+				h3#plugin-cors Compatibilidad con CORS
+				
+				:markdown
+					Plugin: [CORS.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/CORS.js).
+
+					Cross-origin resource sharing. Compartición de recursos entre distintos dominios. 
+
+					Permite definir si un controlador (objeto route) tendrá en cuenta CORS, mediante la propiedad `cors`.
+
+				:highlight(lang='javascript')
+					// Todos los dominios va a poder realizar peticiones a este route.
+					var route = new Route({cors:false}, function(gw){...}); 
+
+					// Ningún dominio va a pdoer realizar peticiones a este route.
+					var route = new Route({cors:true}, function(gw){...}); 
+
+					// Solo el dominio www.pillarsjs.com va a poder realizar peticiones a este route concreto.
+					var route = new Route({cors:['www.pillarsjs.com']}, function(gw){...}); 
+
+				:markdown
+
+
+			section.plugin
+				h3#plugin-options Compatibilidad con el método OPTIONS
+				
+				:markdown
+					Plugin: [OPTIONS.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/OPTIONS.js)
+
+					Este plugin establece compatibilidad con el método OPTIONS del protocolo http.
+
+
+			section.plugin
+				h3#plugin-sessions Sistema de sesiones
+				
+				:markdown
+					Plugin: [sessions.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/sessions.js)
+
+					Permite mediante la propiedad `session:true` activar las sesiones en un route dado y/o en toda su descendencia, ya que esta propiedad se hereda de nodos padres a nodos hijos en la estructura de árbol de los objetos route.
+
+					Para utilizar sesiones es necesario que esté configurada una base de datos en [ENV.database](/pillars/docs/reference/entorno.jade#property-database) y arrancada.
+
+					Una vez que se inicia la sesion se envía una cookie encriptada al cliente. La clave genérica para realizar las encriptaciones se encuentra en ENV.crypt.password. 
+
+					Este plugin también setea en gw.session los datos de la sesión. gw.session, no es una propiedad nativa de gangway, sino que es creada por este plugin.
+
+
+			section.plugin
+				h3#plugin-accounts Sistema de usuarios
+				
+				:markdown
+					Plugin: [accounts.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/accounts.js)
+
+					Permite activar cuentas de usuario en la aplicación. Este plugin activa el plugin de sesiones sessions.js, por lo que necesita que exista una base de datos activa.
+
+					Este plugin setea gw.user con los datos del usuario. 
+
+
+			section.plugin
+				h3#plugin-bodyreader Lector del cuerpo de la petición HTTP
+				
+				:markdown
+					Plugin: [bodyReader.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/bodyReader.js)
+
+					Lee el cuerpo de la petición y lo setea en [gw.content.params](/pillars/docs/reference/gangway.jade#property-content). 
+
+					Para que el controlador acepte ficheros se debe establecer la propiedad `multipart: true`. Los ficheros de la petición son seteados en [gw.files](/pillars/docs/reference/gangway.jade#property-files)
+
+				
+			section.plugin
+				h3#plugin-directory Directorio estático
+				
+				:markdown
+					Plugin: [directory.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/directory.js)
+
+					Permite servir un directorio estático del servidor.
+					render automático de las plantillas que conozca. monta los index de los directorios automaticamente, 
+
+					Para añadir a la aplicación un directorio estático añadimos un objeto route sin manejador (handler) y con una configuración específica para activar este plugin:
+
+				:highlight(lang='javascript')
+					// ---------- Pillars static directory -----------------
+
+					var paths = require('path');
+					var pillarsStatic = new Route({
+						id:'pillarsStatic',
+						path:'/pillars/*:path',
+						directory:{
+							path:paths.resolve(__dirname,'./static'),
+							listing:true
+						}
+					});
+					ENV.add(pillarsStatic);
+
+				:markdown
+					La configuración del objeto route debe ser la siguiente para activar el Plugin Directory: 
+					+ **path**. El path espera el parámetro path. *path:'/staticDirecotyName/*:path'*
+					+ **directory**. La propiedad directory que se añade a route consta de dos parámetros: path y listing, para especificar el directorio estático del servidor, y para permitir que se liste el directorio respectivamente.
+
+					> Actualmente, versión beta de Pillars.js, Pillars.js se arranca con un directorio estático montado en /pillars/, el código está en [pillars.js](https://github.com/bifuer/pillars/blob/master/pillars.js#L45) y es el del ejemplo.
+
+
+
