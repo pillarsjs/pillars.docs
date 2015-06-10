@@ -1,0 +1,101 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Performance',url:'/pillars/docs/reference/'},{label:'Clase Route',url:'/pillars/docs/reference/route.jade'}];
+	+reference-layout("Pillars.js Performance - Clase Route - 'make it easy!'",path)
+
+		#title
+			h1 Enrutado
+				em  Pillars.js Performance
+			a.source(href="https://github.com/bifuer/pillars/blob/master/lib/Route.js") Source
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:markdown
+				El **sistema de enrutado** de Pillars.js se basa en: 
+				+ Objetos de la [Clase Route](route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un objeto route.
+			:highlight(lang='javascript')
+				var myRoute = new Route({
+					id: 'hello',
+					path: '/'
+				},function(gw){
+					gw.send("Hello World!");
+				});
+
+			:markdown
+				+ `project.routes`, estructura que contiene el árbol de controladores/manejadores disponibles en el proyecto. Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). En esta propiedad se añadirán los objetos route:
+			:highlight(lang='javascript')
+				project.routes.add(myRoute);
+
+			:markdown
+		//- Description
+		section.caracteristicas
+			h2#description Características
+			:markdown
+				El sistema de enrutado de Pillars.js tiene las siguientes características: 
+
+				+ **Anidable**. Podemos crear árboles de controladores, que **organizan y agrupan funcionalidades** de la aplicación. El nodo raíz será el que se conecte a `project.routes`. El objeto se puede declarar sin configuración, por lo que toma los valores predeterminados. También se puede declarar sin manejador, por lo que en este caso el *objeto route* actuaría como **elemento organizativo**.
+
+			img(src="/img/reference/enrutado.png")
+
+			:highlight(lang='javascript')
+				var myRoute = new Route({
+					id: 'management',
+					path: '/'
+				});
+
+				var myRouteSonOne = new Route({
+					id: 'students',
+					path: '/students'
+				},function(gw){
+					//...
+				});
+
+				var myRouteSonTwo = new Route({
+					id: 'teachers',
+					path: '/teachers'
+				},function(gw){
+					//...
+				});
+
+				myRoute.routes.add(myRouteSonOne);
+				myRoute.routes.add(myRouteSonTwo);
+
+				project.routes.add(myRoute);
+
+			:markdown
+				+ **Sistema de enrutado más eficiente**. El sistema de enrutado no tendrá que buscar coincidencia en todos los *parámetros de configuración* de todas las rutas añadidas de forma lineal y completa, sino que recorrerá sólo los hijos directos del nodo raíz en busca de coincidencias, es decir, sólo los añadidos directamente `project.routes`.
+
+				+ **Tiempo Real**. Los controladores son conectables y desconectables en tiempo real, de forma que no necesariamente tendremos que detener la aplicación para realizar modificaciones sobre éstos. Un route podemos desconectarlo del árbol de controladores o simplemente desactivarlo mediante su propiedad `.active`.
+
+			img(src="/img/reference/remove-teachers.png")
+
+			:highlight(lang='javascript')
+				myRoute.routes.get('management').remove('teachers');
+				
+			:markdown
+		//- Description
+		section.integracion
+			h2#description Integración/Tipo ObjectArray
+			:markdown
+				 Tanto `project.routes` como `Route.prototype.routes` son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y ordenar objetos en su estructura:
+				 
+				+ `.add(route)`: añade un *objeto route* previamente creado.
+				+ `.get(id)`: obtiene un *objeto route* dado un identificador *id*. 
+				+ `.remove(id)`: elimina el *objeto route* con identificador *id*.
+				+ `.move(id, pos)`: mueve el *objeto route* con identificador *id* a la posición *pos*.
+				+ `.moveBefore()`:  
+				+ `.moveAfter()`: 
+	
+
+		section.plugin-router
+			h2#description Plugin Router
+			:markdown
+				El [Plugin router](plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+
+
+
+			:markdown
+				> Los **parámetros de configuración** del route adquieren bastante importancia cuando combinamos objetos route y plugins, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route.

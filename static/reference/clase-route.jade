@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'Clase Route',url:'/pillars/docs/reference/route.jade'}];
+	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'Clase Route',url:'/pillars/docs/reference/clase-route.jade'}];
 	+reference-layout("Pillars.js Reference - Clase Route - 'make it easy!'",path)
 
 		#title
@@ -14,8 +14,6 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:markdown
-				El sistema de enrutado de Pillars.js se basa en objetos de la clase Route. Estos objetos se encuentran ordenados en la cadena de routes y accesible desde **project.routes**. 
-
 				La **creación de un objeto route** acepta como parámetros una *configuración* y el *handler*. El *handler* se ejecutará cuando la **petición de usuario** coincida con la *configuración* del objeto.			
 			
 		//- Syntax

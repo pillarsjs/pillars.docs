@@ -1,0 +1,86 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Performance',url:'/pillars/docs/reference/'},{label:'Funcionamiento de los Plugins',url:'/pillars/docs/reference/funcionamiento-plugin.jade'}];
+	+reference-layout("Pillars.js Performance - Plugins Performance - 'make it easy!'",path)
+
+		#title
+			h1 Plugins
+				em  Pillars.js Performance
+			a.source(href="https://github.com/bifuer/pillars/blob/master/lib/Plugin.js") Source
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:markdown
+				El **funcionamiento y flujo de trabajo** en Pillars.js se basa en la **Cadena de Plugins**, que está formada por objetos de la [Clase Plugin](clase-plugin.jade).
+
+		section.summary
+			h2#summary Cadena de Plugins
+			:markdown
+				La Cadena de Plugins es una variable de tipo [ObjectArray](), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins en el Array. Así, se conforma una lista ordenada de Plugins que se ejecutan de manera secuencial en cada petición de usuario.
+
+
+
+				Estas funcionalidades pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
+
+				
+
+				[Dibujo-------------------------------]
+
+				Pillars.js incorpora una serie de [Plugins nativos]. El más importante de todos ellos es el **plugin Router**, que es el encargado de enroutar la petición del usuario, haciendo por lo tanto que dada una petición ésta la ejecute el *handler* del objeto route pertinente.
+
+				Dicho de otra forma, todas las rutas que atiende el proyecto web, se construyen mediante objetos route. Todos estos objetos route están contenidos en la **Cadena de Routes**, que es de tipo ObjectArray, dando de esta forma la versatilidad de añadir o eliminar rutas de la aplicación incluso en funcionamiento.
+
+				En Pillars.js hay dos objetos que no forman parte en sí mismos de las herramientas de desarrollo, pero que dotan de funcionalidades excepcionales al framework, estos objetos son: 
+				+ La Cadena de Routes. La cadena de routes es una variable de tipo ObjectArray que contiene objetos de tipo Route.
+				+ La Cadena de Plugins. La cadena de plugins es una variable de tipo ObjectArray que contiene objetos de tipo Plugin. 
+				
+				El **flujo** que sigue Pillars.js, así como su interacción con Node.js, es la siguiente: 
+
+				**1**. Cuando el cliente realiza una petición se dispara el evento “request” de Node.js. Pillars.js [captura este evento](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L145), que contiene el request y el response, parsea los datos contenidos en request y los setea de forma ordenada y accesible en el **objeto Gangway**. Por lo tanto, por cada petición de cliente, se creará un objeto gangway.
+
+				> [Ver los parses que realiza el objeto gangway](/pillars/docs/reference/gangway.jade#description) de los datos del request.
+
+				**2**. Una vez que gangway realiza todo el parseo y setea todas las propiedades, Pillars.js emite el [evento gangway](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L147). Este evento es [capturado](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L506) y seguidamente se ejecuta la **Cadena de Plugins**.
+
+				---
+
+
+				En Pillars.js tenemos un listado de objetos tipo plugin que se van ejecutando en orden y de forma concatenada. Este listado es el llamado Cadena de Plugins. 
+
+				Los objetos plugin se crean con la clase Plugin del mismo framework. 
+
+				El orden de ejecución de los objetos plugin es importante, está determinado en la Cadena de Plugins en función a su orden de adicción y es modificable. 
+
+				El sistema que se ha utilizado para encadenar objetos y que éstos se ejecuten en orden y de forma asíncrona está implementado en el framework y es el [Sistema de Nexting](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L514).
+
+				Los Plugins que conforman la **Cadena de Plugins nativa de Pillars.js** son por ejemplo: 
+
+				+ [Plugin de Sesiones](/pillars/docs/reference/plugins.jade#plugin-sessions)
+				+ [Plugin de enrutado](/pillars/docs/reference/plugins.jade#plugin-router)
+				+ [Plugin de Sistema de Usuarios](/pillars/docs/reference/plugins.jade#plugin-accounts)
+
+				Uno de los más interesantes es el **plugin router.js**, que es el encargado de realizar el **sistema de enrutado de Pillars.js**. Tiene prioridad 100. 
+
+				> [Ver los plugins nativos en Pillars.js](/pillars/docs/reference/plugins.jade).
+
+				---
+
+
+				**3**. En la **Cadena de Plugins** existen Plugins de menor y mayor importancia. El más destacable es el **plugin router.js**, que lee todos los objetos “route raíz” que están “conectados” a la aplicación, y comprueba si los parámetros de configuración del route coinciden con los parámetros de la petición, y por lo tanto si debe ejecutar el handler de ese objeto route, seguir recorriendo el árbol, o pasar a otro “route raíz”. 
+
+				Una vez que se encuentra el objeto route que coincide con la petición de usuario, se guarda el handler en gw.routing, y sigue la ejecución de la cadena de plugins hasta la finalización.
+
+
+				**4**. Una vez finalice toda la cadena de Plugins, se ejecuta el handler del objeto route que coincidió con la petición de usuario. Este handler es el que realiza el response al cliente.
+					
+	
+		//- Description
+		section.description
+			h2#description Descripción
+			:markdown
+				La Clase Plugin es primordial en el funcionamiento del framework, ya que éste está construido a base de Plugins que realizan diversas funciones. 	
+
+				Ver [Plugins integrados](plugins.jade) en Pillars.js. 		

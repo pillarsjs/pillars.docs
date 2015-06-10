@@ -1,0 +1,213 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'project',url:'/pillars/docs/reference/project.jade'}];
+	+reference-layout("Pillars.js Reference - project - 'make it easy!'",path)
+
+		#title
+			h1 project
+				em  Pillars.js Reference
+			a.source(href="https://github.com/bifuer/pillars/blob/master/index.js") Source
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:markdown
+				El proyecto es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web.
+
+				`var project = require('pillars');`
+				 	
+
+		//- Properties
+		section.properties
+			h2#properties Propiedades
+
+			//- Property
+			section.property
+				h3#property-debug: code
+					small project
+					| .debug
+
+				//- Property description
+				section.description
+					:markdown
+						 La propiedad `.debug` establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. 
+
+						 Es de tipo **Boolean**.
+						 Por defecto es: **true**.
+
+
+			//- Property
+			section.property
+				h3#property-config: code 
+					small project
+					| .config
+
+				//- Property description
+				section.description
+					:markdown
+						La propiedad `.config` contiene las variables de entorno del proyecto:
+						+ `cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio. 
+							+ *false* indica que no acepta solicitudes cors de ningún origen. 
+							+ *true* indica que acepta solicitudes cors de cualquier origen.
+							+ Si se especifica un Array de string, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
+						+ `maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud. Por defecto 5\*1024\*1024 (5MB). 
+						+ `maxCacheFileSize`: **Integer** por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
+						+ `cacheMaxSamples`: **Integer** por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se realiza del fichero.
+						+ `cacheMaxSize`: **Integer** por defecto es 250\*1024\*1024. Tamaño máximo de la caché.
+						+ `cacheMaxItems`: **Integer** por defecto es 5000. Número máximo de elementos en la caché.
+						+ `fileMaxAge`: **Integer** por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son cache-control y expires.
+						+ `renderReload`: **Boolean** por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
+
+
+					:markdown
+						> También podemos setear las **variables de entorno** a través del método `project.configure()`, en ese caso podremos configurar varias a la vez.
+
+						Configuración a través de seteo de propiedades: 
+
+					:highlight(lang='javascript')
+						project.config.cors = true;
+						project.config.cacheMaxSize = 25*1024*1024;
+
+					:markdown
+						Configuración a través del método `project.configure()`:
+
+					:highlight(lang='javascript')
+						project.configure({
+							cors: true,
+							cacheMaxSize: 25*1024*1024
+						});
+		
+
+			//- Property
+			section.property
+				h3#property-services: code 
+					small project
+					| .services
+
+				//- Property description
+				section.description
+					:markdown
+						 
+
+					:highlight(lang='javascript')
+						
+
+					:markdown				
+
+
+			//- Property
+			section.property
+				h3#property-routes: code 
+					small project
+					| .routes
+
+				//- Property description
+				section.description
+					:markdown
+						Arbol de controladores. Tiempo real.
+						referencia a route y a objectarray.
+
+						+ `.add(route)`: añade un *objeto route* previamente creado.
+						+ `.get(id)`: obtiene un objeto route dado un identificador *id*. 
+						+ `.remove(id)`: elimina el objeto route con identificador *id*.
+						+ `.move(id, pos)`: mueve el objeto route con identificador *id* a la posición *pos*.
+						+ `.moveBefore()`:  
+						+ `.moveAfter()`: 
+
+					:highlight(lang='javascript')
+						var myRoute = new Route();
+						project.routes.add();
+
+					:markdown				
+			//- Property
+			section.property
+				h3#property-plugins: code 
+					small project
+					| .plugins
+
+				//- Property description
+				section.description
+					:markdown
+						Referencia a la clase plugin
+
+						Es la cadena de plugins. Propiedad de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). Contiene todos los plugins instalados en la aplicación, para trabajar con los objetos del array disponemos de los siguientes métodos: 
+
+						+ `.add(plugin)`: añade un *objeto plugin* previamente creado.
+						+ `.get(id)`: obtiene un objeto plugin dado un identificador *id*. 
+						+ `.remove(id)`: elimina el objeto plugin con identificador *id*.
+						+ `.move(id, pos)`: mueve el objeto plugin con identificador *id* a la posición *pos*.
+						+ `.moveBefore()`:  
+						+ `.moveAfter()`: 
+						
+			
+					:highlight(lang='javascript')
+						var myPlugin = new Plugin();
+						project.plugins.add();
+
+
+					:markdown
+			//- Property
+			section.property
+				h3#property-version: code 
+					small project
+					| .version
+
+				//- Property description
+				section.description
+					:markdown
+						`.version` es de solo lectura. Devuelve la versión del framework instalada.
+
+			//- Property
+			section.property
+				h3#property-path: code 
+					small project
+					| .path
+
+				//- Property description
+				section.description
+					:markdown
+						La propiedad `.path` es de solo lectura y devuelve el path absoluto de la librería pillars.	
+
+
+		//- Methods
+		section.methods
+			h2#methods Métodos
+
+			//- Method
+			section.method
+				h3#method-configure: code
+					small ENV
+					| .configure()
+
+				//- Method description
+				section.description
+					:markdown
+						El método `.configure()` permite setear en un solo objeto toda la configuración del entorno.
+
+				
+			//- Method
+			section.method
+				h3#method-resolve: code
+					small ENV
+					| .resolve()
+
+				//- Method description
+				section.description
+					:markdown
+						Devuelve una ruta absoluta sobre un directorio relativo respecto al directorio de ejecución de la librería `pillars`. 
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						ENV.resolve( directory );
+
+					:markdown
+						+ *directory*: **String** del directorio relativo.
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var pathStatic = ENV.resolve('./static');
