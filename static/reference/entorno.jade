@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'project',url:'/pillars/docs/reference/project.jade'}];
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'project',url:'/reference/project.jade'}];
 	+reference-layout("Pillars.js Reference - project - 'make it easy!'",path)
 
 		#title
@@ -12,23 +12,13 @@ html(lang=gw.language)
 
 		//- Summary
 		section.summary
-			h2#summary Sumario
 			:markdown
-				La librería devuelve un proyecto con una **configuración mínima inicial** y sobre el que se construye el resto de la aplicación. A esta configuración inicial la llamamos entorno o proyecto.
+				La librería *'pillars'* devuelve un proyecto con una **configuración mínima inicial** y sobre el que se construye el resto de la aplicación. 
 
 				`var project = require('pillars');`
 
-				El proyecto es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web. 
-	
-
-		//- Description
-		section.description
-			h2#description Descripción
-			:markdown
-				La librería consiste en la creación de un entorno que ofrece una serie de **propiedades** y **funciones** que nos permiten trabajar con el framework para la creación de una aplicación web. 
-
-				Las propiedades más destacables son:
-				+ `project.config`, propiedad en la que se establecen las **variables de entorno** para el proyecto. Ver [project.config](project.jade#) en la referencia.
-				+ `project.services`, **servicios** instalados en el proyecto. Ver [Servicios](servicios.jade).
-				+ `project.routes`, contiene el **árbol de controladores/manejadores** disponibles en el proyecto. Ver [Controladores](controladores.jade).
-				+ `project.plugins` o cadena de plugins. Contiene todos los **Plugins instalados** en el proyecto. Por defecto Pillars.js tiene instalados una serie de plugins. Ver [Plugins](plugins.jade).				
+				El *proyecto* es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web. Desde `project` se van a manejar:
+				+ Las **variables de entono**, establecidas en [`project.config`](project.jade#property-config).
+				+ Los **controladores de ruta** añadidos, contenidos en [`project.routes`](project.jade#property-routes) y de estructura arbórea.
+				+ Los **servicios** instalados, ubicados en [`project.services`](project.jade#property-services). Contamos con un *servicio http* built-in.
+				+ y los **Plugins** o **Cadena de Plugins** que conforman el proyecto, en [`project.plugins`](project.jade#property-plugins).			

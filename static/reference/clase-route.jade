@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'Clase Route',url:'/pillars/docs/reference/clase-route.jade'}];
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'Clase Route',url:'/reference/clase-route.jade'}];
 	+reference-layout("Pillars.js Reference - Clase Route - 'make it easy!'",path)
 
 		#title
@@ -29,7 +29,9 @@ html(lang=gw.language)
 					+ [host](#property-host): nombre o ip de host que atenderá.
 					+ [active](#property-active): si está activo o no. En el caso de no estar activo, no responderá.
 					+ [method](#property-method): **método/s de la petición HTTP** que acepta el route. Acepta uno o varios. Soporta HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS y CONNECT.
-					+ [https](#property-https): define si el route responderá o no en el servidor https definido en [`ENV.server`](/pillars/docs/reference/entorno.jade#property-server). ???
+					+ [https](#property-https): por defecto es undefined, es decir, que pasa por servidores http y https. Si es true es que debe pasar por un https, si es false es que no debe pasar por un ht`ps.define si el route responderá o no en el servidor https.
+					+ multipart: true si queremos que el controlador acepte ficheros.
+					+ maxsize: propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en [`project.config.maxUploadSize`](project.jade#property-config)
 
 				+ **handler**: Opcional. Manejador que se ejecutará siempre y cuando la petición de usuario coincida con la *configuración* del objeto route. El handler siempre recibe como parámetro el [objeto gangway](gangway.jade).
 
@@ -100,14 +102,14 @@ html(lang=gw.language)
 
 				También son **anidables** por lo que **organizan y agrupan funcionalidades** de la aplicación. Tienen la versatilidad de crear estructuras arbóreas donde el nodo raíz será el que se conecte a la aplicación mediante `project.routes.add()`.. Las estructuras creadas podrán ser árboles n-arios de altura h. El sistema de enrutado, por lo tanto, no tendrá que buscar coincidencia en todos los *parámetros de configuración* de todas las rutas añadidas de forma lineal y completa, sino que recorrerá sólo los hijos directos del nodo raíz en busca de coincidencias. 
 				
-				Como hemos visto anteriormente, un objeto route se crea mediante una *configuración* y el *handler*. Los *parámetros de configuración* con los que es instanciado el objeto route es de vital importancia para que se ejecuten, o no, **Plugins** instalados en la aplicación, ya que serán estos parámetros los que disparen los plugins pertinentes. Por lo tanto los plugins se ejecutan, ante una configuración concreta de un objeto route. De esta forma tendremos instalados plugins en el sistema, y no tendrán porqué ejecutarse todos necesariamente, dependerá de la configuración del route y de que esta configuración coindica con la petición de usuario. 
+				Como hemos visto anteriormente, un objeto route se crea mediante una *configuración* y el *handler*. Los *parámetros de configuración* con los que es instanciado el objeto route es de vital importancia para que se ejecuten, o no, **Plugins** instalados en la aplicación, ya que serán estos parámetros los que disparen los plugins pertinentes. Por lo tanto los plugins se ejecutan, ante una configuración concreta de un objeto route. De esta forma tendremos instalados plugins en el sistema, y no tendrán porqué ejecutarse todos necesariamente, dependerá de la configuración del route y de que esta configuración coincida con la petición. 
 
-				El [Plugin router](plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a la cadena de routers `project.routes`.
+				El [Plugin router](plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
 
 
 
 			:markdown
-				> Los parámetros de configuración del route adquieren bastante importancia cuando combinamos objetos route y plugin, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route.
+				> Los **parámetros de configuración** del route adquieren bastante importancia cuando combinamos objetos route y plugin, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route.
 
 
 						
@@ -295,7 +297,7 @@ html(lang=gw.language)
 
 
 					:markdown
-						> El contenido de los parámetros pasados por la URL, así como del POST y del GET, pueden ser consultados con el objeto gangway. [`gw.params`](/pillars/docs/reference/gangway.jade#property-params).
+						> El contenido de los parámetros pasados por la URL, así como del POST y del GET, pueden ser consultados con el objeto gangway. [`gw.params`](/reference/gangway.jade#property-params).
 						
 
 
@@ -309,7 +311,3 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Propiedad de **sólo lectura** que contiene la expresión regular de la propiedad `path`. Si modificamos `path`, `pathRegex` se actualiza automáticamente.
-
-		//- Methods
-		section.methods
-			h2#methods Métodos

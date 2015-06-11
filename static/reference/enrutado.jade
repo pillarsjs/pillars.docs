@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Performance',url:'/pillars/docs/reference/'},{label:'Clase Route',url:'/pillars/docs/reference/route.jade'}];
+	- var path = [{label:'Pillars.js Performance',url:'/reference/'},{label:'Clase Route',url:'/reference/route.jade'}];
 	+reference-layout("Pillars.js Performance - Clase Route - 'make it easy!'",path)
 
 		#title
@@ -15,7 +15,7 @@ html(lang=gw.language)
 			h2#summary Sumario
 			:markdown
 				El **sistema de enrutado** de Pillars.js se basa en: 
-				+ Objetos de la [Clase Route](route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un objeto route. Hay que resaltar que cada objeto route se crea con una *configuración determinada* y un *handler*. 
+				+ Objetos de la [Clase Route](route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un *objeto route*. Hay que resaltar que cada *objeto rout*e se crea con una *configuración determinada* y un *handler*. 
 
 			:highlight(lang='javascript')
 				var myRoute = new Route({
@@ -81,19 +81,13 @@ html(lang=gw.language)
 		section.integracion
 			h2#description Uso
 			:markdown
-				 Tanto `project.routes` como `Route.prototype.routes` son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y ordenar objetos en su estructura:
-				 
-				+ `.add(route)`: añade un *objeto route* previamente creado.
-				+ `.get(id)`: obtiene un *objeto route* dado un identificador *id*. 
-				+ `.remove(id)`: elimina el *objeto route* con identificador *id*.
-				+ `.move(id, pos)`: mueve el *objeto route* con identificador *id* a la posición *pos*. Ver [.move()](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.				
-				+ `.moveAfter(id, pos)`: mueve el objeto con identificador *id*, a la posición después de *pos*. Ver [.moveAfter()](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
+				 Tanto `project.routes` como [`Route.prototype.routes`](clase-route.jade#property-routes) son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y mover objetos en su estructura. Ver los métodos de [`project.routes`](project.jade#property-routes).
 	
 
 		section.plugin-router
 			h2#description Plugin Router
 			:markdown
-				El [Plugin router](plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+				El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
 
 
 

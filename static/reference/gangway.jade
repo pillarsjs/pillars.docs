@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'Objeto gangway',url:'/pillars/docs/reference/gangway.jade'}];
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'Objeto gangway',url:'/reference/gangway.jade'}];
 	+reference-layout("Pillars.js Reference - Objeto gangway - 'make it easy!'",path)
 
 		#title
@@ -234,7 +234,7 @@ html(lang=gw.language)
 						En esta propiedad se engloban los encabezados y valores relacionados con el cuerpo de la solicitud.
 						+ `.type`: Encabezado *Content-Type* de la solicitud.
 						+ `.length`: Encabezado *Content-length* de la solicitud, indica el tamaño en bytes del cuerpo.
-						+ `.boundary`: Aparece solo en las solicitudes POST del tipo multipart-formdata. Es extraido de *Content-type*.
+						+ `.boundary`: Aparece solo en las solicitudes POST del tipo *multipart/form-data*. Es extraido de *Content-type*.
 						+ `.params`: Es la ubicación donde el Plugin *BodyReader* guardará los parámetros recibidos en el cuerpo de la solicitud. Estos son copiados también en la propiedad [`gw.params`](#property-params), donde se combinan con los recibidos mediante GET.
 
 			//- Property
@@ -510,7 +510,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene los ficheros contenidos en el cuerpo de la solicitud en el caso de ser multipart/form-data. Pillars.js por defecto utiliza a la librería formidable para recibir los ficheros, por lo que en esta propiedad se encuentran las referencias a los archivos en el formato que ofrece esta librería.
+						Contiene los ficheros contenidos en el cuerpo de la solicitud en el caso de ser *multipart/form-data*. Pillars.js por defecto utiliza a la *librería formidable* para recibir los ficheros, por lo que en esta propiedad se encuentran las referencias a los archivos en el formato que ofrece esta librería.
 
 
 			//- Property
@@ -702,6 +702,33 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Esta propiedad sirve para establecer los encabezados HTTP [Expires](http://tools.ietf.org/html/rfc2616#section-14.21) y [Cache-control:max-age](http://tools.ietf.org/html/rfc2616#section-14.9). Debe contener el número de segundos que debe mantenerse dicho contenido en la caché del cliente.
+
+			//- Property
+			section.property
+				h3#property-routing: code
+					small gw
+					| .routing
+
+				//- Property description
+				section.description
+					:markdown
+						Propiedad no nativa del *objeto gangway*. Es añadida por el *Plugin router.js*. Contiene un referencia a todos los objetos route por los que va pasando el plugin. En `gw.routing` encontramos: 
+						+ **options**:  parámetros de configuración de cada objeto route route. Finalmente queda un listado de propiedades heredadas. 
+						+ **Check**: chequeo rápido de options. 
+						+ **Routes**: array de route por los que pasa. 
+						+ **handlers**: handler o handlers que atienden finalmente la petición.
+
+			//- Property
+			section.property
+				h3#property-session: code
+					small gw
+					| .session
+
+				//- Property description
+				section.description
+					:markdown
+						Propiedad no nativa del *objeto gangway*. Es añadida por el [Plugin sessions.js](https://github.com/bifuer/pillars/blob/master/plugins/sessions.js). Contiene los datos de la sesión.
+						
 						
 
 

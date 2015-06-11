@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Reference',url:'/pillars/docs/reference/'},{label:'project',url:'/pillars/docs/reference/project.jade'}];
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'project',url:'/reference/project.jade'}];
 	+reference-layout("Pillars.js Reference - project - 'make it easy!'",path)
 
 		#title
@@ -32,7 +32,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						La propiedad `.config` contiene las variables de entorno del proyecto:
+						La propiedad `.config` contiene las **variables de entorno** del proyecto:
 						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio. 
 							+ *false* indica que no acepta solicitudes cors de ningún origen. 
 							+ *true* indica que acepta solicitudes cors de cualquier origen.
@@ -46,6 +46,7 @@ html(lang=gw.language)
 						+ `.renderReload`: **Boolean** por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
 						+ `.favicon`: **String**, ruta del fichero favicon.ico del sitio. 
 						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
+						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](funcionamiento-plugins.jade#plugin-directory). Podemos cambiarlo seteando la ruta del nuevo template.
 
 
 					:markdown
@@ -93,19 +94,22 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Arbol de controladores. Tiempo real.
-						referencia a route y a objectarray.
+						Contiene el **árbol de controladores**. Cada controlador es creado con una instancia de la [Clase Route](clase-route.jade).
 
-						+ `.add(route)`: añade un *objeto route* previamente creado.
-						+ `.get(id)`: obtiene un objeto route dado un identificador *id*. 
-						+ `.remove(id)`: elimina el objeto route con identificador *id*.
-						+ `.move(id, pos)`: mueve el objeto route con identificador *id* a la posición *pos*.
-						+ `.moveBefore()`:  
-						+ `.moveAfter()`: 
 
-					:highlight(lang='javascript')
-						var myRoute = new Route();
-						project.routes.add();
+						Este árbol de controladores es modificable en **tiempo real**, es decir, en vivo podremos añadir, eliminar o modificar controladores.
+
+						> Ver [enrutado en Pillars.js](enrutado.jade).
+
+
+						Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que cuenta con los siguientes métodos para trabajar con la propiedad:
+
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto route* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un objeto route dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un objeto route. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el objeto route. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
+
 
 					:markdown				
 			//- Property
@@ -117,21 +121,19 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Referencia a la clase plugin
+						`project.plugins` es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). Es un array que contiene [objetos Plugin](clase-plugin.jade). Solemos llamar a esta propiedad la **Cadena de Plugins**. 
 
-						Es la cadena de plugins. Propiedad de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). Contiene todos los plugins instalados en la aplicación, para trabajar con los objetos del array disponemos de los siguientes métodos: 
+						> Ver [funcionamiento de plugins](funcionamiento-plugins.jade).
 
-						+ `.add(plugin)`: añade un *objeto plugin* previamente creado.
-						+ `.get(id)`: obtiene un objeto plugin dado un identificador *id*. 
-						+ `.remove(id)`: elimina el objeto plugin con identificador *id*.
-						+ `.move(id, pos)`: mueve el objeto plugin con identificador *id* a la posición *pos*.
-						+ `.moveBefore()`:  
-						+ `.moveAfter()`: 
-						
-			
-					:highlight(lang='javascript')
-						var myPlugin = new Plugin();
-						project.plugins.add();
+						Contiene todos los plugins instalados en la aplicación.
+
+						Para trabajar con los objetos del array disponemos de los siguientes métodos: 
+
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto plugin* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un objeto plugin dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un objeto plugin. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el objeto plugin. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
 					:markdown
@@ -189,7 +191,7 @@ html(lang=gw.language)
 				section.syntax
 					h4 Sintaxis
 					:codesyntax
-						ENV.resolve( directory );
+						project.resolve( directory );
 
 					:markdown
 						+ *directory*: **String** del directorio relativo.
@@ -197,4 +199,4 @@ html(lang=gw.language)
 				section.example
 					h4 Ejemplo
 					:highlight(lang='javascript')
-						var pathStatic = ENV.resolve('./static');
+						var pathStatic = project.resolve('./static');
