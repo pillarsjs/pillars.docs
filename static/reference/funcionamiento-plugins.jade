@@ -16,96 +16,67 @@ html(lang=gw.language)
 			:markdown
 				El **funcionamiento y flujo de trabajo** en Pillars.js se basa en la **Cadena de Plugins**, que está formada por objetos de la [Clase Plugin](clase-plugin.jade).
 
-		section.cadena-de-plugins
-			h2#cadena-de-plugins Cadena de Plugins
-			:markdown
-				La Cadena de Plugins es una variable de tipo [ObjectArray](), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins en el Array. Así, se conforma una lista ordenada de Plugins que se ejecutan de manera secuencial en cada petición de usuario.
-
-
-
-				Las funcionalidades añadidas por los plugins pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
-
-		
 		section.flujo-funcionamiento
 			h2#flujo-funcionamiento Flujo funcionamiento
 			:markdown
-				
-				El **flujo** que sigue Pillars.js, así como su interacción con Node.js, es la siguiente: 
+				La Cadena de Plugins es una variable de tipo [ObjectArray](), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins en el Array. Así, se conforma una **lista ordenada de Plugins** que se ejecutan de manera secuencial en cada petición de usuario.
 
-				**1**. Cuando el cliente realiza una petición se dispara el evento “request” de Node.js. Pillars.js [captura este evento](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L145), que contiene el request y el response, parsea los datos contenidos en request y los setea de forma ordenada y accesible en el **objeto Gangway**. Por lo tanto, por cada petición de cliente, se creará un objeto gangway.
+			img(src="/img/reference/cadena-de-plugins.png")
 
-				> [Ver los parses que realiza el objeto gangway](/pillars/docs/reference/gangway.jade#description) de los datos del request.
-
-				**2**. Una vez que gangway realiza todo el parseo y setea todas las propiedades, Pillars.js emite el [evento gangway](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L147). Este evento es [capturado](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L506) y seguidamente se ejecuta la **Cadena de Plugins**.
-
-				---
-
-
-				En Pillars.js tenemos un listado de objetos tipo plugin que se van ejecutando en orden y de forma concatenada. Este listado es el llamado Cadena de Plugins. 
-
-				Los objetos plugin se crean con la clase Plugin del mismo framework. 
-
-				El orden de ejecución de los objetos plugin es importante, está determinado en la Cadena de Plugins en función a su orden de adicción y es modificable. 
-
-				El sistema que se ha utilizado para encadenar objetos y que éstos se ejecuten en orden y de forma asíncrona está implementado en el framework y es el [Sistema de Nexting](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L514).
-
-				Los Plugins que conforman la **Cadena de Plugins nativa de Pillars.js** son por ejemplo: 
-
-				+ [Plugin de Sesiones](/pillars/docs/reference/plugins.jade#plugin-sessions)
-				+ [Plugin de enrutado](/pillars/docs/reference/plugins.jade#plugin-router)
-				+ [Plugin de Sistema de Usuarios](/pillars/docs/reference/plugins.jade#plugin-accounts)
-
-				Uno de los más interesantes es el **plugin router.js**, que es el encargado de realizar el **sistema de enrutado de Pillars.js**. Tiene prioridad 100. 
-
-				> [Ver los plugins nativos en Pillars.js](/pillars/docs/reference/plugins.jade).
-
-				---
-
-
-				**3**. En la **Cadena de Plugins** existen Plugins de menor y mayor importancia. El más destacable es el **plugin router.js**, que lee todos los objetos “route raíz” que están “conectados” a la aplicación, y comprueba si los parámetros de configuración del route coinciden con los parámetros de la petición, y por lo tanto si debe ejecutar el handler de ese objeto route, seguir recorriendo el árbol, o pasar a otro “route raíz”. 
-
-				Una vez que se encuentra el objeto route que coincide con la petición de usuario, se guarda el handler en gw.routing, y sigue la ejecución de la cadena de plugins hasta la finalización.
-
-
-				**4**. Una vez finalice toda la cadena de Plugins, se ejecuta el handler del objeto route que coincidió con la petición de usuario. Este handler es el que realiza el response al cliente.
-
-
-
-
-
-
-		section.plugins-nativos
-			h2#plugins-nativos Plugins nativos
 			:markdown
-				Pillars.js incorpora una serie de **Plugins nativos**. El más importante de todos ellos es el **plugin Router**, que es el encargado de enroutar la petición del usuario.
-
-				Se listan a continuación en orden de ejecución:
+				Pillars.js incorpora una serie de **Plugins nativos**. Se listan a continuación en orden de ejecución:
 				
 				+ Plugin **langPath**, para la gestión de la ruta en múltiples idiomas. `http://www.pillarsjs.com/en/entorno/` `http://www.pillarsjs/de/entorno`. Este plugin detecta si la ruta de la petición de usuario coincide con algún idioma de los declarados y que no sea el idioma por defecto. Si hay coincidencia, elimina de *gw.path* el idioma correspondiente (/es/tools -> /tools). Una vez hecho esto, setea *gw.languages* al idioma que se ha eliminado.
 				+ Plugin **encoding**, para Codificaciones no válidas, **error 406**.
 				+ Plugin **router**, Plugin de enrutado y responsable de todo el sistema de enrutado de Pillars.js.
-				+ Plugin **maxUploadSize**, que controla el tamaño máximo permitido de la petición HTTP. Además permite añadir para un controlador concreto (objeto route) el tamaño máximo de petición permitido para ese mismo route.
+				+ Plugin **maxUploadSize**, que controla el tamaño máximo permitido de la petición HTTP. Además permite añadir para un controlador concreto (objeto route) modificar el tamaño máximo de petición para ese route concreto.
 				+ Plugin **CORS**, que establece compatibilidad con CORS.
 				+ Plugin **OPTIONS**, compatibilidad con el método *OPTIONS* del protocolo HTTP.
-				+ Plugin **sessions**, permite establecer sesiones de usuario.
+				+ Plugin **sessions**, permite establecer sesiones de usuario. ???
 				+ Plugin **directory**, Ofrece el soporte de directorio estático de ficheros. 
-				+ Plugin **bodyReader**, lee el cuerpo de la petición y lo setea en **gw**.
+				+ Plugin **bodyReader**, lee el cuerpo de la petición y lo setea en el objeto gangway.
 
+				 El más importante de todos ellos es el **plugin router**, encargado de enroutar la petición del usuario. Una vez que se encuentra el objeto route que coincide con la solicitud, se guarda el *handler* en `gw.routing`, y sigue la ejecución de la cadena de plugins hasta la finalización. Una vez finalice toda la cadena de Plugins, se ejecuta el handler del objeto route que coincidió con la solicitud. Este handler es el que realiza el response al cliente.
+
+
+
+
+
+
+				Las funcionalidades añadidas por los plugins pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique:
+
+			:highlight(lang='javascript')
+				var myPlugin = new Plugin(function(gw, next){
+					next();
+				});
+
+				var myRoute = new Route({
+					path:'/plugin',
+					varToPlugin: true
+				},
+					function(gw){
+				});
 		
+
+		section.plugins-nativos
+			h2#plugins-nativos Plugins nativos
+			:markdown
+				
 			section.plugin
 				h3#plugin-langpath 1. Gestión de la ruta para múltiples idiomas
 				
 				:markdown
 					Plugin: [langPath.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/langPath.js)
 
-					Este plugin lee la ruta que llega del request y detecta si en el comienzo de la ruta existe algún identificador de idioma de los declarados en [ENV.languages](/pillars/docs/reference/entorno.jade#property-languages), y que éste no sea el primero.
+					Este plugin lee la ruta que llega en la solicitud y detecta existe algún identificador de idioma de los declarados en `project.languages`, siempre y cuando éste no sea el idioma por defecto.
 
-					Este plugin actúa sobre gangway y se ejecuta el primero de la [Cadena de Plugins](/pillars/docs/reference/vision-global.jade#description-plugins), por lo que actúa antes que el plugin router.js.
-					Una vez hecho eso setea [gw.language](/pillars/docs/reference/gangway.jade#property-language) al idioma que ha eliminado.
+					Este plugin actúa sobre gangway y se ejecuta el primero de la *Cadena de Plugins*, por lo que actúa antes que el *plugin router.js*.
+
+					Una vez hecho esto, setea en [gw.language](/pillars/docs/reference/gangway.jade#property-language) el idioma detectado en la ruta de la solicitud y lo elimina de `gw.path`.
 
 
 			section.plugin
-				h3#plugin-encoding Codificaciones no válidas
+				h3#plugin-encoding 2. Codificaciones no válidas
 				
 				:markdown
 					 Plugin: [encoding.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/encoding.js). 
@@ -113,7 +84,7 @@ html(lang=gw.language)
 					 Plugin que devuelve un error 406 en caso de que la codificación no [gw.encoding](/pillars/docs/reference/gangway.jade#property-encoding) tenga una codificación no válida.
 
 			section.plugin
-				h3#plugin-router Plugin de enrutado
+				h3#plugin-router 3. Plugin de enrutado
 				
 				:markdown
 					 Plugin: [router.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/router.js).
@@ -139,7 +110,7 @@ html(lang=gw.language)
 
 
 			section.plugin
-				h3#plugin-maxUploadSize Máximo tamaño permitido de la petición HTTP
+				h3#plugin-maxUploadSize 4. Máximo tamaño permitido de la petición HTTP
 				
 				:markdown
 					Plugin [maxUploadSize.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/maxUploadSize.js) 
@@ -156,7 +127,7 @@ html(lang=gw.language)
 					var route = new Route({maxsize:10*1024*1024}, function(gw){...}); 
 
 			section.plugin
-				h3#plugin-cors Compatibilidad con CORS
+				h3#plugin-cors 5. Compatibilidad con CORS
 				
 				:markdown
 					Plugin: [CORS.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/CORS.js).
@@ -179,7 +150,7 @@ html(lang=gw.language)
 
 
 			section.plugin
-				h3#plugin-options Compatibilidad con el método OPTIONS
+				h3#plugin-options 6. Compatibilidad con el método OPTIONS
 				
 				:markdown
 					Plugin: [OPTIONS.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/OPTIONS.js)
@@ -188,7 +159,7 @@ html(lang=gw.language)
 
 
 			section.plugin
-				h3#plugin-sessions Sistema de sesiones
+				h3#plugin-sessions 7. Sistema de sesiones
 				
 				:markdown
 					Plugin: [sessions.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/sessions.js)
@@ -201,20 +172,8 @@ html(lang=gw.language)
 
 					Este plugin también setea en gw.session los datos de la sesión. gw.session, no es una propiedad nativa de gangway, sino que es creada por este plugin.
 
-
 			section.plugin
-				h3#plugin-accounts Sistema de usuarios
-				
-				:markdown
-					Plugin: [accounts.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/accounts.js)
-
-					Permite activar cuentas de usuario en la aplicación. Este plugin activa el plugin de sesiones sessions.js, por lo que necesita que exista una base de datos activa.
-
-					Este plugin setea gw.user con los datos del usuario. 
-
-
-			section.plugin
-				h3#plugin-bodyreader Lector del cuerpo de la petición HTTP
+				h3#plugin-bodyreader 8. Lector del cuerpo de la petición HTTP
 				
 				:markdown
 					Plugin: [bodyReader.js](https://github.com/bifuer/pillars/blob/master/lib/plugins/bodyReader.js)

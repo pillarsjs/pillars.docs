@@ -66,24 +66,7 @@ html(lang=gw.language)
 				Gangway parsea los datos del request y los setea en sus propiedades de una forma usable y accesible directamente. 
 
 				Algunos parses, como el parser del contenido de la petición HTTP, es posible desactivarlos para que no ocupen tiempo de proceso, si fuera necesario. 
-
-				Los Parses que realiza el objeto gangway son: 
-				+ **Parser del contenido de la Petición HTTP**. Setea la propiedad [`gw.content`](#property-content), por lo que podremos acceder directamente al POST en la propiedad `gw.content.params` en formato JSON, entre otras.
-
-				+ **Parser de las cabeceras HTTP accepts**. Teniendo toda esta información en [`gw.accepts`]() y pudiendo acceder directamente a los idiomas que espera el navegador en `gw.accepts.language`, por ejemplo. En este caso, también se resuelve el idioma que va a utilizar el servidor para el response y lo setea en `gw.language`. 
-				
-				+ **Parser de Ranges**. Gracias a este parser Pillars.js es compatible con HTTP-ranges, que permite entre otras cosas enviar archivos de gran tamaño con pausa y stop en el navegador, o emitir un video en streaming.
-
-				+ **Parser auth**. Ofrece en la propiedad `gw.auth` un objeto JSON con el user y pass enviados como respuesta a una petición de autenticación HTTP básica. Esta petición HTTP de autenticación básica se realiza con el método [`gw.authenticate()`](#method-authenticate).
-
-				+ **Parser User Agent**. Acceso directo en un único string al motor de renderizado, navegador que usa, si es móvil o no, y OS del cliente.
-
-				+ **Parser del encabezado cookie del request**. Deja las cookies setedas en un objeto JSON en la propiedad `gw.cookie`.
-
-
-				
-			
-
+							
 		//- Properties
 		section.properties
 			h2#properties Propiedades
@@ -232,13 +215,12 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Engloba los encabezados del protocolo HTTP *Accept*, *Accept-Languages* y *Accept-Encoding*. Estos valores siguen el patrón de queality values (http://tools.ietf.org/html/rfc7231#section-5.3.1), hay que deducir cual es la mejor, el protocolo no hace la cuenta, el array que devuelve hace lo ordena por calidad. Comrpobar el formato del array.
+						Engloba los encabezados del protocolo HTTP *Accept*, *Accept-Language* y *Accept-Encoding*. Estos valores siguen el patrón [RFC de Quality Values](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js ordena y establece de una forma homogénea estos parámetros en las siguientes propiedades: 
 
 						`.accepts` devuelve un objeto con: 
-						+ gw.accepts.types: **Array** que contiene los Content-types que espera como respuesta el navegador en la solicitud. [RFC](http://tools.ietf.org/html/rfc7231#section-5.3.2)
-						+ gw.accepts.language: **Array** que contiene los idiomas que espera el navegador. El idioma que utilizará el servidor en el envío se setea en [`gw.language`](#property-language).[RFC](http://tools.ietf.org/html/rfc7231#section-5.3.5)
-						+ gw.accepts.encodings: **Array** que contiene los encodigns que soporta el navegador. El encoding que utilizará el servidor se setea en [`gw.encoding`](#property-encoding). [RFC](http://tools.ietf.org/html/rfc7231#section-5.3.4).
-						La q se traduce de 0 a 100. En la norma puede no haber q, venir como valor *.....
+						+ `.accepts.types`: **Array** que contiene los *Content-types* que espera como respuesta el navegador en la solicitud. [RFC Accept](http://tools.ietf.org/html/rfc7231#section-5.3.2).
+						+ `.accepts.languages`: **Array** que contiene los idiomas que espera el navegador. El idioma que utilizará el servidor en el envío se setea en [`gw.language`](#property-language).[RFC Accept-Language](http://tools.ietf.org/html/rfc7231#section-5.3.5).
+						+ `.accepts.encodings`: **Array** que contiene los encodings que soporta el navegador. El encoding que utilizará el servidor se setea en [`gw.encoding`](#property-encoding). [RFC Accept-Encoding](http://tools.ietf.org/html/rfc7231#section-5.3.4).						
 
 			//- Property
 			section.property
@@ -253,7 +235,7 @@ html(lang=gw.language)
 						+ `.type`: Encabezado *Content-Type* de la solicitud.
 						+ `.length`: Encabezado *Content-length* de la solicitud, indica el tamaño en bytes del cuerpo.
 						+ `.boundary`: Aparece solo en las solicitudes POST del tipo multipart-formdata. Es extraido de *Content-type*.
-						+ `.params`: Es la ubicación donde el Plugin *BodyReader* guardará los parametros recibidos en el cuerpo de la solicitud. Estos son copiados tambien en la propiedad *gw.params*, donde se combinan con los recibidos mediante GET.
+						+ `.params`: Es la ubicación donde el Plugin *BodyReader* guardará los parámetros recibidos en el cuerpo de la solicitud. Estos son copiados también en la propiedad [`gw.params`](#property-params), donde se combinan con los recibidos mediante GET.
 
 			//- Property
 			section.property
@@ -429,12 +411,11 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Path completo al que se realiza la petición. Puede sufrir modificaciones, por ejemplo por el sistema de traducciones o cualquier otra redirección interna, en cualquier caso estará disponible una copia del path original en la propiedad [`.originalPath`](gangway.jade#property-originalPath).
-						http://sub.dom.ext/a/b/c?a=A&b=B
-						"/a/b/c"
+						
 
 					:highlight(lang='javascript')
-						console.log(gw.path);
-						//>/es/
+						//http://sub.dom.ext/a/b/c?a=A&b=B
+						"/a/b/c"
 
 
 			//- Property
@@ -463,14 +444,11 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Parámetros recibidos en el query string de la solicitud.
-
-						http://sub.dom.ext/a/b/c?a=A&b=B
-						{a:'A',b:'B'}
-
+					
 					:highlight(lang='javascript')
-							// Se visita http://localhost/?q=1
-							//> gw.query: { q: '1' }
-							gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+							// Se visita http://sub.dom.ext/a/b/c?a=A&b=B
+							//> gw.query: {a:'A',b:'B'}
+							gw.send("Has enviado mediante Query String el valor: " + gw.query['a']);
 
 
 			//- Property
@@ -975,7 +953,7 @@ html(lang=gw.language)
 					:markdown
 						Emite un código de estado 401 con el encabezado [WWW-Authenticate](http://tools.ietf.org/html/rfc2616#section-14.47) es una cabecera HTTP que emite un diálogo en cliente solicitando usuario y contraseña.
 
-						> El conjunto .authenticate() y .auth son similares a la restricción de acceso que se realiza en el archivo .htaccess en otros servidores HTTP.
+						> El conjunto .authenticate() y [.auth](#property-auth) son similares a la restricción de acceso que se realiza en el archivo .htaccess en otros servidores HTTP.
 
 
 				//- Method syntax
