@@ -14,26 +14,30 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:markdown
-				La **creación de un objeto route** acepta como parámetros una *configuración* y el *handler*. El *handler* se ejecutará cuando la **petición de usuario** coincida con la *configuración* del objeto.			
+				La **creación de un objeto route** acepta como parámetros una *configuración* y el *handler*. El *handler* se ejecutará cuando la **petición** *(request)* coincida con la *configuración* del route.			
 			
 		//- Syntax
-		section.syntax
-			h2#syntax Constructor
+		section.constructor
+			h2#constructor Constructor
 			:codesyntax
 				route = new Route( configuration, handler );
 
 			:markdown
-				+ **configuration**: Opcional. Conjunto de *parámetros de configuración* del route. En la creación se pueden definir: 
-					+ [id](#property-id): Identificador del route.
-					+ [path](#property-path): path al que responderá.
-					+ [host](#property-host): nombre o ip de host que atenderá.
-					+ [active](#property-active): si está activo o no. En el caso de no estar activo, no responderá.
+				+ **configuration**: Opcional. Conjunto de *parámetros de configuración* del route. Se pueden definir: 
+					+ [id](#property-id): **String**, identificador del route.
+					+ [path](#property-path): **String**, path al que responderá.
+					+ [host](#property-host): **String**, nombre o ip de host que atenderá.
+					+ [active](#property-active): **Boolean**, si está activo o no. En el caso de no estar activo, no responderá.
 					+ [method](#property-method): **método/s de la petición HTTP** que acepta el route. Acepta uno o varios. Soporta HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS y CONNECT.
-					+ [https](#property-https): por defecto es undefined, es decir, que pasa por servidores http y https. Si es true es que debe pasar por un https, si es false es que no debe pasar por un ht`ps.define si el route responderá o no en el servidor https.
-					+ multipart: true si queremos que el controlador acepte ficheros.
-					+ maxsize: propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en [`project.config.maxUploadSize`](project.jade#property-config)
+					+ [https](#property-https): define si el objeto atenderá o no por *https*. Por defecto es **undefined**, por lo que el objeto aceptará conexiones http y https. **true** para que sólo atienda https, y **false** para que no atienda *https*.
+					+ [multipart](#property-multipart): true si queremos que el controlador acepte ficheros.
+					+ [maxsize](#property-maxsize): propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en [`project.config.maxUploadSize`](project.jade#property-config)
+					+ [cors](#property-cors)
+					+ [session](#property-session): true
 
-				+ **handler**: Opcional. Manejador que se ejecutará siempre y cuando la petición de usuario coincida con la *configuración* del objeto route. El handler siempre recibe como parámetro el [objeto gangway](gangway.jade).
+				> Ver Configuración de un *objeto route* e interactuación con los *plugins*.
+
+				+ **handler**: Opcional. Manejador que se ejecutará siempre y cuando la petición coincida con la *configuración* del objeto route. El *handler* siempre recibe como parámetro el [objeto gangway](gangway.jade).
 
 
 			:highlight(lang='javascript')
@@ -94,22 +98,22 @@ html(lang=gw.language)
 		section.description
 			h2#description Descripción
 			:markdown
-				Las rutas que atenderá la aplicación se definen mediante objetos route añadidos al proyecto en `project.routes`. 
+				Las rutas que atenderá la aplicación se definen mediante *objetos route* añadidos al proyecto en `project.routes`. 
 
 				Los objetos de la clase Route **permiten crear el enrutado de la aplicación** dotando a ésta de un **enrutado dinámico** y por lo tanto, pudiendo **conectar** y **deconectar** rutas de forma dinámica, es decir, con la aplicación en funcionamiento.
 
-				El objeto se puede declarar sin configuración, por lo que toma los valores predeterminados. También se puede declarar sin manejador, por lo que en este caso el objeto route actuaría como **elemento organizativo**.
+				El objeto se puede declarar sin *configuración*, por lo que toma los valores predeterminados. También se puede declarar sin *manejador*, por lo que en este caso el objeto route actuaría como **elemento organizativo**.
 
-				También son **anidables** por lo que **organizan y agrupan funcionalidades** de la aplicación. Tienen la versatilidad de crear estructuras arbóreas donde el nodo raíz será el que se conecte a la aplicación mediante `project.routes.add()`.. Las estructuras creadas podrán ser árboles n-arios de altura h. El sistema de enrutado, por lo tanto, no tendrá que buscar coincidencia en todos los *parámetros de configuración* de todas las rutas añadidas de forma lineal y completa, sino que recorrerá sólo los hijos directos del nodo raíz en busca de coincidencias. 
+				También son **anidables** por lo que **organizan y agrupan funcionalidades** de la aplicación. Tienen la versatilidad de crear estructuras arbóreas donde el nodo raíz será el que se conecte a la aplicación mediante `project.routes.add()`. Las estructuras creadas podrán ser árboles n-arios de altura h. El sistema de enrutado, por lo tanto, no tendrá que buscar coincidencia en todos los *parámetros de configuración* de todas las rutas añadidas de forma lineal y completa, sino que recorrerá sólo los hijos directos del nodo raíz en busca de coincidencias. 
 				
-				Como hemos visto anteriormente, un objeto route se crea mediante una *configuración* y el *handler*. Los *parámetros de configuración* con los que es instanciado el objeto route es de vital importancia para que se ejecuten, o no, **Plugins** instalados en la aplicación, ya que serán estos parámetros los que disparen los plugins pertinentes. Por lo tanto los plugins se ejecutan, ante una configuración concreta de un objeto route. De esta forma tendremos instalados plugins en el sistema, y no tendrán porqué ejecutarse todos necesariamente, dependerá de la configuración del route y de que esta configuración coincida con la petición. 
+				Como hemos visto anteriormente, un objeto route se crea mediante una *configuración* y el *handler*. Los *parámetros de configuración* con los que es instanciado el objeto route es de vital importancia para que se ejecuten, o no, **Plugins** instalados en la aplicación, ya que serán estos parámetros los que disparen los plugins pertinentes. Por lo tanto los plugins se ejecutan, ante una configuración concreta de un *objeto route*. De esta forma tendremos instalados plugins en el sistema que no tendrán porqué ejecutarse necesariamente, dependerá de la configuración del route y de que esta configuración coincida con la petición. 
 
-				El [Plugin router](plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+				El [Plugin router](plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los *objetos route* añadidos a `project.routes`.
 
 
 
 			:markdown
-				> Los **parámetros de configuración** del route adquieren bastante importancia cuando combinamos objetos route y plugin, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route.
+				> Los **parámetros de configuración** del route adquieren bastante importancia cuando combinamos objetos route y plugin, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route. Ver Configuración de un *objeto route* e interactuación con los *plugins*.
 
 
 						
@@ -186,7 +190,65 @@ html(lang=gw.language)
 						route.host = "www.pillarsjs.com";		
 
 					:markdown
-						> Esta propiedad es útil si se requiere que un objeto route sólo responda cuando el cliente esté visitando un host específico como el del ejemplo.			
+						> Esta propiedad es útil si se requiere que un objeto route sólo responda cuando el cliente esté visitando un host específico como el del ejemplo.
+
+			//- Property
+			section.property
+				h3#property-https: code
+					small Route.prototype
+					| .https
+
+				//- Property description
+				section.description
+					:markdown
+						https
+
+			//- Property
+			section.property
+				h3#property-multipart: code
+					small Route.prototype
+					| .multipart
+
+				//- Property description
+				section.description
+					:markdown
+						multipart
+
+
+			//- Property
+			section.property
+				h3#property-maxsize: code
+					small Route.prototype
+					| .maxsize
+
+				//- Property description
+				section.description
+					:markdown
+						maxsize
+
+			//- Property
+			section.property
+				h3#property-cors: code
+					small Route.prototype
+					| .cors
+
+				//- Property description
+				section.description
+					:markdown
+						cors
+
+			//- Property
+			section.property
+				h3#property-session: code
+					small Route.prototype
+					| .session
+
+				//- Property description
+				section.description
+					:markdown
+						session
+
+
 
 			//- Property
 			section.property
@@ -197,7 +259,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Cada objeto route a su vez, posee una propiedad `routes` de tipo ObjectArray, que podrá contener los nodos route hijos. El funcionamiento es exactamente igual que `project.routes`.					
+						Cada *objeto route* a su vez, posee la propiedad `routes` de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), que podrá contener los nodos route hijos. El funcionamiento es exactamente igual que [`project.routes`](project.jade#property-routes).
 
 
 			//- Property

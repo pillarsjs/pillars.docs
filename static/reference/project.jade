@@ -36,17 +36,17 @@ html(lang=gw.language)
 						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio. 
 							+ *false* indica que no acepta solicitudes cors de ningún origen. 
 							+ *true* indica que acepta solicitudes cors de cualquier origen.
-							+ Si se especifica un Array de string, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
+							+ Si se especifica un *Array de strings*, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
 						+ `.maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud. Por defecto 5\*1024\*1024 (5MB). 
-						+ `.maxCacheFileSize`: **Integer** por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
-						+ `.cacheMaxSamples`: **Integer** por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se realiza del fichero.
-						+ `.cacheMaxSize`: **Integer** por defecto es 250\*1024\*1024. Tamaño máximo de la caché.
-						+ `.cacheMaxItems`: **Integer** por defecto es 5000. Número máximo de elementos en la caché.
-						+ `.fileMaxAge`: **Integer** por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son cache-control y expires.
-						+ `.renderReload`: **Boolean** por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
+						+ `.maxCacheFileSize`: **Integer**, por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
+						+ `.cacheMaxSamples`: **Integer**, por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se realiza del fichero.
+						+ `.cacheMaxSize`: **Integer**, por defecto es 250\*1024\*1024. Tamaño máximo de la caché en MB.
+						+ `.cacheMaxItems`: **Integer**, por defecto es 5000. Número máximo de elementos en la caché.
+						+ `.fileMaxAge`: **Integer**, por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son *cache-control* y *expires*.
+						+ `.renderReload`: **Boolean**, por defecto es **false**. Lo utiliza el objeto gangway para forzar la recompilación del template.
 						+ `.favicon`: **String**, ruta del fichero favicon.ico del sitio. 
 						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
-						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](funcionamiento-plugins.jade#plugin-directory). Podemos cambiarlo seteando la ruta del nuevo template.
+						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](funcionamiento-plugins.jade#plugin-directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
 
 
 					:markdown
@@ -105,9 +105,9 @@ html(lang=gw.language)
 						Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que cuenta con los siguientes métodos para trabajar con la propiedad:
 
 						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto route* previamente creado.
-						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un objeto route dado un identificador o la posición del elemento. 
-						+ `.remove(index [, pid])`: elimina un objeto route. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
-						+ `.move(index, indexTo [, pid])`: mueve de posición el objeto route. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto route* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto route*. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto route*. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
 						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
@@ -130,9 +130,9 @@ html(lang=gw.language)
 						Para trabajar con los objetos del array disponemos de los siguientes métodos: 
 
 						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto plugin* previamente creado.
-						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un objeto plugin dado un identificador o la posición del elemento. 
-						+ `.remove(index [, pid])`: elimina un objeto plugin. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
-						+ `.move(index, indexTo [, pid])`: mueve de posición el objeto plugin. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto plugin* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto plugin*. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto plugin*. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
 						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
@@ -173,7 +173,7 @@ html(lang=gw.language)
 				//- Method description
 				section.description
 					:markdown
-						El método `.configure()` permite setear en un solo objeto toda la configuración del entorno.
+						El método `.configure()` permite setear en un solo objeto todas las **variables de entorno**.
 
 				
 			//- Method

@@ -19,7 +19,7 @@ html(lang=gw.language)
 		section.flujo-funcionamiento
 			h2#flujo-funcionamiento Flujo funcionamiento
 			:markdown
-				La Cadena de Plugins es una variable de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins del Array. Así, se conforma una **lista ordenada de Plugins** que se ejecutan de manera secuencial en cada petición de usuario.
+				La Cadena de Plugins es una variable de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins del Array. Así, se conforma una **lista ordenada de Plugins** que se ejecutan de manera secuencial en cada petición (*request*).
 
 			img(src="/img/reference/cadena-de-plugins.png")
 
@@ -54,20 +54,20 @@ html(lang=gw.language)
 			:markdown
 				> Más información sobre el manejo de la estructura [`project.plugins`](project.jade#property-plugins).
 
-				Se listan en orden de ejecución los **plugins built-in**:
+				Listado de **plugins built-in** en orden de ejecución:
 				
-				+ Plugin **langPath**, para la gestión de la ruta en múltiples idiomas. `http://www.pillarsjs.com/en/entorno/` `http://www.pillarsjs/de/entorno`. Este plugin detecta si la ruta de la petición de usuario coincide con algún idioma de los declarados y que no sea el idioma por defecto. Si hay coincidencia, elimina de *gw.path* el idioma correspondiente (/es/tools -> /tools). Una vez hecho esto, setea *gw.languages* al idioma que se ha eliminado.
+				+ Plugin **langPath**, para la gestión de la ruta en múltiples idiomas. `http://www.pillarsjs.com/en/entorno/` `http://www.pillarsjs/de/entorno`. Este plugin detecta si la ruta de la petición coincide con algún idioma de los declarados, y que no sea el idioma por defecto. Si hay coincidencia, elimina de *gw.path* el idioma correspondiente (/es/tools -> /tools). Una vez hecho esto, setea *gw.languages* al idioma que se ha eliminado.
 				+ Plugin **encoding**, para Codificaciones no válidas, **error 406**.
 				+ Plugin **favicon.js**, para establecer el favicon.
 				+ Plugin **router**, Plugin de enrutado y responsable de todo el sistema de enrutado de Pillars.js.
-				+ Plugin **maxUploadSize**, que controla el tamaño máximo permitido de la petición HTTP. Además permite añadir para un controlador concreto (objeto route) modificar el tamaño máximo de petición para ese route concreto.
+				+ Plugin **maxUploadSize**, que controla el tamaño máximo permitido de la petición HTTP. Además permite modificar para un controlador concreto (*objeto route*) el tamaño máximo de petición para dicho *route*.
 				+ Plugin **CORS**, que establece compatibilidad con CORS.
 				+ Plugin **OPTIONS**, compatibilidad con el método *OPTIONS* del protocolo HTTP.
-				+ Plugin **sessions**, permite establecer sesiones de usuario. ???
-				+ Plugin **directory**, Ofrece el soporte de directorio estático de ficheros. 
+				+ Plugin **sessions**, permite establecer sesiones de usuario con persistencia en memoria.
+				+ Plugin **directory**, que ofrece el soporte de directorio estático de ficheros. 
 				+ Plugin **bodyReader**, lee el cuerpo de la petición y lo setea en el objeto gangway.
 
-				 El más importante de todos ellos es el **plugin router**, encargado de enroutar la petición del usuario. Una vez que se encuentra el objeto route que coincide con la solicitud, se guarda el *handler* en `gw.routing`, y sigue la ejecución de la cadena de plugins hasta la finalización. Una vez finalice toda la cadena de Plugins, se ejecuta el handler del objeto route que coincidió con la solicitud. Este handler es el que realiza el response al cliente.
+				El más importante de todos ellos es el **plugin router**, encargado de **enrutar** la petición. Una vez que se localiza el *objeto route* que **coincide con la solicitud**, se guarda el *handler* en `gw.routing`, y sigue la ejecución de la cadena de plugins hasta la finalización. Una vez finalice toda la Cadena de Plugins, se ejecuta el handler del *objeto route* que coincidió con la solicitud. Este *handler* será el que realice el response al cliente.
 
 				Las funcionalidades añadidas por los plugins pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique:
 
@@ -94,7 +94,7 @@ html(lang=gw.language)
 				:markdown
 					Plugin: [langPath.js](https://github.com/bifuer/pillars/blob/master/plugins/langPath.js)
 
-					Este plugin lee la ruta que llega en la solicitud y detecta si existe algún identificador de idioma de los declarados en `project.languages`.
+					Este plugin lee el *path* de la solicitud y detecta si existe algún identificador de idioma de los declarados en `project.languages`.
 
 					Este plugin actúa sobre gangway y se ejecuta el primero de la *Cadena de Plugins*, por lo que actúa antes que el *plugin router.js*.
 
@@ -115,7 +115,7 @@ html(lang=gw.language)
 				:markdown
 					 Plugin: [favicon.js](https://github.com/bifuer/pillars/blob/master/plugins/favicon.js).
 
-					 Este plugin establece el favicon de Pillars.js. En caso de querer cambiarlo setear la propiedad [`project.config.favicon`](project.jade#property-config) con la URI de dicho icono.project.jade#property-config
+					 Este plugin establece el favicon de Pillars.js. En caso de querer cambiarlo setear la propiedad [`project.config.favicon`](project.jade#property-config) con la URI de dicho icono.
 
 			section.plugin
 				h3#plugin-router 4. Plugin de enrutado
@@ -123,15 +123,13 @@ html(lang=gw.language)
 				:markdown
 					 Plugin: [router.js](https://github.com/bifuer/pillars/blob/master/plugins/router.js).
 
-					 Este plugin comprueba qué objeto route de los añadidos a `project.routes` coincide con la petición de usuario. 
+					 Este plugin comprueba qué *objeto route* de los añadidos a `project.routes` coincide con la petición. Para esto se comprueba la solicitud con las propiedades declaradas en la **configuración del objeto route**, las propiedades que se comprueban son: *path*, *host*, *port*, *method* y *https*. Ver [constructor de Route](clase-route.jade#constructor).
 
-					 Las propiedades que comprueba son: **path**, **host**, **method** y **protocolo http o https**.
+					 Si los *parámetros de configuración* de alguno de los *objetos route* añadidos directamente a `project.routes` coindice con la petición, el *plugin router* sigue comparando con los hijos si tuviese.
 
-					 Si los *parámetros de configuración* de alguno de los objetos route añadidos directamente a `project` coindice con la petición del usuario, el *plugin router* sigue comparando con los hijos.
+					 Este *plugin* guarda una referencia a todos los *objetos route* por los que va pasando en la propiedad **gw.routing**, propiedad no nativa del objeto gangway y que añade este plugin.
 
-					 Este plugin guarda una referencia a todos los objetos route por los que va pasando en **gw.routing**, propiedad no nativa en el objeto gangway y que añade este plugin.
-
-					 A medida que pasa por la estructura arbórea de objetos route, guarda (manteniendo la herencia) la configuración de cada route. En gw.routing encontramos: 
+					 A medida que pasa por la estructura arbórea de *objetos route*, guarda (manteniendo la herencia) la configuración de cada route. En gw.routing encontramos: 
 					 + **options**:  configuración de cada route. Finalmente queda un listado de propiedades heredadas. 
 					 + **Check**: chequeo rápido de los options. 
 					 + **Routes**: array de route por los que pasa. 
@@ -139,8 +137,8 @@ html(lang=gw.language)
 
 
 					 Hay que tener en cuenta los siguientes casos: 
-					 + **Propiedad host** definida en los parámetros de configuración del route. Si no hay coincidencia en el host definido con el host de la petición de usuario, el plugin no seguirá buscando coincidencias en la descendencia de este nodo.
-					 + **Propiedad method** definida en los parámetros de configuración del route. Si hay coincidencia en el path, aunque el método definido en la configuración del route no coincida con el método de la petición de usuario, el plugin seguirá buscando coincidencias en la descendencia de este nodo. Esta propiedad se hereda en la estructura arbórea de objetos route, de forma que si el padre tiene definido el método, el hijo lo heredará en caso de no tenerlo definido. En caso de que padre e hijo tengan definidos ambos la propiedad method prevalecerá la del hijo.  
+					 + **Propiedad host** definida en los parámetros de configuración del route. Si no hay coincidencia en el host definido con el host de la petición, el plugin no seguirá buscando coincidencias en la descendencia de este nodo.
+					 + **Propiedad method** definida en los parámetros de configuración del route. Si hay coincidencia en el path, aunque el método definido en la configuración del route no coincida con el método de la petición, el plugin seguirá buscando coincidencias en la descendencia de este nodo. Esta propiedad se hereda en la estructura arbórea de objetos route, de forma que si el padre tiene definido el método, el hijo lo heredará en caso de no tenerlo definido. En caso de que padre e hijo tengan definidos ambos la propiedad method prevalecerá la del hijo.  
 
 
 			section.plugin
@@ -149,9 +147,9 @@ html(lang=gw.language)
 				:markdown
 					Plugin [maxUploadSize.js](https://github.com/bifuer/pillars/blob/master/plugins/maxUploadSize.js) 
 
-					Para cualquier petición de usuario se comprueba que el tamaño del cuerpo de la petición no supere el tamaño declarado en [`project.config.maxUploadSize`](project.jade#property-config). 
+					Para cualquier petición (*request*) se comprueba que el tamaño del cuerpo de la petición no supere el tamaño declarado en [`project.config.maxUploadSize`](project.jade#property-config). 
 
-					Este plugin permite definir para un *objeto route* concreto el tamaño máximo de la petición para éste, obviando por lo tanto el declarado en `project.config.maxUploadSize`. 
+					Este plugin permite definir para un *objeto route* el tamaño máximo de la petición para éste, obviando por lo tanto el declarado en `project.config.maxUploadSize`. 
 
 					Si el route tiene en su configuración la propiedad `maxsize` seteada a un valor, será este valor el tamaño máximo permitido de la petición para ese route.
 
@@ -168,7 +166,7 @@ html(lang=gw.language)
 
 					[Cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing). Compartición de recursos entre distintos dominios. 
 
-					Permite definir si un controlador (*objeto route*) tendrá en cuenta CORS, seteando la propiedad `cors` en su configuración.
+					Permite definir si un controlador (*objeto route*) permitirá CORS o no, seteando la propiedad [`.cors`](clase-route.jade#constructor) en su configuración.
 
 				:highlight(lang='javascript')
 					// Todos los dominios va a poder realizar peticiones a este route.
@@ -218,7 +216,7 @@ html(lang=gw.language)
 
 					Si el directorio tiene un archivo con nombre *index* de una extensión conocida por el motor de renderizado o HTML,HTM, se muestra/renderiza el *index*.
 
-					Para añadir a la aplicación un directorio estático añadimos un *objeto route* sin manejador (*handler*) y con una configuración específica para activar este plugin:
+					Para **añadir a la aplicación un directorio estático** añadimos un *objeto route* sin manejador (*handler*) y con una configuración específica para activar este plugin:
 
 				:highlight(lang='javascript')
 					// ---------- Pillars static directory -----------------

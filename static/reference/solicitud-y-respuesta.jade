@@ -22,7 +22,7 @@ html(lang=gw.language)
 		section.description
 			h2#description Cabeceras HTTP
 			:markdown
-				Pillars.js pasea y deja accesibles de una forma **directa y homogénea** las cabeceras HTTP: 
+				Pillars.js parsea y deja accesibles de una forma **directa y homogénea** las cabeceras HTTP: 
 				+ **Accept**, contenido en `req.headers['accept']` de Node.js, especifica qué tipo de contenidos son aceptables para la respueta, su valor es un *string* similar a: `"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"`. Pillars.js setea en [`gw.accepts.types`](gangway.jade#property-accepts) un *array* que contiene esta información, de forma ordenada y homogeneizada.  
 
 			:highlight(lang='javascript')
@@ -94,7 +94,7 @@ html(lang=gw.language)
 				"en"
 
 			:markdown
-				+ **User-Agent**. Información relativa al cliente disponible en [`gw.ua`](gangway.jade#property-ua), disponible de una forma ágil.
+				+ **User-Agent**. Información relativa al cliente disponible en [`gw.ua`](gangway.jade#property-ua), disponible de una forma directa.
 
 			:highlight(lang='javascript')
 				// gw.ua 
@@ -164,7 +164,7 @@ html(lang=gw.language)
 		section.i18n
 			h2#i18n Internacionalización
 			:markdown
-				Para trabajar con **proyectos en varios idiomas** disponemos de la [librería textualization](https://github.com/bifuer/textualization), un sistema de internacionalización en dot-notation que usa *nodos de traducción* del tipo: *myProject.hello*, junto con hojas JSON de traducción para los diferentes idiomas: *es.js, en.js, de.js, etc*.
+				Para trabajar con **proyectos en varios idiomas** disponemos de la [librería textualization](https://github.com/bifuer/textualization), integrada en el framework, un sistema de internacionalización en dot-notation que usa *nodos de traducción* del tipo: *myProject.hello*, junto con hojas JSON de traducción para los diferentes idiomas: *es.js, en.js, de.js, etc*.
 				
 				Además el objeto gangway dispone del método [`gw.i18n()`](), un alias de `i18n()`, en el que no tenemos que pasar el último parámetro de idioma, ya que gangway en la propiedad [`gw.language`](gangway.jade#property-language) establece el idioma con el que se responderá al usuario.
 
