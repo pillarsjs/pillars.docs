@@ -1,0 +1,30 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Performance',url:'/reference/'},{label:'Servidor',url:'/reference/servidor.jade'}];
+	+reference-layout("Pillars.js Performance - Servidor - 'make it easy!'",path)
+
+		#title
+			h1 Servidor
+				em  Pillars.js Performance			
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:markdown
+				El servidor servidor
+
+
+			:markdown
+		//- Description
+		section.caracteristicas
+			h2#description Características
+			:markdown
+				
+	
+
+		section.plugin-router
+			h2#description Plugin Router
+			:markdown
+				

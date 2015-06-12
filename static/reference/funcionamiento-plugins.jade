@@ -7,8 +7,7 @@ html(lang=gw.language)
 
 		#title
 			h1 Plugins
-				em  Pillars.js Performance
-			a.source(href="https://github.com/bifuer/pillars/blob/master/lib/Plugin.js") Source
+				em  Pillars.js Performance			
 
 		//- Summary
 		section.summary
@@ -84,6 +83,16 @@ html(lang=gw.language)
 				});
 		
 
+		section.modificacion-plugins-built-in
+			h2#flujo-modificacion-plugins-built-in Modificación de Plugins
+			:markdown
+				Para modificar propiedades de un plugin built-in en primer lugar deberemos capturarlo, y posteriormente realizar las operaciones pertinentes.
+
+			:highlight(lang='javascript')
+				var bodyReaderPlugin = project.services.get('BodyReader');
+				bodyReaderPlugin.tempDirectory = "/temporal";
+
+
 		section.plugins-nativos
 			h2#plugins-nativos Plugins nativos
 			:markdown
@@ -93,6 +102,8 @@ html(lang=gw.language)
 				
 				:markdown
 					Plugin: [langPath.js](https://github.com/bifuer/pillars/blob/master/plugins/langPath.js)
+
+					Id: *LangPath*.
 
 					Este plugin lee el *path* de la solicitud y detecta si existe algún identificador de idioma de los declarados en `project.languages`.
 
@@ -107,6 +118,8 @@ html(lang=gw.language)
 				:markdown
 					 Plugin: [encoding.js](https://github.com/bifuer/pillars/blob/master/plugins/encoding.js). 
 
+					 Id: *Encoding*.
+
 					 Plugin que devuelve un error 406 en caso de que la codificación tenga una codificación no válida.
 
 			section.plugin
@@ -115,6 +128,8 @@ html(lang=gw.language)
 				:markdown
 					 Plugin: [favicon.js](https://github.com/bifuer/pillars/blob/master/plugins/favicon.js).
 
+					 Id: *favicon*.
+
 					 Este plugin establece el favicon de Pillars.js. En caso de querer cambiarlo setear la propiedad [`project.config.favicon`](project.jade#property-config) con la URI de dicho icono.
 
 			section.plugin
@@ -122,6 +137,8 @@ html(lang=gw.language)
 				
 				:markdown
 					 Plugin: [router.js](https://github.com/bifuer/pillars/blob/master/plugins/router.js).
+
+					 Id: *Router*.
 
 					 Este plugin comprueba qué *objeto route* de los añadidos a `project.routes` coincide con la petición. Para esto se comprueba la solicitud con las propiedades declaradas en la **configuración del objeto route**, las propiedades que se comprueban son: *path*, *host*, *port*, *method* y *https*. Ver [constructor de Route](clase-route.jade#constructor).
 
@@ -132,7 +149,7 @@ html(lang=gw.language)
 					 A medida que pasa por la estructura arbórea de *objetos route*, guarda (manteniendo la herencia) la configuración de cada route. En gw.routing encontramos: 
 					 + **options**:  configuración de cada route. Finalmente queda un listado de propiedades heredadas. 
 					 + **Check**: chequeo rápido de los options. 
-					 + **Routes**: array de route por los que pasa. 
+					 + **routes**: array de *objetos route* por los que pasa *gangway* hasta llegar al *route* que ejecutará la petición.
 					 + **handlers**: handler del route que atiende finalmente la petición.
 
 
@@ -146,6 +163,8 @@ html(lang=gw.language)
 				
 				:markdown
 					Plugin [maxUploadSize.js](https://github.com/bifuer/pillars/blob/master/plugins/maxUploadSize.js) 
+
+					Id: *MaxUploadSize*.
 
 					Para cualquier petición (*request*) se comprueba que el tamaño del cuerpo de la petición no supere el tamaño declarado en [`project.config.maxUploadSize`](project.jade#property-config). 
 
@@ -163,6 +182,8 @@ html(lang=gw.language)
 				
 				:markdown
 					Plugin: [CORS.js](https://github.com/bifuer/pillars/blob/master/plugins/CORS.js).
+
+					Id: *CORS*.
 
 					[Cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing). Compartición de recursos entre distintos dominios. 
 
@@ -188,6 +209,8 @@ html(lang=gw.language)
 				:markdown
 					Plugin: [OPTIONS.js](https://github.com/bifuer/pillars/blob/master/plugins/OPTIONS.js)
 
+					Id: *OPTIONS*.
+
 					Este plugin establece compatibilidad con el método OPTIONS del protocolo HTTP.
 
 
@@ -196,6 +219,8 @@ html(lang=gw.language)
 				
 				:markdown
 					Plugin: [sessions.js](https://github.com/bifuer/pillars/blob/master/plugins/sessions.js)
+
+					Id: *Sessions*.
 
 					Sesiones con persistencia en memoria. Estableciendo en la configuración del *route* la propiedad `session:true` se activan las sesiones en dicho *route* y en toda su descendencia ya que esta propiedad se hereda de nodos padres a nodos hijos en la estructura de árbol de dichos objetos.
 
@@ -209,6 +234,8 @@ html(lang=gw.language)
 				
 				:markdown
 					Plugin: [directory.js](https://github.com/bifuer/pillars/blob/master/plugins/directory.js)
+
+					Id: *Directory*.
 
 					Permite servir un directorio estático del servidor.
 
