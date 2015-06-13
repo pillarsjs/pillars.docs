@@ -17,6 +17,8 @@ html(lang=gw.language)
 
 				`var project = require('pillars');`
 
+				> Cualquier require de 'pillars' devolverá siempre la misma instancia. Todas las librerías Pillars.js se cargan en modo [singleton.](http://es.wikipedia.org/wiki/Singleton)
+
 				El *proyecto* es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web. Desde `project` se van a manejar:
 				+ Las **variables de entono**, establecidas en [`project.config`](project.jade#property-config).
 				+ Los **controladores de ruta** añadidos, contenidos en [`project.routes`](project.jade#property-routes) y de estructura arbórea.

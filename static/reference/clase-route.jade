@@ -28,11 +28,11 @@ html(lang=gw.language)
 					+ [path](#property-path): **String**, path al que responderá.
 					+ [host](#property-host): **String**, nombre o ip de host que atenderá.
 					+ [active](#property-active): **Boolean**, si está activo o no. En el caso de no estar activo, no responderá.
-					+ [method](#property-method): **String** o **Array**, método/s de la petición HTTP que acepta el *objeto route*. Acepta uno o varios. Soporta HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS y CONNECT.
+					+ [method](#property-method): **Array**, método/s de la petición HTTP que acepta el *objeto route*. Por defecto es *undefined*, caso en el que se acepta cualquier método, se puede establecer un método específico, o varios que serán los únicos aceptados. Los métodos del protocolo HTTP son: HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS y CONNECT.
 					+ [https](#property-https): **Boolean**. Define si el objeto atenderá o no solicitudes *https*. Por defecto es **undefined**, por lo que el objeto aceptará conexiones *http* y *https*. **true** para que sólo atienda *https*, y **false** para que no atienda *https*.
 					+ [multipart](#property-multipart): **Boolean**. Propiedad para indicar que el *controlador* acepte ficheros.
 					+ [maxUploadSize](#property-maxUploadSize): **Integer**. Propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en [`project.config.maxUploadSize`](project.jade#property-config)
-					+ [cors](#property-cors): **Boolean**, por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos de este objeto.  
+					+ [cors](#property-cors): **Boolean**, por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos de esta URI.  
 					+ [session](#property-session): **Boolean**, false por defecto. **true** para activar sesiones. Es utilizado por el plugin [sessions.js](funcionamiento-plugins.jade#plugin-sessions) para establecer sesiones de usuario.
 
 				> Ver Configuración de un *objeto route* e interactuación con los *plugins*.
@@ -342,47 +342,3 @@ html(lang=gw.language)
 						var myRoute = new Route({}, function(gw){gw.send("Hola Mundo!");});
 						myRoute.active = false;
 						//En este momento la aplicación no respondería
-
-
-			//- Property
-			section.property
-				h3#property-params: code
-					small Route.prototype
-					| .params
-
-				//- Property description
-				section.description
-					:markdown
-						Devuelve un Array de **sólo lectura** que acumula los parámetros que se han pasado en la creación de la ruta.
-						GET, POST Y PATH. 
-
-					:highlight(lang='javascript')
-						var users = new Route({path:"/user/:param1/:param2"},function(gw){
-							gw.send(users.params);
-						});
-
-						project.routes.add(users);
-
-						/* Visitando http://127.0.0.1:3000/user/javi/fotos - Imprime: 
-							[
-								"param1",
-								"param2"
-							]
-						*/
-
-
-					:markdown
-						> El contenido de los parámetros pasados por la URL, así como del POST y del GET, pueden ser consultados con el objeto gangway. [`gw.params`](/reference/gangway.jade#property-params).
-						
-
-
-			//- Property
-			section.property
-				h3#property-pathRegex: code
-					small Route.prototype
-					| .pathRegex
-
-				//- Property description
-				section.description
-					:markdown
-						Propiedad de **sólo lectura** que contiene la expresión regular de la propiedad `path`. Si modificamos `path`, `pathRegex` se actualiza automáticamente.

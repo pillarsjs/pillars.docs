@@ -14,7 +14,7 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:markdown
-				Pillars.js **genera de forma automática** un objeto gangway en cada petición. Contiene como propiedades los **datos del request parseados** y métodos para la respuesta. 
+				Pillars.js **genera de forma automática** un *objeto gangway* en cada petición. Tiene como propiedades los **datos del request parseados** y métodos para la respuesta. 
 
 				Este objeto está disponible en el *handler* tanto del **objeto route**, como en el **objeto plugin**.				
 		
@@ -235,9 +235,9 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Relacionado con la solicitudes [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto es, cuando se solicita una porción de un contenido previamente descargado de forma parcial. Por ejemplo; una imagen cuya descarga ha sido interrumpida, o un video que se está ejecutando con un reproductor multimedia. Engloba las siguientes propiedades:
+						Relacionado con la solicitudes [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto es, cuando se solicita una porción de un contenido previamente descargado de forma parcial. Por ejemplo; una imagen cuya descarga ha sido interrumpida, o un video que se está ejecutando con un reproductor multimedia. Para una solicitud sin rangos la propiedad `.ranges` es false, en caso contrario `.ranges` será un objeto con las siguientes propiedades:
 
-						+ `.check`: parámetro de control para saber si se ha realizado una petición por rangos.
+						+ `.check`: indica el eTag del contenido del cual se solicita el rango. Algunos navegadores y reproductores de video, por ejemplo, no añaden este dato, siendo en estos casos *false*.
 						+ `.unit`: unidad en la que se solicitan los rangos. Normalmente bytes.
 						+ `.start`: byte de comienzo.
 						+ `.end`: byte de finalización.
@@ -865,12 +865,12 @@ html(lang=gw.language)
 				section.syntax
 					h4 Sintaxis
 					:codesyntax
-						.file(filename, clientname, download);
+						.file(filename [, clientname , download]);
 
 					:markdown
 						+ filename: **String**, fichero a enviar, dentro del sistema de archivos del servidor.
 						+ clientname: Opcional, **String** con el nombre del fichero para el cliente, en caso de que no sea el mismo que el original.
-						+ download: **Boolean**. True para forzar el diálogo de descarga. Por defecto es *false*.
+						+ download: Opcional, **Boolean**. True para forzar el diálogo de descarga. Por defecto es *false*.
 
 						> Nota: Este método también tiene gestión de caché automática, por lo que si el cliente ya tiene el archivo no volverá a ser enviado y se responderá con un código 304.
 
@@ -1161,6 +1161,8 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Compone una página genérica de error HTTP con el código de estado especificado, opcionalmente se le puede pasar el objeto Error de JS para su trazado.
+
+						> Pillars.js utiliza un template por defecto para componer la página de error. Se puede modificar este template mediante la propiedad `project.config.errorTemplate`.
 
 				//- Method syntax
 				section.syntax

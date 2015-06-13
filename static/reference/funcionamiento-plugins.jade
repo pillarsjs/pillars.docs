@@ -18,14 +18,14 @@ html(lang=gw.language)
 		section.flujo-funcionamiento
 			h2#flujo-funcionamiento Flujo funcionamiento
 			:markdown
-				La Cadena de Plugins es una variable de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins del Array. Así, se conforma una **lista ordenada de Plugins** que se ejecutan de manera secuencial en cada petición (*request*).
+				La Cadena de Plugins es un objeto de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins del Array. Así, se conforma una **lista ordenada de Plugins** que se ejecutan de manera secuencial en cada petición (*request*).
 
 			img(src="/img/reference/cadena-de-plugins.png")
 
 			:markdown
 				Pillars.js incorpora una serie de **Plugins nativos** o **built-in** (detallados más abajo). Estos **plugins built-in** se ejecutan de forma secuencial. Al primer plugin le llega la petición y cuando finaliza su ejecución pasa la ejecución al siguiente plugin, de esta forma finaliza el último plugin y Pillars.js ejecuta el manejador/controlador pertinente dada la petición (request).
 
-				Como ya hemos comentado, la Cadena de Plugins es la propiedad `project.plugins` de tipo ObjectArray. Este tipo de dato dispone de métodos para añadir, mover o eliminar, por lo que podremos crear *plugins* mediante la [Clase Plugin](clase-plugin.jade) e insertarlos en la posición deseada de la Cadena de Plugins.
+				Como ya hemos comentado, la Cadena de Plugins es la propiedad `project.plugins` de tipo ObjectArray. Este tipo de objeto dispone de métodos para añadir, mover o eliminar, por lo que podremos crear *plugins* mediante la [Clase Plugin](clase-plugin.jade) e insertarlos en la posición deseada de la Cadena de Plugins.
 
 			:highlight(lang='javascript')
 				var myPlugin = new Plugin({
@@ -77,12 +77,11 @@ html(lang=gw.language)
 				Para modificar propiedades de un plugin built-in en primer lugar deberemos capturarlo, y posteriormente realizar las operaciones pertinentes.
 
 			:highlight(lang='javascript')
-				var bodyReaderPlugin = project.services.get('BodyReader');
-				bodyReaderPlugin.tempDirectory = "/temporal";
+				project.services.get('BodyReader').tempDirectory = "/temporal";
 
 
-		section.plugins-nativos
-			h2#plugins-nativos Plugins nativos
+		section.plugins-built-in
+			h2#plugins-built-in Plugins built-in
 			:markdown
 				
 			section.plugin
@@ -93,7 +92,7 @@ html(lang=gw.language)
 
 					Id: *LangPath*.
 
-					Este plugin lee el *path* de la solicitud y detecta si existe algún identificador de idioma de los declarados en `project.languages`.
+					Este plugin lee el *path* de la solicitud y detecta si existe algún identificador de idioma de los declarados en `i18n.languages`, tener en cuenta que en este caso estaríamos utilizando la librería textualization: `var i18n = require('textualization')`.
 
 					Este plugin actúa sobre gangway y se ejecuta el primero de la *Cadena de Plugins*, por lo que actúa antes que el *plugin router.js*.
 
@@ -108,7 +107,7 @@ html(lang=gw.language)
 
 					 Id: *Encoding*.
 
-					 Plugin que devuelve un error 406 en caso de que la codificación tenga una codificación no válida.
+					 Plugin que devuelve un error 406 en caso de que la solicitud requiera una codificación no soportada.
 
 			section.plugin
 				h3#plugin-favicon 3. Plugin favicon
@@ -134,16 +133,9 @@ html(lang=gw.language)
 
 					 Este *plugin* guarda una referencia a todos los *objetos route* por los que va pasando en la propiedad **gw.routing**, propiedad no nativa del objeto gangway y que añade este plugin.
 
-					 A medida que pasa por la estructura arbórea de *objetos route*, guarda (manteniendo la herencia) la configuración de cada route. En gw.routing encontramos: 
-					 + **options**:  configuración de cada route. Finalmente queda un listado de propiedades heredadas. 
-					 + **Check**: chequeo rápido de los options. 
-					 + **routes**: array de *objetos route* por los que pasa *gangway* hasta llegar al *route* que ejecutará la petición.
-					 + **handlers**: handler del route que atiende finalmente la petición.
+					 A medida que pasa por la estructura arbórea de *objetos route*, guarda (manteniendo la herencia) la configuración de cada route. 
 
-
-					 Hay que tener en cuenta los siguientes casos: 
-					 + **Propiedad host** definida en los parámetros de configuración del route. Si no hay coincidencia en el host definido con el host de la petición, el plugin no seguirá buscando coincidencias en la descendencia de este nodo.
-					 + **Propiedad method** definida en los parámetros de configuración del route. Si hay coincidencia en el path, aunque el método definido en la configuración del route no coincida con el método de la petición, el plugin seguirá buscando coincidencias en la descendencia de este nodo. Esta propiedad se hereda en la estructura arbórea de objetos route, de forma que si el padre tiene definido el método, el hijo lo heredará en caso de no tenerlo definido. En caso de que padre e hijo tengan definidos ambos la propiedad method prevalecerá la del hijo.  
+					 > Ver [herencia en estructuras arbóreas.](enrutado.jade#herencia)
 
 
 			section.plugin
@@ -158,12 +150,12 @@ html(lang=gw.language)
 
 					Este plugin permite definir para un *objeto route* el tamaño máximo de la petición para éste, obviando por lo tanto el declarado en `project.config.maxUploadSize`. 
 
-					Si el route tiene en su configuración la propiedad `maxsize` seteada a un valor, será este valor el tamaño máximo permitido de la petición para ese route.
+					Si el route tiene en su configuración la propiedad `.maxUploadSize` seteada a un valor, será este valor el tamaño máximo permitido de la petición para ese route.
 
 					El error devuelto en el caso de superar el tamaño es un 413.
 
 				:highlight(lang='javascript')
-					var route = new Route({maxsize:10*1024*1024}, function(gw){...}); 
+					var route = new Route({maxUploadSize:10*1024*1024}, function(gw){...}); 
 
 			section.plugin
 				h3#plugin-cors 6. Compatibilidad con CORS
@@ -199,7 +191,7 @@ html(lang=gw.language)
 
 					Id: *OPTIONS*.
 
-					Este plugin establece compatibilidad con el método OPTIONS del protocolo HTTP.
+					Este plugin establece compatibilidad con el método OPTIONS del protocolo HTTP respondiendo al mismo de forma automática.
 
 
 			section.plugin
@@ -264,8 +256,6 @@ html(lang=gw.language)
 
 					Para que el controlador del *objeto route* acepte **ficheros**, se debe establecer en su configuración la propiedad `multipart: true`. Los ficheros de la petición son seteados en [`gw.files`](gangway.jade#property-files). 
 
-					> Para que un route acepte el método POST también lo ha de tener seteado en su configuración *method='POST'*
-
 					La subida de ficheros se realiza en el directorio `/temp`. Para modificar este directorio se puede realizar a través de la propiedad `.tempDirectory` del plugin.
 
-					Los ficheros del upload estarán en el directorio temporal **mientras** que se está ejecutando el *objeto route*, una vez que gangway emita el *evento close* se finaliza la ejecución del *route* y se borran los ficheros de temp.
+					Los ficheros del upload estarán en el directorio temporal **mientras** que se está ejecutando el *objeto route*. Una vez finaliza la ejecución de gangway y se envía la respuesta al cliente, se borran los ficheros temporales de la solicitud. Por lo tanto, se deben mover dichos ficheros desde el controlador para poder conservarlos.

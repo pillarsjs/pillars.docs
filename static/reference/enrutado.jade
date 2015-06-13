@@ -14,7 +14,7 @@ html(lang=gw.language)
 			h2#summary Sumario
 			:markdown
 				El **sistema de enrutado** de Pillars.js se basa en: 
-				+ Objetos de la [Clase Route](route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un *objeto route*. Hay que resaltar que cada *objeto rout*e se crea con una *configuración determinada* y un *handler*. 
+				+ Objetos de la [Clase Route](clase-route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un *objeto route*. Hay que resaltar que cada *objeto route* se crea con una *configuración determinada* y un *handler*.
 
 			:highlight(lang='javascript')
 				var myRoute = new Route({
@@ -25,9 +25,11 @@ html(lang=gw.language)
 				});
 
 			:markdown
+				>  En el path están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`,etc.
+				
 				+ `project.routes`, estructura que contiene el árbol de controladores/manejadores disponibles en el proyecto. Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). En esta propiedad se añadirán los objetos Route:
 			:highlight(lang='javascript')
-				project.routes.add(myRoute);
+				project.routes.add(myRoute);				
 
 			:markdown
 				> El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
