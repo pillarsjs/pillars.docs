@@ -54,7 +54,7 @@ html(lang=gw.language)
 					var method = gw.method;		// Método de la petición  GET y/o POST					
 					var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
 
-					gw.send("<pre>"+util.inspect(gw)+"</pre>");
+					gw.json(gw);
 				});
 
 				
@@ -91,7 +91,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Tiempo que se tarda en solucionarse la respuesta. Se considera que es la diferencia entre gw.timer y el momento en el que se dispara el método gw.close.
+						Tiempo que se tarda en resolver la respuesta, justo antes de comenzar el envío de la misma.
 
 
 			//- Property
@@ -103,7 +103,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						**TimeStamp** de cuando se creó el gangway.
+						**TimeStamp** del instante en el que se creó el objeto gangway.
 
 			//- Property
 			section.property
@@ -114,7 +114,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Id del objeto gangway, se genera automáticamente.
+						**String**. Id del objeto gangway, se genera automáticamente.
 
 			//- Property
 			section.property
@@ -136,7 +136,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Alias del [objeto response original de Node](#)
+						Alias del objeto response original de Node.
 
 			//- Property
 			section.property
@@ -147,7 +147,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Es el socket de la solicitud. Es un alias de [request.socket de Node](http://nodejs.org/api/http.html#http_message_socket).
+						Socket de la solicitud. Es un alias de [request.socket de Node](http://nodejs.org/api/http.html#http_message_socket).
 
 			//- Property
 			section.property
@@ -203,12 +203,13 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Engloba los encabezados del protocolo HTTP *Accept*, *Accept-Language* y *Accept-Encoding*. Estos valores siguen el patrón [RFC de Quality Values](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js ordena y establece de una forma homogénea estos parámetros en las siguientes propiedades: 
+						Engloba los encabezados del protocolo HTTP *Accept*, *Accept-Language* y *Accept-Encoding*. Estos valores siguen en su forma original el [RFC de Quality Values](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js ordena y establece de una forma homogénea estos parámetros en las siguientes propiedades: 
 
 						`.accepts` devuelve un objeto con: 
 						+ `.accepts.types`: **Array** que contiene los *Content-types* que espera como respuesta el navegador en la solicitud. [RFC Accept](http://tools.ietf.org/html/rfc7231#section-5.3.2).
 						+ `.accepts.languages`: **Array** que contiene los idiomas que espera el navegador. El idioma que utilizará el servidor en el envío se setea en [`gw.language`](#property-language).[RFC Accept-Language](http://tools.ietf.org/html/rfc7231#section-5.3.5).
-						+ `.accepts.encodings`: **Array** que contiene los encodings que soporta el navegador. El encoding que utilizará el servidor se setea en [`gw.encoding`](#property-encoding). [RFC Accept-Encoding](http://tools.ietf.org/html/rfc7231#section-5.3.4).						
+						+ `.accepts.encodings`: **Array** que contiene los encodings que soporta el navegador. El encoding que utilizará el servidor se setea en [`gw.encoding`](#property-encoding). [RFC Accept-Encoding](http://tools.ietf.org/html/rfc7231#section-5.3.4).		
+						> [Ejemplos](solicitud-y-respuesta.jade#cabeceras-http)
 
 			//- Property
 			section.property
@@ -236,12 +237,12 @@ html(lang=gw.language)
 					:markdown
 						Relacionado con la solicitudes [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto es, cuando se solicita una porción de un contenido previamente descargado de forma parcial. Por ejemplo; una imagen cuya descarga ha sido interrumpida, o un video que se está ejecutando con un reproductor multimedia. Engloba las siguientes propiedades:
 
-						+ `.check`: parámetro de control para saber si se nos ha hecho una petición por rangos.
+						+ `.check`: parámetro de control para saber si se ha realizado una petición por rangos.
 						+ `.unit`: unidad en la que se solicitan los rangos. Normalmente bytes.
 						+ `.start`: byte de comienzo.
 						+ `.end`: byte de finalización.
 
-						> El objeto gangway maneja ranges de forma automática cuando se van a enviar ficheros con gw.file().
+						> El objeto gangway maneja ranges de forma automática cuando se van a enviar ficheros mediante gw.file().
 
 			//- Property
 			section.property
@@ -252,7 +253,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Objeto que contiene los valores recibidos mediante cookies del cliente.
+						Objeto que contiene los valores recibidos mediante cookies.
 
 			//- Property
 			section.property
@@ -263,9 +264,9 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene los valores recibidos en la cabecera HTTP [Authorization](http://tools.ietf.org/html/rfc2616#section-14.8).
-						Devuelve false, en caso de no haberse recibido dicha cabecera y un objeto con las propiedades `user` y `pass` en el caso de haberse recibido.
-						Para solicitar al cliente dicha validación esta disponible el método [.authenticate()](#method-authenticate).
+						Contiene los valores recibidos en la cabecera HTTP Authorization.[RFC](http://tools.ietf.org/html/rfc2616#section-14.8).
+						Devuelve *false*, en caso de no haberse recibido dicha cabecera y un objeto con las propiedades `.user` y `.pass` en el caso de haberse recibido.
+						Para solicitar al cliente dicha validación esta disponible el método [`.authenticate()`](#method-authenticate).
 
 					:highlight(lang='javascript')
 						auth:{
@@ -282,7 +283,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene información relativa al cliente extraido del encabezado HTTP [User-Agent](http://tools.ietf.org/html/rfc2616#section-14.43): 
+						Contiene información relativa al cliente extraido del encabezado HTTP User-Agent ([RFC](http://tools.ietf.org/html/rfc2616#section-14.43)): 
 						+ `.mobile`: **Boolean**. Si es dispositivo móvil o no.
 						+ `.os`: **String** con el Sistema Operativo del cliente.
 						+ `.engine`: **String**. Motor de renderizado. Gecko, Webkit, Trident, Blink o Unknow.
@@ -305,7 +306,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene el valor del encabezado *Origin* relacionado con las solicitudes [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+						Encabezado *Origin* relacionado con las solicitudes [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 			//- Property
 			section.property
@@ -316,7 +317,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Devuelve la dirección IP del cliente en un **String**.
+						Dirección IP del cliente. **String**.
 
 					:highlight(lang='javascript')
 						console.log(gw.ip);
@@ -353,7 +354,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Host al que se realiza la petición.
+						Host al que se realiza la petición. **String**
 
 					:highlight(lang='javascript')
 							console.log(gw.host);
@@ -530,7 +531,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene los parametros recibidos tanto por query string como en el cuerpo de la solicitud y mediante parametros de ruta. 
+						Contiene los parámetros recibidos tanto por query string como en el cuerpo de la solicitud y mediante parametros de ruta. 
 						Es decir, gw.pathParams (/:var, /*:var) + gw.query (?q=1) + gw.content.params(POST).
 
 			//- Property
@@ -590,7 +591,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene los valores de las cabeceras relacionas con solicitudes CORS para la respuesta al cliente. Estas propiedades son definidas por el [Plugin CORS](funcionamiento-plugins.jade#plugin-cors) automáticamente.
+						Cabeceras relacionas con solicitudes CORS para la respuesta al cliente. Estas propiedades son definidas por el [Plugin CORS](funcionamiento-plugins.jade#plugin-cors) automáticamente.
 
 					:highlight(lang='javascript')
 						//cors: {
@@ -608,7 +609,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Contiene el tamaño en bytes de la respuesta al cliente. Es usado para generar el encabezado HTTP [Content-Length](http://tools.ietf.org/html/rfc2616#section-14.13) cuando ejecutamos cualquier método de envío a cliente. De forma general se rellena automática con cualquiera de los métodos de respueta de gangway.
+						Tamaño en bytes de la respuesta al cliente. Es usado para generar el encabezado HTTP [Content-Length](http://tools.ietf.org/html/rfc2616#section-14.13) cuando ejecutamos cualquier método de envío a cliente. De forma general se rellena automática con cualquiera de los métodos de respueta de gangway.
 
 
 			//- Property
@@ -647,7 +648,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Esta propiedad sirve para establecer los encabezados HTTP [Expires](http://tools.ietf.org/html/rfc2616#section-14.21) y [Cache-control:max-age](http://tools.ietf.org/html/rfc2616#section-14.9). Debe contener el número de segundos que debe mantenerse dicho contenido en la caché del cliente.
+						Establece los encabezados HTTP [Expires](http://tools.ietf.org/html/rfc2616#section-14.21) y [Cache-control:max-age](http://tools.ietf.org/html/rfc2616#section-14.9). Debe contener el número de segundos que debe mantenerse dicho contenido en la caché del cliente.
 
 			//- Property
 			section.property
@@ -659,11 +660,19 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Propiedad no nativa del *objeto gangway*. Es añadida por el *Plugin router.js*. Contiene un referencia a todos los *objetos route* por los que va pasando Pillars.js hasta llegar al que atenderá la petición. En `gw.routing` encontramos: 
-						+ **inheritance**: *parámetros de configuración* declarados en el *objeto route* que atiende la petición, y sus antecesores en el caso de ser una estructura arbórea. Finalmente queda un listado de propiedades heredadas. 
-						> Ver herencia de *parámetros de configuración* de un *objeto route* en una estructura arbórea.
-						+ **Check**: chequeo rápido de options. ???
-						+ **routes**: dada una estructura arbórea, rray que contiene todos los *objetos route* que se recorren en el árbol hasta llegar al que atiende finalmente la petición.
-						+ **handlers**: handler o handlers que atienden finalmente la petición.
+						+ `inheritance`: *parámetros de configuración* declarados en el *objeto route* que atiende la petición y sus antecesores en el caso de ser una estructura arbórea. Finalmente queda un listado de propiedades heredadas. 
+						> [Ver herencia de *parámetros de configuración* de un *objeto route* en una estructura arbórea.](enrutado.jade#herencia)
+						+ `routes`: dada una estructura arbórea, array que contiene todos los *objetos route* que se recorren en el árbol hasta llegar al que atiende finalmente la petición.
+						+ `handlers`: handler o handlers que atienden finalmente la petición.
+
+						Métodos:
+						+ `.check()`: chequeo rápido de las propiedades heredadas. Dados unos parámetros heredados, chequeo de las mismas: 
+					:highlight(lang='javascript')
+						var userParam = gw.routing.check("userParam", project.config.userParam || '56');
+					:markdown
+						Si no viene heredada la propiedad *userParam*, establece su valor con *pillars.config.userParam*, en el caso de que sea *undefined* lo establece en *56*.
+
+
 
 			//- Property
 			section.property
@@ -964,17 +973,6 @@ html(lang=gw.language)
 					h4 Ejemplo
 					:highlight(lang='javascript')
 						gw.redirect("www.pillarsjs.com");
-
-			//- Method
-			section.method
-				h3#method-head: code
-					small gw
-					| .head()
-
-				//- Method description
-				section.description
-					:markdown
-						Es un método interno encargado de establecer los encabezados de la respuesta antes de su envío.
 
 			//- Method
 			section.method

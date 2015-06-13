@@ -26,10 +26,10 @@ html(lang=gw.language)
 
 			:markdown
 				+ *configuration*: opcional. Objeto de configuración del plugin. En la creación del plugin se pueden configurar los siguientes parámetros: 
-					+ [id](#property-id): Identificador del plugin.					
-					+ [active](#property-active): si está activo o no.
+					+ [id](#property-id): **String** identificador del plugin. Si no se especifica se autogenera.
+					+ [active](#property-active): **Boolean**, indica si está activo o no.
 
-				+ *handler*: opcional. Controlador que se ejecutará el plugin. El controller siempre recibe como parámetro el [objeto gangway](gangway.jade) y **next**.
+				+ *handler*: Controlador que ejecutará el plugin. El controller siempre recibe como parámetro el [objeto gangway](gangway.jade) y **next**.
 
 				
 			:highlight(lang='javascript')
@@ -41,16 +41,15 @@ html(lang=gw.language)
 				});
 
 
-				// Creación de un objeto plugin con id 'web' y path '/web'. 
-				// El manejador envía al cliente el renderizado del archivo example.jade
+				// Creación de un objeto plugin con id 'idPlugin'
 
 				var plugin = new Plugin(
 					{
-						id: "web",
-						path: "/web/"
+						id: "idPlugin"
 					},
 					function(gw, next){
-						gw.render("example.jade");
+						//...
+						next();
 					}
 				);
 
@@ -61,7 +60,9 @@ html(lang=gw.language)
 			:markdown
 				La Clase Plugin es primordial en el funcionamiento del framework, ya que éste está construido a base de Plugins que realizan diversas funciones. 	
 
-				Ver [Funcionamiento de los Plugins](funcionamiento-plugins.jade) en Pillars.js. 		
+				> Ver [Funcionamiento de los Plugins](funcionamiento-plugins.jade) en Pillars.js. 
+			:markdown
+				> Un *objeto route* podrá determinar gracias a su *configuración* si se ejecuta un Plugin. [Ver configuración route y plugins.](enrutado.jade#ejecucion-plugins)	
 
 
 		//- Properties

@@ -19,8 +19,8 @@ html(lang=gw.language)
 				Este objeto está disponible en el *handler* tanto del **objeto route** como en el **objeto plugin**.
 
 		//- Description
-		section.description
-			h2#description Cabeceras HTTP
+		section.cabeceras-http
+			h2#cabeceras-http Cabeceras HTTP
 			:markdown
 				Pillars.js parsea y deja accesibles de una forma **directa y homogénea** las cabeceras HTTP: 
 				+ **Accept**, contenido en `req.headers['accept']` de Node.js, especifica qué tipo de contenidos son aceptables para la respueta, su valor es un *string* similar a: `"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"`. Pillars.js setea en [`gw.accepts.types`](gangway.jade#property-accepts) un *array* que contiene esta información, de forma ordenada y homogeneizada.  
@@ -120,7 +120,6 @@ html(lang=gw.language)
 			:markdown
 				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](gangway.jade#property-content) de una forma accesible. Este parseo lo realiza el [Plugin bodyReader.js](funcionamiento-plugins.jade#plugin-bodyreader). En el caso de subida de ficheros, hemos de tener en cuenta: 
 					+ El *objeto route* debe estar configurado para aceptar multipart/form-data y el método post. 
-					+ Los ficheros de la petición serán seteados en [`gw.files`](gangway.jade#property-files) y almacenados en el directorio `/temp` definido en la propiedad `.tempDirectory` del [plugin bodyReader.js](funcionamiento-plugins.jade#plugin-bodyreader).
 			:highlight(lang='javascript')
 				var myRoute = new Route(
 					{
@@ -130,7 +129,10 @@ html(lang=gw.language)
 					},
 					function(gw){
 						//...
-					});			
+					});
+			:markdown
+					+ Los ficheros de la petición serán seteados en [`gw.files`](gangway.jade#property-files) y almacenados en el directorio `/temp` definido en la propiedad `.tempDirectory` del [plugin bodyReader.js](funcionamiento-plugins.jade#plugin-bodyreader).
+				
 					
 			:markdown
 				+ **Query String (GET)**. Seteado en [`gw.query`](gangway.jade#property-query). 

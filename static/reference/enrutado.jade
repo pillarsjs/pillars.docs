@@ -140,7 +140,7 @@ html(lang=gw.language)
 		section.ejecucion-plugins
 			h3#ejecucion-plugins Configuración route y Plugins
 			:markdown
-				Los **parámetros de configuración** del route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también el los plugins, por lo que en podremos "activar" plugins. 
+				Los **parámetros de configuración** del route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
 
 				> Antes de leer cómo interaccionan objetos route y plugin, recomendamos la lectura de [functionamiento de plugins](funcionamiento-plugins.jade)
 
@@ -148,6 +148,9 @@ html(lang=gw.language)
 
 			:highlight(lang='javascript')
 				var myPlugin = new Plugin(function(gw, next){
+					if (gw.routing.inheritance.varToPlugin){
+						console.log("Plugin running");
+					};
 					next();
 				});
 
@@ -156,7 +159,7 @@ html(lang=gw.language)
 					varToPlugin: true
 				},
 				function(gw){
-					gw.send();
+					gw.send("Something");
 				});
 		
 
@@ -166,8 +169,96 @@ html(lang=gw.language)
 			:markdown
 				Los *objetos route* son anidables en estructura de árbol, por lo que hay que tener presente la **herencia** de los *parámetros de configuración* de un *route* cuando éstos estan anidados.
 
-				Los *parámetros de configuración* declarados en un nodo padre, lo heredarán sus descendientes. Si uno de los nodos hijos redefine una propiedad ya definida en los *parámetros de configuración* de un nodo superior, ésta tomará el valor actual.
+				Los *parámetros de configuración* declarados en un nodo padre, lo heredarán sus descendientes. Si uno de los nodos hijos redefine una propiedad ya definida en los *parámetros de configuración* de un nodo superior, ésta tomará el valor definido en sí mismo.
 
 			img(src="/img/reference/herencia.png")
+
+			:markdown
+				En el caso del ejemplo gráfico, se crean tres *objetos route* con la siguiente configuración:
+				+ *myRoute*: que define id, cors, https, port, method, maxUploadSize y un parámetro nuevo creado por el usuario: userParam.
+				+ *son1*: descendiente directo de *myRoute*, y que redefine la propiedad method y maxUploadSize. Por lo que éste sólo aceptará el método GET, y su tamaño máximo de la solicitud sube a 5MB. El resto de propiedades serán las mismas que las de *myRoute*, también dispondrá de la propiedad userParam en true.
+				+ *son2*: descendiente directo de *myRoute* y que no redefine ninguna propiedad. Por lo que las propiedades serán las mismas que las de su nodo superior *myRoute*.
+
+				Las propiedades obtenidas por herencia estarán disponibles en [`gw.routing.inheritance`](gangway.jade#property-routing).
+
+			:highlight(lang='javascript')
+				var myRoute = new Route({
+						id: 'idRoute',
+						cors: false,
+						https: false,
+						port: 3006,
+						method: ['POST', 'GET'],
+						maxUploadSize: 2*1024*1024,
+						userParam: true
+					},
+					function(gw){
+						gw.json(gw.routing.inheritance);
+				});
+
+				var son1 = new Route({
+						id: 'son1',
+						path: '/son1',
+						method: 'GET',
+						maxUploadSize: 5*1024*1024
+					},
+					function(gw){
+						gw.json(gw.routing.inheritance);
+				});
+
+				var son2 = new Route({
+						id: 'son2',
+						path: '/son2'
+					},
+					function(gw){
+						gw.json(gw.routing.inheritance);
+				});
+
+
+				project.routes.add(myRoute);
+				myRoute.routes.add(son1);
+				myRoute.routes.add(son2);
+
+
+			:highlight(lang='javascript')
+				// > http://localhost:3006/
+				{
+				  "active": true,
+				  "port": 3006,
+				  "method": ["POST","GET"],
+				  "https": false,
+				  "cors": false,
+				  "maxUploadSize": 2097152,
+				  "userParam": true
+				}
+
+				// > http://localhost:3006/son1
+				{
+				  "active": true,
+				  "port": 3006,
+				  "method": ["GET"],
+				  "https": false,
+				  "cors": false,
+				  "maxUploadSize": 5242880,
+				  "userParam": true
+				}
+
+				// > http://localhost:3006/son2
+				{
+				  "active": true,
+				  "port": 3006,
+				  "method": ["POST","GET"],
+				  "https": false,
+				  "cors": false,
+				  "maxUploadSize": 2097152,
+				  "userParam": true
+				}
+
+
+
+
+
+
+
+
 
 
