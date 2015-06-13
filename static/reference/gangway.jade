@@ -118,18 +118,6 @@ html(lang=gw.language)
 
 			//- Property
 			section.property
-				h3#property-closed: code
-					small gw
-					| .closed
-
-				//- Property description
-				section.description
-					:markdown
-						**Boolean**, indica si el objeto gangway ha terminado su ejecución, un objeto gangway finaliza una vez que se termina de enviar la respuesta al cliente.
-
-
-			//- Property
-			section.property
 				h3#property-req: code
 					small gw
 					| .req
@@ -489,16 +477,16 @@ html(lang=gw.language)
 					:markdown
 						Esta propiedad engloba los valores relacionados con la negociación de caché con el cliente. Contiene las siguientes propiedades:
 						+ `.control`: contiene el valor del encabezado HTTP [cache-control](http://tools.ietf.org/html/rfc2616#section-14.9).
-						+ `.nonemath`: contiene el valor del encabezado HTTP [if-none-match](http://tools.ietf.org/html/rfc2616#section-14.26). Este encabezado está relacionado con el encabezado de la respuesta [etag](#property-etag) que es encriptado para el cliente y se obtiene en esta propiedad ya desencriptado.
-						+ `.modsince`: contiene el valor del encabezado HTTP [if-modified-since](http://tools.ietf.org/html/rfc2616#section-14.25).
+						+ `.eTag`: contiene el valor del encabezado HTTP [if-none-match](http://tools.ietf.org/html/rfc2616#section-14.26). Este encabezado está relacionado con el encabezado de la respuesta [eTag](#property-eTag) que es encriptado para el cliente y se obtiene en esta propiedad ya desencriptado.
+						+ `.lastMod`: contiene el valor del encabezado HTTP [if-modified-since](http://tools.ietf.org/html/rfc2616#section-14.25).
 
 						
 					:highlight(lang='javascript')
 						console.log(gw.cache);
 						//>{ 
 						// control: 'max-age=0',
-						// nonematch: false, // va con el etag
-						// modsince: 'Tue, 30 Dec 2014 18:47:00 GMT' 
+						// eTag: false, // va con el eTag
+						// lastMod: 'Tue, 30 Dec 2014 18:47:00 GMT' 
 						// },
 
 			//- Property
@@ -544,48 +532,6 @@ html(lang=gw.language)
 					:markdown
 						Contiene los parametros recibidos tanto por query string como en el cuerpo de la solicitud y mediante parametros de ruta. 
 						Es decir, gw.pathParams (/:var, /*:var) + gw.query (?q=1) + gw.content.params(POST).
-
-			//- Property
-			section.property
-				h3#property-queryHeap: code
-					small gw
-					| .queryHeap
-
-				//- Property description
-				section.description
-					:markdown
-						Es una utilidad que convierte conjuntos de parámetros con la notación de nombres `account[user][firstname]` en el correspondiente árbol de propiedades.
-
-						Por ejemplo:
-
-					:highlight(lang='javascript')
-						var form = {
-						  'account[user][firstname]':'Homer',
-						  'account[user][lastname]':'Simpson',
-						  'account[user][age]':'45',
-						  'account[meta][var]':'Ouch!',
-						}
-
-						form = gw.queryHeap(form);
-
-						console.log(form);
-						/*>
-						  {
-						    account: {
-						      user : {
-						        firstname : 'Homer',
-						        lastname: 'Simpson',
-						        age: '45'
-						      },
-						      meta: {
-						        var: 'Ouch!'
-						      }
-						    }
-						  }
-						*/
-
-					:markdown
-						> Adicionalmente acepta también notación de puntos para realizar el proceso, solo cuando se utilizan exclusivamente carácteres alfanuméricos [a-Z0-9].
 
 			//- Property
 			section.property
@@ -667,36 +613,36 @@ html(lang=gw.language)
 
 			//- Property
 			section.property
-				h3#property-lastmod: code
+				h3#property-lastMod: code
 					small gw
-					| .lastmod
+					| .lastMod
 
 				//- Property description
 				section.description
 					:markdown
-						La propiedad `.lastmod` (objeto Date) indica la fecha de última modificación de la respuesta, este valor es usado para generar el encabezado HTTP [Last-modified](http://tools.ietf.org/html/rfc2616#section-14.29).
+						La propiedad `.lastMod` (objeto Date) indica la fecha de última modificación de la respuesta, este valor es usado para generar el encabezado HTTP [Last-modified](http://tools.ietf.org/html/rfc2616#section-14.29).
 						Por defecto será la fecha y hora en la que se efectúa dicha respuesta de no ser establecida esta propiedad antes de comenzar la respuesta al cliente.
 
 
 
 			//- Property
 			section.property
-				h3#property-etag: code
+				h3#property-eTag: code
 					small gw
-					| .etag
+					| .eTag
 
 				//- Property description
 				section.description
 					:markdown
-						Esta propiedad sirve para establecer el encabezado HTTP [etag](http://tools.ietf.org/html/rfc2616#section-14.19) de la respuesta. Consiste en un objeto que será encriptado mediante `JSON.encrypt()` para ser enviado al cliente. Por lo que podemos definir múltiples valores detro de la cabecera etag. Pillars.js utiliza la propiedad `gw.etag.hash` para establecer el identificador único o hash del contenido enviado. Este hash único se establece con el método `cacheck()` ya que es el valor utilizado para controlar la versión en caché del cliente del contenido solicitado. 
+						Esta propiedad sirve para establecer el encabezado HTTP [eTag](http://tools.ietf.org/html/rfc2616#section-14.19) de la respuesta. Consiste en un objeto que será encriptado mediante `JSON.encrypt()` para ser enviado al cliente. Por lo que podemos definir múltiples valores detro de la cabecera eTag. Pillars.js utiliza la propiedad `gw.eTag.hash` para establecer el identificador único o hash del contenido enviado. Este hash único se establece con el método `.cacheck()` ya que es el valor utilizado para controlar la versión en caché del cliente del contenido solicitado. 
 
 						
 
 			//- Property
 			section.property
-				h3#property-maxage: code
+				h3#property-maxAge: code
 					small gw
-					| .maxage
+					| .maxAge
 
 				//- Property description
 				section.description
@@ -712,10 +658,11 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						Propiedad no nativa del *objeto gangway*. Es añadida por el *Plugin router.js*. Contiene un referencia a todos los objetos route por los que va pasando el plugin. En `gw.routing` encontramos: 
-						+ **options**:  parámetros de configuración de cada objeto route route. Finalmente queda un listado de propiedades heredadas. 
-						+ **Check**: chequeo rápido de options. 
-						+ **Routes**: array de route por los que pasa. 
+						Propiedad no nativa del *objeto gangway*. Es añadida por el *Plugin router.js*. Contiene un referencia a todos los *objetos route* por los que va pasando Pillars.js hasta llegar al que atenderá la petición. En `gw.routing` encontramos: 
+						+ **inheritance**: *parámetros de configuración* declarados en el *objeto route* que atiende la petición, y sus antecesores en el caso de ser una estructura arbórea. Finalmente queda un listado de propiedades heredadas. 
+						> Ver herencia de *parámetros de configuración* de un *objeto route* en una estructura arbórea.
+						+ **Check**: chequeo rápido de options. ???
+						+ **routes**: dada una estructura arbórea, rray que contiene todos los *objetos route* que se recorren en el árbol hasta llegar al que atiende finalmente la petición.
 						+ **handlers**: handler o handlers que atienden finalmente la petición.
 
 			//- Property
@@ -842,19 +789,6 @@ html(lang=gw.language)
 				section.description
 					:markdown
 						Alias de [response.end([data], [encoding])](http://nodejs.org/api/all.html#all_response_end_data_encoding) de Node.
-
-
-			//- Method
-			section.method
-				h3#method-close: code
-					small gw
-					| .close()
-
-				//- Method description
-				section.description
-					:markdown
-						Es un método interno que se encarga de finalizar la ejecución del objeto gangway.
-						Al ejecutarse este método emite el [evento close](#event-close), del sistema de eventos de gangway. 
 
 			//- Method
 			section.method

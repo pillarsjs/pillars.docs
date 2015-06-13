@@ -68,20 +68,8 @@ html(lang=gw.language)
 
 				El más importante de todos ellos es el **plugin router**, encargado de **enrutar** la petición. Una vez que se localiza el *objeto route* que **coincide con la solicitud**, se guarda el *handler* en `gw.routing`, y sigue la ejecución de la cadena de plugins hasta la finalización. Una vez finalice toda la Cadena de Plugins, se ejecuta el handler del *objeto route* que coincidió con la solicitud. Este *handler* será el que realice el response al cliente.
 
-				Las funcionalidades añadidas por los plugins pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique:
-
-			:highlight(lang='javascript')
-				var myPlugin = new Plugin(function(gw, next){
-					next();
-				});
-
-				var myRoute = new Route({
-					path:'/plugin',
-					varToPlugin: true
-				},
-					function(gw){
-				});
-		
+				Las funcionalidades añadidas por los plugins pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la **configuración del objeto route lo determine**. [Ver Configuración objeto route y Plugins.](enrutado.jade#ejecucion-plugins)
+			
 
 		section.modificacion-plugins-built-in
 			h2#flujo-modificacion-plugins-built-in Modificación de Plugins

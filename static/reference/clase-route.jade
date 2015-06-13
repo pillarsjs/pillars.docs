@@ -28,12 +28,12 @@ html(lang=gw.language)
 					+ [path](#property-path): **String**, path al que responderá.
 					+ [host](#property-host): **String**, nombre o ip de host que atenderá.
 					+ [active](#property-active): **Boolean**, si está activo o no. En el caso de no estar activo, no responderá.
-					+ [method](#property-method): **método/s de la petición HTTP** que acepta el route. Acepta uno o varios. Soporta HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS y CONNECT.
-					+ [https](#property-https): define si el objeto atenderá o no por *https*. Por defecto es **undefined**, por lo que el objeto aceptará conexiones http y https. **true** para que sólo atienda https, y **false** para que no atienda *https*.
-					+ [multipart](#property-multipart): true si queremos que el controlador acepte ficheros.
-					+ [maxsize](#property-maxsize): propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en [`project.config.maxUploadSize`](project.jade#property-config)
-					+ [cors](#property-cors)
-					+ [session](#property-session): true
+					+ [method](#property-method): **String** o **Array**, método/s de la petición HTTP que acepta el *objeto route*. Acepta uno o varios. Soporta HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS y CONNECT.
+					+ [https](#property-https): **Boolean**. Define si el objeto atenderá o no solicitudes *https*. Por defecto es **undefined**, por lo que el objeto aceptará conexiones *http* y *https*. **true** para que sólo atienda *https*, y **false** para que no atienda *https*.
+					+ [multipart](#property-multipart): **Boolean**. Propiedad para indicar que el *controlador* acepte ficheros.
+					+ [maxUploadSize](#property-maxUploadSize): **Integer**. Propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en [`project.config.maxUploadSize`](project.jade#property-config)
+					+ [cors](#property-cors): **Boolean**, por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos de este objeto.  
+					+ [session](#property-session): **Boolean**, false por defecto. **true** para activar sesiones. Es utilizado por el plugin [sessions.js](funcionamiento-plugins.jade#plugin-sessions) para establecer sesiones de usuario.
 
 				> Ver Configuración de un *objeto route* e interactuación con los *plugins*.
 
@@ -171,8 +171,9 @@ html(lang=gw.language)
 						route.method = ["GET","POST"]; //acepta GET y POST
 
 					:markdown
-						La propiedad `.method` es **heredable** en una estructura arbórea de objetos route. Sigue el siguiente patrón: 
-						+ Si el padre ???
+						La propiedad `.method` es **heredable** en una estructura arbórea de objetos route.
+
+						> Ver herencia de propiedades del objeto route en una estructura arbórea.
 			
 
 			//- Property
@@ -201,7 +202,10 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						https
+						Propiedad para indicar si el *objeto route* acepta conexiones http, https o ambas. Por defecto es ***undefined*.
+						+ **undefined** para permitir http y https.
+						+ **true** para sólo permitir conexiones **https**.
+						+ **false** para sólo permitir conexiones **http**.
 
 			//- Property
 			section.property
@@ -212,19 +216,23 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						multipart
+						Tipo **Boolean**. **true** para indicar que el controlador acepte ficheros. Hay que tener en cuenta que la propiedad `.method` deberá estar seteada en `POST` para que acepte ficheros.
+
+						**false** para no aceptar ficheros.
 
 
 			//- Property
 			section.property
-				h3#property-maxsize: code
+				h3#property-maxUploadSize: code
 					small Route.prototype
-					| .maxsize
+					| .maxUploadSize
 
 				//- Property description
 				section.description
 					:markdown
-						maxsize
+						Propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en `project.config.maxUploadSize`. 
+
+						Si esta propiedad está definida en `project.config` prevalecerá la definida en el *objeto route*.
 
 			//- Property
 			section.property
@@ -235,7 +243,10 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						cors
+						**Boolean**, por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos de este objeto. 
+						+ *false* indica que no acepta solicitudes cors de ningún origen. 
+						+ *true* indica que acepta solicitudes cors de cualquier origen.
+						+ Si se especifica un *Array de strings*, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors.
 
 			//- Property
 			section.property
@@ -246,7 +257,9 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:markdown
-						session
+						Es utilizado por el plugin [sessions.js](funcionamiento-plugins.jade#plugin-sessions) para establecer sesiones de usuario. Las sesiones se establecen con persistencia en memoria, por lo que si se apaga el servidor se pierden. (*Más adelante se ampliará a sistema de sesiones con persistencia en base de datos*)
+
+						**Boolean**, false por defecto. **true** para activar sesiones. 
 
 
 

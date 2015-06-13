@@ -30,6 +30,9 @@ html(lang=gw.language)
 				project.routes.add(myRoute);
 
 			:markdown
+				> El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+
+			:markdown
 		//- Description
 		section.caracteristicas
 			h2#description Características
@@ -77,18 +80,91 @@ html(lang=gw.language)
 				
 			:markdown
 		//- Description
-		section.integracion
-			h2#description Uso
+		section.uso
+			h2#uso Uso de la Cadena de Plugins
 			:markdown
 				 Tanto `project.routes` como [`Route.prototype.routes`](clase-route.jade#property-routes) son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y mover objetos en su estructura. Ver los métodos de [`project.routes`](project.jade#property-routes).
-	
 
-		section.plugin-router
-			h2#description Plugin Router
+		section.configuracion-objeto-route
+			h2#configuracion-objeto-route Configuración objeto route
 			:markdown
-				El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+				Al instanciar el *objeto route* podemos hacerlo con un [*objeto de configuración*](clase-route.jade#constructor). 
+			:codesyntax
+				route = new Route( configuration, handler );
+			:markdown
+				Estos **parámetros de configuración** determinarán:
+				+ Si se ejecuta el handler de este objeto, ya que la *petición* deberá coincidir con ciertos parámetros de esta configuración.
+				+ Si se ejecutarán determinados Plugins. En este sentido, los parámetros declarados en la *configuración* del *objeto route*, nos servirán para activar, o no, diversos plugins.
+
+		section.ejecucion-handler
+			h3#ejecucion-handler Configuración route y petición
+			:markdown
+				Los *parámetros de configuración* que determinarán si se ejecutará el handler de este mismo objeto son: 
+				+ **path**. Obviamente, si no es su path no se ejecutará. 
+				+ **active**. Obviamente, si el *route* no está activo, no responderá a ninguna solicitud.
+				+ **port**. Si el puerto de la petición no coincide con el declarado en la configuración del *route*, no se ejecutará, emitiendo un Error 404. 
+			:highlight(lang='javascript')
+				project.services.get('http').configure({port:3002}).start();
+
+				project.services.insert((new HttpService({
+				  id:'http2',
+				  port: 3003
+				})).start());
+
+				var myRoute = new Route({id: 'idRoute',port: 3002},function(gw){
+				  gw.send("Sólo funciona en el puerto 3002");
+				});
+
+				project.routes.add(myRoute);
+			:markdown
+				De esta forma podremos crear servicios *http* en diferentes puertos, y establecer qué mostraremos en cada uno. 
+
+				> Todos los **parámetros de configuración** son modificables en vivo es decir, si una vez instanciado el objeto modificamos la propiedad `.port` para que acepte conexiones desde cualquier puerto: `myRoute.port = undefined` o `project.routes.get('idRoute').port = undefined;` este *objeto route* atenderá las peticiones dirigidas a cualquier puerto. El resto de *parámetros de configuración* tienen la misma versatilidad.
+
+				+ **host**. Si la petición no va dirida al host definido en el parámetro `.host`, emitirá un error 404, Not found.
+			:highlight(lang='javascript')
+				var myRoute = new Route({host: 'localhost'},function(gw){
+				  gw.send("Sólo funciona para peticiones a localhost");
+				});
+
+				project.routes.add(myRoute);
+			:markdown
+				En el caso del ejemplo, si realizamos una petición a http://127.0.0.1, devolverá un error 404.
+
+				+ **method**. Especifica el método que acepta el *route*, por lo que si la petición se realiza mediante un método diferente al/los definido/s emitirá un error 404.
+				+ **https**. Especifica si el objeto acepta peticiones *http*, *https* o ambas. Si la petición se realiza por un protocolo diferente al especificado, emitirá un error 404.
+
+				> Solo los parámetros de configuración definidas en esta sección determinarán si se ejecuta el *handler* o no.
 
 
+		section.ejecucion-plugins
+			h3#ejecucion-plugins Configuración route y Plugins
+			:markdown
+				Los **parámetros de configuración** del route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también el los plugins, por lo que en podremos "activar" plugins. 
+
+				> Antes de leer cómo interaccionan objetos route y plugin, recomendamos la lectura de [functionamiento de plugins](funcionamiento-plugins.jade)
+
+				Para ello, podemos insertar **nuevas propiedades** en el *objeto de configuración del route*, y éstas estarán disponibles para los Plugins *(siempre y cuando se ejecuten después del plugin router.js)* en la propiedad de gangway [`gw.routing`](gangway.jade#property-routing).
+
+			:highlight(lang='javascript')
+				var myPlugin = new Plugin(function(gw, next){
+					next();
+				});
+
+				var myRoute = new Route({
+					path:'/plugin',
+					varToPlugin: true
+				},
+				function(gw){
+					gw.send();
+				});
+		
 
 			:markdown
-				> Los **parámetros de configuración** del route adquieren bastante importancia cuando combinamos objetos route y plugins, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route.
+		section.herencia
+			h2#herencia Herencia objeto route
+			:markdown
+				Los *objetos route* son anidables en estructura de árbol, por lo que hay que tener presente la **herencia** de los *parámetros de configuración* de un *route* cuando éstos estan anidados.
+
+				Los *parámetros de configuración* declarados en un nodo padre, lo heredarán sus descendientes. Si uno de los nodos hijos redefine una propiedad ya definida en los *parámetros de configuración* de un nodo superior, ésta tomará el valor actual.
+
