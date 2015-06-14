@@ -22,8 +22,8 @@ var project = require('pillars').configure({
 
 // HTTP service start
 project.services.get('http').configure({
-  timeout: args.timeout,
-  port: args.port
+  timeout: parseInt(args.timeout,10),
+  port: parseInt(args.port,10)
 }).start();
 
 // Internacionalization config
