@@ -6,7 +6,7 @@ mixin base(title,path,bodyclass)
 		meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
 		style
 			include ./css/pillarsDocs.css
-		//
+		//- 
 
 	body(class=bodyclass)
 		#space
@@ -46,14 +46,59 @@ mixin base(title,path,bodyclass)
 					.copyright ©2015 Javier Gallego Martín & Chelo Quilón (Just Married) & individual contributors
 					.license MIT license
 
+		//- 'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
+		//- 'http://fonts.googleapis.com/css?family=Inconsolata:400,700|Source+Sans+Pro:400,400italic,700,700italic'
+		style
+			include ./css/font-awesome.min.css
+		//- 
+
+		style.
+
+			@font-face {
+			  font-family: 'Inconsolata';
+			  font-style: normal;
+			  font-weight: 400;
+			  src: local('Inconsolata'), url(http://fonts.gstatic.com/s/inconsolata/v10/BjAYBlHtW3CJxDcjzrnZCIgp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2'), url(http://fonts.gstatic.com/s/inconsolata/v10/BjAYBlHtW3CJxDcjzrnZCLrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
+			}
+			@font-face {
+			  font-family: 'Inconsolata';
+			  font-style: normal;
+			  font-weight: 700;
+			  src: local('Inconsolata Bold'), local('Inconsolata-Bold'), url(http://fonts.gstatic.com/s/inconsolata/v10/AIed271kqQlcIRSOnQH0yf79_ZuUxCigM2DespTnFaw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/inconsolata/v10/AIed271kqQlcIRSOnQH0yRbnBKKEOwRKgsHDreGcocg.woff) format('woff');
+			}
+			@font-face {
+			  font-family: 'Source Sans Pro';
+			  font-style: normal;
+			  font-weight: 400;
+			  src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlJbPFduIYtoLzwST68uhz_Y.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNHq-FFgoDNV3GTKpHwuvtI.woff) format('woff');
+			}
+			@font-face {
+			  font-family: 'Source Sans Pro';
+			  font-style: normal;
+			  font-weight: 700;
+			  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGJkF8H8ye47wsfpWywda8og.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGIqjGYJUyOXcBwUQbRaNH6c.woff) format('woff');
+			}
+			@font-face {
+			  font-family: 'Source Sans Pro';
+			  font-style: italic;
+			  font-weight: 400;
+			  src: local('Source Sans Pro Italic'), local('SourceSansPro-It'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoM2Sl3jWJ3D9poyJPMfASioc.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoM_bce-VcyLJMRR1FC9qWbU8.woff) format('woff');
+			}
+			@font-face {
+			  font-family: 'Source Sans Pro';
+			  font-style: italic;
+			  font-weight: 700;
+			  src: local('Source Sans Pro Bold Italic'), local('SourceSansPro-BoldIt'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/fpTVHK8qsXbIeTHTrnQH6H0cQ2LOPDPk8GfVMt0MqYH3rGVtsTkPsbDajuO5ueQw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/fpTVHK8qsXbIeTHTrnQH6PgYMAt3u4NmhhzLLLPJ5qH3rGVtsTkPsbDajuO5ueQw.woff) format('woff');
+			}
+
 		style
 			include ./css/pillarsForms.css
 			include ./js/highlight/styles/monokai_sublime.css
-		//
+		//- 
 		
 		script
 			include ./js/jquery.min.js
-		//
+		//- 
 		
 		script.
 
