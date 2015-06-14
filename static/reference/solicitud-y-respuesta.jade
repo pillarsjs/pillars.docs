@@ -51,7 +51,7 @@ html(lang=gw.language)
 				]
 
 			:markdown
-				+ **Accept-Encoding**. Determina la compresión que se espera de la respuesta. Los valores comunes son gzip, deflate o sdch. La propiedad `req.headers['accept-encoding']` de Node.js contiene un *string* con todos los valores, junto con la calidad, siguiendo la norma [RFC referida a los parámetros de calidad](http://tools.ietf.org/html/rfc7231#section-5.3.1). Un ejemplo de este *string*: `"gzip, deflate, sdch"`. Pillars.js transforma este string en [`gw.accepts.encodings`](gangway.jade#property-accepts), un *array* ordenado con los parámetros de calidad homogeneizados. Por otro lado, la codificación usada en la respueta se setea en [`gw.encoding`](gangway.jade#property-encoding).
+				+ **Accept-Encoding**. Determina la compresión que se espera de la respuesta. Los valores comunes son gzip, deflate o sin compresión. La propiedad `req.headers['accept-encoding']` de Node.js contiene un *string* con todos los valores, junto con la calidad, siguiendo la norma [RFC referida a los parámetros de calidad](http://tools.ietf.org/html/rfc7231#section-5.3.1). Un ejemplo de este *string*: `"gzip, deflate, sdch"`. Pillars.js transforma este string en [`gw.accepts.encodings`](gangway.jade#property-accepts), un *array* ordenado con los parámetros de calidad homogeneizados. Por otro lado, la codificación usada en la respueta se setea en [`gw.encoding`](gangway.jade#property-encoding).
 			:highlight(lang='javascript')
 				// gw.accepts.encodings
 				[
@@ -119,12 +119,11 @@ html(lang=gw.language)
 			h2#contenido-de-la-peticion POST, GET y rutas parametrizadas
 			:markdown
 				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](gangway.jade#property-content) de una forma accesible. Este parseo lo realiza el [Plugin bodyReader.js](funcionamiento-plugins.jade#plugin-bodyreader). En el caso de subida de ficheros, hemos de tener en cuenta: 
-					+ El *objeto route* debe estar configurado para aceptar multipart/form-data y el método post. 
+					+ El *objeto route* debe estar configurado para aceptar multipart/form-data. En el caso de no estar definido `method`, aceptará todos.
 			:highlight(lang='javascript')
 				var myRoute = new Route(
 					{
 						path: '/uploads',
-						method: 'POST',
 						multipart: true
 					},
 					function(gw){
@@ -207,4 +206,45 @@ html(lang=gw.language)
 			:markdown
 				La librería textualization acepta [numerales](https://github.com/bifuer/textualization#numerales) y traducción con [funciones](https://github.com/bifuer/textualization#traducción-con-funciones).
 
-				Por otro lado, permite la internacionalización de las rutas, de forma que ......	
+		section.i18n-path
+			h3#i18n-path Internacionalización de path
+			:markdown
+				Pillars.js implementa internacionalización de rutas, esto es; definir *objetos route* que atenderán una petición a una URL en los idiomas definidos en el proyecto.
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+				var i18n = require("textualization");
+
+				i18n.load("i18nSample","./languages");
+
+				i18n.languages = ["es","en"];
+
+				var myRoute = new Route({
+						id: 'idRoute',
+						iPath: 'i18nSample.paths.events'
+					},function(gw){
+					//...
+					});
+
+
+			:highlight(lang='javascript')
+				//Hoja de traducción ./languages/es.js
+				textualization={
+					hello: "Hola {firstname} {lastname}!!",
+					paths: {
+						events: "/eventos"
+					}
+				}
+
+			:highlight(lang='javascript')
+				//Hoja de traducción ./languages/en.js
+				textualization={
+					hello: "Hello {firstname} {lastname}!!",
+					paths: {
+						events: "/events"
+					}
+				}
+
+
+
+					

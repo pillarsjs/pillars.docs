@@ -17,6 +17,8 @@ html(lang=gw.language)
 				La Clase Plugin permiten ampliar las funcionalidades del framework. 
 
 				Estas funcionalidades pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
+
+				Es necesario añadir un plugin creado a [`project.plugins`](project.jade#property-plugins).
 					
 		//- Syntax
 		section.syntax
@@ -40,6 +42,8 @@ html(lang=gw.language)
 					next();
 				});
 
+				project.plugins.add(plugin;
+
 
 				// Creación de un objeto plugin con id 'idPlugin'
 
@@ -52,6 +56,8 @@ html(lang=gw.language)
 						next();
 					}
 				);
+
+				project.plugins.add(plugin);
 
 
 		//- Description
