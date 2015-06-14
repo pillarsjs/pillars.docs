@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:marked
+			:markdown
 				Pillars.js **genera de forma automática** un objeto gangway en cada petición. Contiene como propiedades los **datos del request parseados** y métodos para la respuesta. 
 
 				Este objeto está disponible en el *handler* tanto del **objeto route**, como en el **objeto plugin**.				
@@ -62,7 +62,7 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:marked
+			:markdown
 				Gangway parsea los datos del request y los setea en sus propiedades de una forma usable y accesible directamente. 
 
 				Algunos parses, como el parser del contenido de la petición HTTP, es posible desactivarlos para que no ocupen tiempo de proceso, si fuera necesario. 
@@ -79,7 +79,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad de tipo ObjectArray. Contiene eventos.
 
 			//- Property
@@ -90,7 +90,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Tiempo que se tarda en resolver la respuesta, justo antes de comenzar el envío de la misma.
 
 
@@ -102,7 +102,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**TimeStamp** del instante en el que se creó el objeto gangway.
 
 			//- Property
@@ -113,7 +113,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**String**. Id del objeto gangway, se genera automáticamente.
 
 			//- Property
@@ -124,7 +124,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Alias del [objeto request original de Node](http://nodejs.org/api/http.html#http_http_incomingmessage).
 
 			//- Property
@@ -135,7 +135,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Alias del objeto response original de Node.
 
 			//- Property
@@ -146,7 +146,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Socket de la solicitud. Es un alias de [request.socket de Node](http://nodejs.org/api/http.html#http_message_socket).
 
 			//- Property
@@ -157,7 +157,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Código de estado de la solicitud. Alias de [response.statusCode original de Node.](http://nodejs.org/api/http.html#http_response_statuscode)
 
 			//- Property
@@ -168,7 +168,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Informa si se han enviado las cabeceras de la respuesta o no. Alias de [response.headersSent original de Node.](http://nodejs.org/api/http.html#http_response_headerssent)
 
 			//- Property
@@ -179,7 +179,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Alias de request.headers original de Node.js.
 		
 
@@ -191,7 +191,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Alias de response.finished original de Node.js.
 
 			//- Property
@@ -202,7 +202,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Engloba los encabezados del protocolo HTTP *Accept*, *Accept-Language* y *Accept-Encoding*. Estos valores siguen en su forma original el [RFC de Quality Values](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js ordena y establece de una forma homogénea estos parámetros en las siguientes propiedades: 
 
 						`.accepts` devuelve un objeto con: 
@@ -219,7 +219,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						En esta propiedad se engloban los encabezados y valores relacionados con el cuerpo de la solicitud.
 						+ `.type`: Encabezado *Content-Type* de la solicitud.
 						+ `.length`: Encabezado *Content-length* de la solicitud, indica el tamaño en bytes del cuerpo.
@@ -234,7 +234,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Relacionado con la solicitudes [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto es, cuando se solicita una porción de un contenido previamente descargado de forma parcial. Por ejemplo; una imagen cuya descarga ha sido interrumpida, o un video que se está ejecutando con un reproductor multimedia. Engloba las siguientes propiedades:
 
 						+ `.check`: parámetro de control para saber si se ha realizado una petición por rangos.
@@ -252,7 +252,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Objeto que contiene los valores recibidos mediante cookies.
 
 			//- Property
@@ -263,7 +263,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene los valores recibidos en la cabecera HTTP Authorization.[RFC](http://tools.ietf.org/html/rfc2616#section-14.8).
 						Devuelve *false*, en caso de no haberse recibido dicha cabecera y un objeto con las propiedades `.user` y `.pass` en el caso de haberse recibido.
 						Para solicitar al cliente dicha validación esta disponible el método [`.authenticate()`](#method-authenticate).
@@ -282,7 +282,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene información relativa al cliente extraido del encabezado HTTP User-Agent ([RFC](http://tools.ietf.org/html/rfc2616#section-14.43)): 
 						+ `.mobile`: **Boolean**. Si es dispositivo móvil o no.
 						+ `.os`: **String** con el Sistema Operativo del cliente.
@@ -305,7 +305,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Encabezado *Origin* relacionado con las solicitudes [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
 
 			//- Property
@@ -316,7 +316,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Dirección IP del cliente. **String**.
 
 					:highlight(lang='javascript')
@@ -331,7 +331,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Versión del protocolo HTTP.
 
 			//- Property
@@ -342,7 +342,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Indica si la solicitud ha sido realizada a un servicio https o no. **Boolean**.
 
 			//- Property
@@ -353,7 +353,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Host al que se realiza la petición. **String**
 
 					:highlight(lang='javascript')
@@ -368,7 +368,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Puerto al que se realiza la petición.
 
 					:highlight(lang='javascript')
@@ -383,7 +383,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Método utilizado para la petición. Uno de los siguientes valores [OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT]
 
 					:highlight(lang='javascript')
@@ -398,7 +398,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Path completo al que se realiza la petición. Puede sufrir modificaciones, por ejemplo por el sistema de traducciones o cualquier otra redirección interna, en cualquier caso estará disponible una copia del path original en la propiedad [`.originalPath`](gangway.jade#property-originalPath).
 						
 
@@ -415,7 +415,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Path original desde el que se realiza la petición. Ver [`gw.path`](gangway.jade#property-path).
 
 					:highlight(lang='javascript')
@@ -431,7 +431,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Parámetros recibidos en el query string de la solicitud.
 					
 					:highlight(lang='javascript')
@@ -448,7 +448,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene el valor del encabezado HTTP [Referer](http://tools.ietf.org/html/rfc2616#section-14.36) que indica, si es el caso, la URL del sitio web que contenía el enlace que lanzó esta solicitud.
 
 			//- Property
@@ -459,7 +459,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene el valor del encabezado HTTP [Connection](http://tools.ietf.org/html/rfc2616#section-14.10).
 
 					:highlight(lang='javascript')
@@ -475,7 +475,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Esta propiedad engloba los valores relacionados con la negociación de caché con el cliente. Contiene las siguientes propiedades:
 						+ `.control`: contiene el valor del encabezado HTTP [cache-control](http://tools.ietf.org/html/rfc2616#section-14.9).
 						+ `.eTag`: contiene el valor del encabezado HTTP [if-none-match](http://tools.ietf.org/html/rfc2616#section-14.26). Este encabezado está relacionado con el encabezado de la respuesta [eTag](#property-eTag) que es encriptado para el cliente y se obtiene en esta propiedad ya desencriptado.
@@ -498,7 +498,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene los ficheros contenidos en el cuerpo de la solicitud en el caso de ser *multipart/form-data*. Pillars.js por defecto utiliza a la *librería formidable* para recibir los ficheros, por lo que en esta propiedad se encuentran las referencias a los archivos en el formato que ofrece esta librería.
 
 
@@ -510,7 +510,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene un objeto con los parámetros y valores que han llegado al servidor a través de la Ruta parametrizada. 
 						En Pillars.js puedes configurar los path de los objetos Route con parámetros abiertos. `/:var`, `/*:var`, `/:var1/:var`.
 
@@ -530,7 +530,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Contiene los parámetros recibidos tanto por query string como en el cuerpo de la solicitud y mediante parametros de ruta. 
 						Es decir, gw.pathParams (/:var, /*:var) + gw.query (?q=1) + gw.content.params(POST).
 
@@ -542,7 +542,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Objeto disponible para añadir propiedades y valores adicionales.
 
 			
@@ -554,7 +554,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Encoding que va a usar el servidor para la respuesta. Está basado en [gw.accepts.encodings](#property-accepts). Pillars.js es compatible con las codificaciones *identity*, *deflate* y *gzip*.
 
 
@@ -566,7 +566,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Idioma que va a usar el servidor para la respuesta.  Está basado en la URL utilizada para la solicitud, esta propiedad es establecida por el [Plugin LangPath](funcionamiento-plugins.jade#plugin-langpath).  
 
 
@@ -578,7 +578,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Es un Array que contiene las cookies que han sido establecidas por el método de gangway [`.setCookie()`](#method-setCookie). Al enviar la respuesta al cliente se adjuntarán las cookies establecidas en este Array.
 
 
@@ -590,7 +590,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Cabeceras relacionas con solicitudes CORS para la respuesta al cliente. Estas propiedades son definidas por el [Plugin CORS](funcionamiento-plugins.jade#plugin-cors) automáticamente.
 
 					:highlight(lang='javascript')
@@ -608,7 +608,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Tamaño en bytes de la respuesta al cliente. Es usado para generar el encabezado HTTP [Content-Length](http://tools.ietf.org/html/rfc2616#section-14.13) cuando ejecutamos cualquier método de envío a cliente. De forma general se rellena automática con cualquiera de los métodos de respueta de gangway.
 
 
@@ -620,7 +620,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						La propiedad `.lastMod` (objeto Date) indica la fecha de última modificación de la respuesta, este valor es usado para generar el encabezado HTTP [Last-modified](http://tools.ietf.org/html/rfc2616#section-14.29).
 						Por defecto será la fecha y hora en la que se efectúa dicha respuesta de no ser establecida esta propiedad antes de comenzar la respuesta al cliente.
 
@@ -634,7 +634,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Esta propiedad sirve para establecer el encabezado HTTP [eTag](http://tools.ietf.org/html/rfc2616#section-14.19) de la respuesta. Consiste en un objeto que será encriptado mediante `JSON.encrypt()` para ser enviado al cliente. Por lo que podemos definir múltiples valores detro de la cabecera eTag. Pillars.js utiliza la propiedad `gw.eTag.hash` para establecer el identificador único o hash del contenido enviado. Este hash único se establece con el método `.cacheck()` ya que es el valor utilizado para controlar la versión en caché del cliente del contenido solicitado. 
 
 						
@@ -647,7 +647,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Establece los encabezados HTTP [Expires](http://tools.ietf.org/html/rfc2616#section-14.21) y [Cache-control:max-age](http://tools.ietf.org/html/rfc2616#section-14.9). Debe contener el número de segundos que debe mantenerse dicho contenido en la caché del cliente.
 
 			//- Property
@@ -658,7 +658,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad no nativa del *objeto gangway*. Es añadida por el *Plugin router.js*. Contiene un referencia a todos los *objetos route* por los que va pasando Pillars.js hasta llegar al que atenderá la petición. En `gw.routing` encontramos: 
 						+ `inheritance`: *parámetros de configuración* declarados en el *objeto route* que atiende la petición y sus antecesores en el caso de ser una estructura arbórea. Finalmente queda un listado de propiedades heredadas. 
 						> [Ver herencia de *parámetros de configuración* de un *objeto route* en una estructura arbórea.](enrutado.jade#herencia)
@@ -669,7 +669,7 @@ html(lang=gw.language)
 						+ `.check()`: chequeo rápido de las propiedades heredadas. Dados unos parámetros heredados, chequeo de las mismas: 
 					:highlight(lang='javascript')
 						var userParam = gw.routing.check("userParam", project.config.userParam || '56');
-					:marked
+					:markdown
 						Si no viene heredada la propiedad *userParam*, establece su valor con *pillars.config.userParam*, en el caso de que sea *undefined* lo establece en *56*.
 
 
@@ -682,7 +682,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad no nativa del *objeto gangway*. Es añadida por el [Plugin sessions.js](https://github.com/bifuer/pillars/blob/master/plugins/sessions.js). Contiene los datos de la sesión.
 						
 						
@@ -702,7 +702,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.setTimeout(msecs, callback)](http://nodejs.org/api/all.html#all_response_settimeout_msecs_callback) de Node.
 
 			//- Method
@@ -713,7 +713,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.writeContinue(statusCode, [reasonPhrase], [headers])](http://nodejs.org/api/all.html#all_response_writecontinue) de Node.
 
 				
@@ -725,7 +725,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.writeHead(statusCode, [reasonPhrase], [headers])](http://nodejs.org/api/all.html#all_response_writehead_statuscode_reasonphrase_headers) de Node.
 
 			
@@ -737,7 +737,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.setHeader(name, value)](http://nodejs.org/api/all.html#all_response_setheader_name_value) de Node.
 
 			//- Method
@@ -748,7 +748,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.getHeader(name)](http://nodejs.org/api/all.html#all_response_getheader_name) de Node.
 
 
@@ -760,7 +760,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.removeHeader(name)](http://nodejs.org/api/all.html#all_response_removeheader_name) de Node.
 
 
@@ -772,7 +772,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.addTrailers(headers)](http://nodejs.org/api/all.html#all_response_addtrailers_headers) de Node.
 
 
@@ -784,7 +784,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.write(chunk, [encoding])](http://nodejs.org/api/all.html#all_response_write_chunk_encoding) de Node.
 
 
@@ -796,7 +796,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Alias de [response.end([data], [encoding])](http://nodejs.org/api/all.html#all_response_end_data_encoding) de Node.
 
 			//- Method
@@ -807,7 +807,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Guarda una nueva cookie para el envío en la respuesta.
 
 				//- Method syntax
@@ -815,7 +815,7 @@ html(lang=gw.language)
 					h4 Sintaxis
 					:codesyntax
 						.setCookie(name, value, config);
-					:marked
+					:markdown
 						+ name: **String** nombre de la cookie.
 						+ value: **String** valor de la cookie.
 						+ config: **objeto** de configuración de la cookie que puede contener los siguientes parámetros:
@@ -834,7 +834,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						El método `.i18n` de gangway es un alias de la librería [textualization](https://github.com/bifuer/textualization) con el valor del idioma preestablecido al idioma actual del gangway, es decir, se puede utilizar gw.i18n sin necesidad de especificar el idioma en la sentencia.
 
 				//- Method syntax
@@ -842,7 +842,7 @@ html(lang=gw.language)
 					h4 Sintaxis
 					:codesyntax
 						.i18n(nodo, params [, lang]); 
-					:marked
+					:markdown
 						+ nodo: **String**, nodo a traducir.
 						+ params: objeto con propiedades a pasar como parámetros para la traducción.
 						+ lang: idioma a utilizar si no fuese el propio de este objeto gangway.
@@ -855,7 +855,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Envía al cliente un archivo y finaliza la petición.
 						Gestiona el sistema de caché e implementa [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto quiere decir que realiza la negociación automática de rango de bytes en la descarga, por lo que permite descargas por partes y streaming.
 
@@ -867,7 +867,7 @@ html(lang=gw.language)
 					:codesyntax
 						.file(filename, clientname, download);
 
-					:marked
+					:markdown
 						+ filename: **String**, fichero a enviar, dentro del sistema de archivos del servidor.
 						+ clientname: Opcional, **String** con el nombre del fichero para el cliente, en caso de que no sea el mismo que el original.
 						+ download: **Boolean**. True para forzar el diálogo de descarga. Por defecto es *false*.
@@ -888,7 +888,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Permite gestionar la caché con el cliente, debemos pasar un valor único identificativo (hash) del contenido de la respuesta. Este método responderá con *false* si el cliente no tiene cacheado el contenido y true junto con un *304* automáticamente si el cliente ya dispone del contenido. La forma ideal de utilizar este método es como condición en una sentencia if, de la forma if(!cacheck(hash)){}, como vemos en el ejemplo.
 
 				//- Method syntax
@@ -896,7 +896,7 @@ html(lang=gw.language)
 					h4 Sintaxis
 					:codesyntax
 						.cacheck( hash );
-					:marked
+					:markdown
 						+ hash: **Mixed** con valor único identificativo.
 
 				section.example
@@ -908,7 +908,7 @@ html(lang=gw.language)
 							gw.json({ok:true}); 
 						}
 
-					:marked
+					:markdown
 						> El valor pasado a **cacheck** puede ser un código de tiempo o un objeto Date, que nos servirá para identificar el contenido. En este ejemplo se devolverá en una primera solicitud un código 200 con el objeto JSON, y en sucesivas solicitudes se responderá en cualquier caso con un 304. 
 	
 
@@ -920,7 +920,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Emite un código de estado 401 con el encabezado [WWW-Authenticate](http://tools.ietf.org/html/rfc2616#section-14.47) es una cabecera HTTP que emite un diálogo en cliente solicitando usuario y contraseña.
 
 						> El conjunto .authenticate() y [.auth](#property-auth) son similares a la restricción de acceso que se realiza en el archivo .htaccess en otros servidores HTTP.
@@ -932,7 +932,7 @@ html(lang=gw.language)
 					:codesyntax
 						.authenticate(msg);
 
-					:marked
+					:markdown
 						+ msg: **String**. Mensaje a mostrar al usuario.
 
 				section.example
@@ -957,7 +957,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Redirección a la URL indicada.
 
 				//- Method syntax
@@ -966,7 +966,7 @@ html(lang=gw.language)
 					:codesyntax
 						.redirect(urlToRedirect);
 
-					:marked
+					:markdown
 						+ urlToRedirect: *String*. URL de la redirección.
 
 				section.example
@@ -982,7 +982,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Método para enviar una respuesta al cliente. 
 						Si la respuesta es un string se envía como *text/html* y si es un objeto lo envía como objeto parseado tipo *application/json*.
 						Cuando se llama al método `.send()` finaliza la ejecución del route en cuestión.
@@ -995,7 +995,7 @@ html(lang=gw.language)
 					:codesyntax
 						.send(data,type);
 
-					:marked
+					:markdown
 						+ data: *String* o *Object* con el contenido a enviar.
 						+ type: Opcional. "text/html", "application/json", "text/plain" ... para forzar un tipo concreto en el envío.
 
@@ -1014,7 +1014,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Envía al cliente una respuesta en formato *application/json*.
 
 				//- Method syntax
@@ -1023,7 +1023,7 @@ html(lang=gw.language)
 					:codesyntax
 						.json(data);
 
-					:marked
+					:markdown
 						+ data: *Object* a enviar como JSON.						
 
 				//- Method ejemplo
@@ -1047,7 +1047,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Envía al cliente la respuesta parseada como *'text/plain'*.
 
 				//- Method syntax
@@ -1056,7 +1056,7 @@ html(lang=gw.language)
 					:codesyntax
 						.text(data);
 
-					:marked
+					:markdown
 						+ data: *String* con el texto a enviar.
 
 				//- Method syntax
@@ -1074,7 +1074,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Envía al cliente la respuesta parseada como *'text/html'*.
 
 				//- Method syntax
@@ -1083,7 +1083,7 @@ html(lang=gw.language)
 					:codesyntax
 						.html(data);
 
-					:marked
+					:markdown
 						+ data: *String* con el contenido html a enviar.	
 
 				//- Method syntax
@@ -1101,7 +1101,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Este método permite enviar al cliente un template renderizado. Hace uso de la [librería Templated](https://github.com/bifuer/templated).
 
 						> Templated da soporte a prácticamente cualquier motor de renderizado, por lo que podrás utilizar el lenguage de plantillas HTML de tu preferencia. En el siguiente código se muestra cómo añadir soporte a jade en nuestro proyecto:
@@ -1120,7 +1120,7 @@ html(lang=gw.language)
 						});
 
 
-					:marked
+					:markdown
 						Para renderizar una plantilla es necesario especificar la ubicación de la misma y un objeto con los parámetros a utilizar en dicha plantilla conocido como 'locals'. El metodo .render() añade de forma automática a 'locals' las propiedades:
 						+ gw: Referencia al Gangaway actual.
 						+ i18n: Referencia al metodo `gw.i18n()`
@@ -1132,7 +1132,7 @@ html(lang=gw.language)
 					:codesyntax
 						.render( template [, locals] ) 
 
-					:marked
+					:markdown
 						+ template: **String**, ruta del template.
 						+ locals: **Object**, conjunto de parámetros para el renderizado de la plantilla.
 						
@@ -1159,7 +1159,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Compone una página genérica de error HTTP con el código de estado especificado, opcionalmente se le puede pasar el objeto Error de JS para su trazado.
 
 				//- Method syntax
@@ -1168,7 +1168,7 @@ html(lang=gw.language)
 					:codesyntax
 						.error(errorCode [, error]) 
 
-					:marked
+					:markdown
 						+ errorCode: Código de error HTTP, [puedes consultar este listado](http://es.wikipedia.org/wiki/Anexo:C%C3%B3digos_de_estado_HTTP#4xx_Errores_del_cliente).
 						+ error: **Error**. Objeto Error de JS para su trazado.
 

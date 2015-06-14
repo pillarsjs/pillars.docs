@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:marked
+			:markdown
 				La **librería procedure** permite crear paquetes de funciones o procedimientos que de tienen que ejecutar de forma secuencial, ya que probablemente tengan datos dependientes. Esta librería **evita el infierno de los callbacks** de una forma sencilla.
 
 			:highlight(lang='javascript')
@@ -36,7 +36,7 @@ html(lang=gw.language)
 						console.log("All processes have ended");
 					);
 
-			:marked
+			:markdown
 				Mediante `.add()` anadimos una **función** y los **parámetros** con los que se llamará a la función.
 
 				Mediante `.launch()` lanzamos la cola de procesos a ejecutar de forma secuencial.
@@ -55,7 +55,7 @@ html(lang=gw.language)
 			codesyntax.
 				logger.info();
 
-			:marked
+			:markdown
 				Lorem ipsum
 
 			:highlight(lang='javascript')
@@ -71,7 +71,7 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:marked
+			:markdown
 				Lorem ipsum
 			
 						
@@ -88,7 +88,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad de **sólo lectura** que contiene la expresión regular de la propiedad `path`. Si modificamos `path`, `pathRegex` se actualiza automáticamente.
 
 		//- Methods
@@ -103,7 +103,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:marked
+					:markdown
 						Dado el identificador de un objeto route hijo, elimina el objeto hijo.
 
 				//- Method syntax
@@ -112,7 +112,7 @@ html(lang=gw.language)
 					codesyntax.
 						.removeRoute( route identificator );
 
-					:marked
+					:markdown
 						+ *route identificator*: **String** identificador del objeto route.
 
 				section.example
@@ -131,7 +131,7 @@ html(lang=gw.language)
 				h3#event-idUpdate: code
 					| idUpdate
 
-				:marked
+				:markdown
 					 Evento que se emite cuando el id del route es actualizado.
 
 				:highlight(lang='javascript')

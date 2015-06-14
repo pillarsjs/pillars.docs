@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:marked
+			:markdown
 				La Clase Plugin permiten ampliar las funcionalidades del framework. 
 
 				Estas funcionalidades pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
@@ -24,7 +24,7 @@ html(lang=gw.language)
 			:codesyntax
 				plugin = new Plugin( configuration, handler );
 
-			:marked
+			:markdown
 				+ *configuration*: opcional. Objeto de configuración del plugin. En la creación del plugin se pueden configurar los siguientes parámetros: 
 					+ [id](#property-id): **String** identificador del plugin. Si no se especifica se autogenera.
 					+ [active](#property-active): **Boolean**, indica si está activo o no.
@@ -57,11 +57,11 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:marked
+			:markdown
 				La Clase Plugin es primordial en el funcionamiento del framework, ya que éste está construido a base de Plugins que realizan diversas funciones. 	
 
 				> Ver [Funcionamiento de los Plugins](funcionamiento-plugins.jade) en Pillars.js. 
-			:marked
+			:markdown
 				> Un *objeto route* podrá determinar gracias a su *configuración* si se ejecuta un Plugin. [Ver configuración route y plugins.](enrutado.jade#ejecucion-plugins)	
 
 
@@ -77,7 +77,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Identificador del objeto plugin. Si no se especifica, se genera un identificador automáticamente.
 
 			//- Property
@@ -88,7 +88,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**Boolean** que indica si el plugin está activo o no. Por defecto es **true**.
 			
 		

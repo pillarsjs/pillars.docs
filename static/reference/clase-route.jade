@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:marked
+			:markdown
 				La **creación de un objeto route** acepta como parámetros una *configuración* y el *handler*. El *handler* se ejecutará cuando la **petición** *(request)* coincida con la *configuración* del route.			
 			
 		//- Syntax
@@ -22,7 +22,7 @@ html(lang=gw.language)
 			:codesyntax
 				route = new Route( configuration, handler );
 
-			:marked
+			:markdown
 				+ **configuration**: Opcional. Conjunto de *parámetros de configuración* del route. Se pueden definir: 
 					+ [id](#property-id): **String**, identificador del route.
 					+ [path](#property-path): **String**, path al que responderá.
@@ -97,7 +97,7 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:marked
+			:markdown
 				Las rutas que atenderá la aplicación se definen mediante *objetos route* añadidos al proyecto en `project.routes`. 
 
 				Los objetos de la clase Route **permiten crear el enrutado de la aplicación** dotando a ésta de un **enrutado dinámico** y por lo tanto, pudiendo **conectar** y **deconectar** rutas de forma dinámica, es decir, con la aplicación en funcionamiento.
@@ -112,7 +112,7 @@ html(lang=gw.language)
 
 
 
-			:marked
+			:markdown
 				> Los **parámetros de configuración** del route adquieren bastante importancia cuando combinamos objetos route y plugin, ya que será en este objeto de configuración *configuration* donde activaremos los plugins que requiramos en el objeto route. Ver Configuración de un *objeto route* e interactuación con los *plugins*.
 
 
@@ -129,7 +129,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**String** identificador del objeto route. Si no se declara el id en la creación del objeto, se autogenera. 
 
 					:highlight(lang='javascript')
@@ -149,7 +149,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Path al que responderá el route. Por defecto es '/'. **String**. 
 
 						Están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`, etc. 
@@ -163,14 +163,14 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**Método de petición** que acepta el route. Para un sólo método acepta un **String**, para dos métodos se setea como **Array**.
 
 					:highlight(lang='javascript')
 						route.method = "GET"; //sólo acepta GET 
 						route.method = ["GET","POST"]; //acepta GET y POST
 
-					:marked
+					:markdown
 						La propiedad `.method` es **heredable** en una estructura arbórea de objetos route.
 
 						> Ver herencia de propiedades del objeto route en una estructura arbórea.
@@ -184,13 +184,13 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Host al que responderá el route. **String**. Por defecto es `undefined`, por lo que acepta todos los host.
 
 					:highlight(lang='javascript')
 						route.host = "www.pillarsjs.com";		
 
-					:marked
+					:markdown
 						> Esta propiedad es útil si se requiere que un objeto route sólo responda cuando el cliente esté visitando un host específico como el del ejemplo.
 
 			//- Property
@@ -201,7 +201,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad para indicar si el *objeto route* acepta conexiones http, https o ambas. Por defecto es ***undefined*.
 						+ **undefined** para permitir http y https.
 						+ **true** para sólo permitir conexiones **https**.
@@ -215,7 +215,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Tipo **Boolean**. **true** para indicar que el controlador acepte ficheros. Hay que tener en cuenta que la propiedad `.method` deberá estar seteada en `POST` para que acepte ficheros.
 
 						**false** para no aceptar ficheros.
@@ -229,7 +229,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad para modificar el tamaño máximo permitido de solicitud para el route concreto. Esta propiedad originalmente está definida en `project.config.maxUploadSize`. 
 
 						Si esta propiedad está definida en `project.config` prevalecerá la definida en el *objeto route*.
@@ -242,7 +242,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**Boolean**, por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos de este objeto. 
 						+ *false* indica que no acepta solicitudes cors de ningún origen. 
 						+ *true* indica que acepta solicitudes cors de cualquier origen.
@@ -256,7 +256,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Es utilizado por el plugin [sessions.js](funcionamiento-plugins.jade#plugin-sessions) para establecer sesiones de usuario. Las sesiones se establecen con persistencia en memoria, por lo que si se apaga el servidor se pierden. (*Más adelante se ampliará a sistema de sesiones con persistencia en base de datos*)
 
 						**Boolean**, false por defecto. **true** para activar sesiones. 
@@ -271,7 +271,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Cada *objeto route* a su vez, posee la propiedad `routes` de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), que podrá contener los nodos route hijos. El funcionamiento es exactamente igual que [`project.routes`](project.jade#property-routes).
 
 
@@ -283,7 +283,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Listado de manejadores de un route. Los usual es que un objeto route tenga un sólo manejador, aunque es posible crearlo con varios manejadores.
 
 					:highlight(lang='javascript')
@@ -306,7 +306,7 @@ html(lang=gw.language)
 
 						//Imprime: Hola Mundo!!!
 
-					:marked
+					:markdown
 						Si bien es cierto, que deberemos sopesar la opción de incluir manejadores intermedios de esta forma, o incluir directamente un Plugin.
 
 						La propiedad `.handlers` devuelve un Array con todos los manejadores del route. Podemos realizar modificaciones de la propiedad: 
@@ -335,7 +335,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						**Boolean** que define si el route está activo o no. Por defecto es **true**, activo.
 
 					:highlight(lang='javascript')
@@ -352,7 +352,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Devuelve un Array de **sólo lectura** que acumula los parámetros que se han pasado en la creación de la ruta.
 						GET, POST Y PATH. 
 
@@ -371,7 +371,7 @@ html(lang=gw.language)
 						*/
 
 
-					:marked
+					:markdown
 						> El contenido de los parámetros pasados por la URL, así como del POST y del GET, pueden ser consultados con el objeto gangway. [`gw.params`](/reference/gangway.jade#property-params).
 						
 
@@ -384,5 +384,5 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:marked
+					:markdown
 						Propiedad de **sólo lectura** que contiene la expresión regular de la propiedad `path`. Si modificamos `path`, `pathRegex` se actualiza automáticamente.
