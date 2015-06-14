@@ -4,7 +4,7 @@ html(lang=gw.language)
 	+reference-layout("Pillars.js Reference - Getting Started - 'make it easy'")
 		h1 Getting Started
 			em Pillars.js Reference
-		:markdown
+		:marked
 			## Setting the environment (Node.js beginners)
 
 			To start using Pillars.js you need to install **NodeJS**, and if you are going to use database connection **MongoDB**, in the followings links you can find and install both; [NodeJS](http://nodejs.org/) and [MongoDB](https://www.mongodb.org/downloads).
@@ -20,7 +20,7 @@ html(lang=gw.language)
 			  }
 			}
 
-		:markdown
+		:marked
 			> You can find more information about how package.json works on the [npmjs](https://www.npmjs.org/doc/files/package.json.html) website.
 			
 			Use *npm* to load dependencies, in the project directory runs in the command prompt `npm install`. This commmand create a directory */node_modules* in which will be loaded all the dependencies described in *package.json* file.
@@ -34,12 +34,12 @@ html(lang=gw.language)
 			  gw.send("Hello World");
 			}));
 
-		:markdown
+		:marked
 			Once you write code, execute in command prompt `node app.js` and visit your `http://localhost:3000/`
 
 			> Once installed and running you can find this documentation in `http://localhost:3000/pillars/docs/reference/` too to consult it off-line ;)
 
-		:markdown
+		:marked
 			## The Framework
 
 			Main concepts in Pillars.js are:
@@ -65,7 +65,7 @@ html(lang=gw.language)
 			        timeout: 30000
 			};
 		
-		:markdown
+		:marked
 			Other possibilities are enable `debug` mode or database connection. In this way, is available the `ENV.configure()` method, to configure all properties needed in an only step:
 
 		:highlight(lang='javascript')
@@ -83,7 +83,7 @@ html(lang=gw.language)
 			  }
 			);
 
-		:markdown
+		:marked
 			> Obviously for database connection is needed to have installed MongoDB.
 
 			By default Pillars.js not start the HTTP Service or database connection. Methods `ENV.start([config[,callback]])` and `ENV.stop([callback])` start and stop the HTTP Service, while `ENV.connect([config[,callback]])` and `ENV.disconnect([callback])` connect and disconnect the database.
@@ -109,7 +109,7 @@ html(lang=gw.language)
 			  gw.send('¡Hello World!');
 			});
 
-		:markdown
+		:marked
 			Although overrall you need to configure the route objects follows:
 
 		:highlight(lang='javascript')
@@ -121,7 +121,7 @@ html(lang=gw.language)
 			  gw.send('¡Hello World!');
 			});
 
-		:markdown
+		:marked
 			Route set default values for the following properties if not specified:
 			- `.id`: if you dont specify one, an unique identifier is generated.
 			- .path: '/' by default.
@@ -144,7 +144,7 @@ html(lang=gw.language)
 			    gw.send('Admin area: Show status');
 			}))
 
-		:markdown
+		:marked
 			Route object with 'Status' id, respond to the path '/admin/status'. If route object with 'Administrator' id is disabled, not will available all their descendants.
 
 			To establish order in route objects can use `.priority` property, by default is `1000`. This allow to control the order in which they will be checked by the Router.
@@ -226,7 +226,7 @@ html(lang=gw.language)
 			  gw.send('You have seen this message '+session.count+' times');
 			}));
 		
-		:markdown
+		:marked
 			In this example we defines some basic properties of the environment and use `.session` gangway property to count the number of times the page is reloaded by the user.
 
 			We have configured a language list, and have established as the default language English, so console messages will be in this language. We will see how to use the translation system in reference and tutorials.
@@ -427,7 +427,7 @@ html(lang=gw.language)
 
 
 
-		:markdown
+		:marked
 			***
 			example.jade
 
@@ -449,7 +449,7 @@ html(lang=gw.language)
 			        h1=h1
 			      #page!=contents
 
-		:markdown
+		:marked
 			In this example we use `.start()` method to start the service. This method accepts as parameter ENV.server, a collection of properties, which in this case we have not setting, so the server start with default values, port 3000 and any host. 
 			
 			You can check how different gangway methods runs with nested Route structures, in the last lines you can see how modify a structure already created and running, adding new items or modifying existing ones.
@@ -477,7 +477,7 @@ html(lang=gw.language)
 			});
 			addPlugin(myPlugin);
 
-		:markdown
+		:marked
 			This plugin sends parameters of any request received to console and gives control to the next plugin. Plugin receive two parameters on handler `gw` and `next`; `next` is a function that allows gives control to the next plugin.
 
 			**A Plugins integrated on Pillars.js is `Router`**. `Router` decide which object route is the charge to address a request, passing control to the Route handler when plugins chain ends.
@@ -506,7 +506,7 @@ html(lang=gw.language)
 			});
 			addPlugin(myPlugin);
 
-		:markdown
+		:marked
 			Through Plugins we can act before and after Router, so can for example; modify the route, or methods before Router, or check properties or Route object when this route has already been selected. Each Plugin can modify or extend Gangway properties and methods for handler. For example, Sessions Plugin provides `gw.session` property which stores values saved in session and saves changes once request ends.
 
 			Plugins allows a way to add functionalities to Pillars.js or modify general performance, this is useful to create generic Plugins that adds functions to any project or to new common tasks between different handlers, being able to **shoot Plugins only with certain configurations of Route**. 

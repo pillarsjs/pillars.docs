@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				La variable `ENV` está disponible de forma global al realizar la inclusión de la librería. 
 
 				Mediante `ENV` se **configura el entorno de la aplicación web** y es el **punto central y de anclaje** para el resto de los elementos que componen el framework.
@@ -51,7 +51,7 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:markdown
+			:marked
 				Al realizar el require() de la librería obtenemos acceso a `ENV`, el entorno de Pillars.js, que se instancia de forma **global**.
 				
 				El entorno consiste en una serie de **propiedades** y **funciones** que nos permiten trabajar con el framework. La variable global `ENV` es la más importante, punto central de configuración y arranque del entorno. Además tendremos acceso a **Clases como Plugin o Route**, y a las diferentes funciones que nos permitirán construir nuestra aplicación.
@@ -108,7 +108,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						 La propiedad `.debug` establece el entorno en modo debug, lo que hará que se muestre información adicional de los errores. 
 						 Es de tipo **Boolean**
 						 Por defecto es: **true**
@@ -121,7 +121,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						`.languages` es de tipo **Array**. Define los idiomas disponibles en el entorno. Por defecto el idioma es `['en']`. Nótese que la consola también es traducida, de forma que si establecemos como primer idioma `['es']` los mensajes de la consola aparecerán en español.
 
 						Cuando seteamos `.languages`, se emite el evento `languages`.
@@ -130,7 +130,7 @@ html(lang=gw.language)
 						//La aplicación estará disponible en tres idiomas, siendo el predeterminado 'es'.
 						ENV.languages=['es','en','de'];
 
-					:markdown
+					:marked
 						> Para conocer más acerca de los idiomas de una aplicación, consultar el módulo [Textualization (i18n)](/pillars/docs/reference/i18n.jade)
 
 
@@ -142,7 +142,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.administrator` permite configurar los datos del administrador/a de la aplicación. Es un conjunto de propiedades con los siguientes elementos:
 						+ `mail`: para definir el email del administrador de la aplicación.
 						+ `firstname`: nombre del administrador.
@@ -163,7 +163,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.server` es un conjunto de propiedades para configurar el servidor HTTP:
 						* `hostname`: nombre de host. Si no se especifica ninguno, responderá a cualquier host. Por defecto es **undefined**.
 						+ `port`: puerto en el que responderá el servidor HTTP.Por defecto: 3000.
@@ -186,7 +186,7 @@ html(lang=gw.language)
 							}
 						};
 
-					:markdown
+					:marked
 						> Nota: El servidor HTTP comprime previamente los envíos a cliente. Esta compresión la realiza dependiendo de los compresores que tenga disponibles el cliente, por defecto si está disponible usa deflate. Con la propiedad `ENV.server.maxZipSize` establecemos a partir de qué tamaño el servidor no comprimirá los archivos.
 
 			//- Property
@@ -197,7 +197,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.database` es un conjunto de propiedades para configurar la base de datos:
 						+ `store`: **String**. Nombre de la base de datos.
 						+ `hostname`: **String**. Nombre de host.
@@ -214,7 +214,7 @@ html(lang=gw.language)
 							password:'mypass'
 						};
 
-					:markdown
+					:marked
 
 			//- Property
 			section.property
@@ -224,7 +224,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.directories` es un conjunto de propiedades para configurar los directorios del sistema:
 						+ `uploads`: **String**. Ruta relativa o absoluta del directorio donde se almacenarán los archivos subidos al servidor. Por defecto es undefined.
 						+ `temp`: **String**. Ruta relativa o absoluta del directorio de archivos temporales. Por defecto es undefined.
@@ -235,7 +235,7 @@ html(lang=gw.language)
 							temp:'./temp'
 						};
 
-					:markdown
+					:marked
 
 			//- Property
 			section.property
@@ -245,7 +245,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.templates` es un conjunto de propiedades para configurar opciones de templates y templates en concreto que utilizará el sistema:
 						+ `cache`: Tipo **Boolean** determina si está activa la caché de templates o no. Por defecto está activa en **true**.
 						+ `directory`: Tipo **String** para determinar la plantilla estática a utilizar al servir directorios estáticos. Por defecto es: **./templates/directory.jade**. Hay que tener en cuenta que el Plugin Directory debe estar activo.
@@ -258,7 +258,7 @@ html(lang=gw.language)
 							error: './templates/error.jade'
 						};
 
-					:markdown
+					:marked
 						> Nota: Pillars.js cuenta por defecto con Jade como lenguaje de templating. Se pueden añadir más motores con renderer.addEngine().
 
 			//- Property
@@ -269,7 +269,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.smtp` es un conjunto de propiedades para configurar el servidor smtp.  Utiliza la librería [node-mailer](https://github.com/andris9/Nodemailer):
 						+ `hostname`: nombre de host
 						+ `port`: puerto 
@@ -284,7 +284,7 @@ html(lang=gw.language)
 							password:''
 						};
 
-					:markdown
+					:marked
 
 
 			//- Property
@@ -295,7 +295,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.routes` es una instancia de la [Clase ObjectArray](/pillars/docs/reference/objectarray.jade), por lo que es un Array de Objetos, donde **cada objeto es un objeto tipo Route**.
 
 						Por lo tanto, en la propiedad`.routes` se encuentran los objetos route que están disponibles en la aplicación, y además ofrece una serie de métodos, da la clase ObjectArray, para trabajar con los objetos route del array, que son:
@@ -348,7 +348,7 @@ html(lang=gw.language)
 							}
 						]
 
-					:markdown
+					:marked
 
 			//- Property
 			section.property
@@ -358,7 +358,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.plugins` es de solo lectura y devuelve un Array de objetos, con todos los objetos plugin que tiene agregado `ENV`. Los plugins con los que se inicia Pillars.js, en orden, son los siguientes:
 						+ LangPath
 						+ Encoding
@@ -380,7 +380,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La [propiedad crypt](https://github.com/bifuer/pillars/blob/master/lib/ENV.js#L71) define el algoritmo de encriptación y la clave mediante ENV.crypt.algorithm y ENV.crypt.password.
 
 					:highlight(lang='javascript')
@@ -389,7 +389,7 @@ html(lang=gw.language)
 							password:'pillars'
 						};
 
-					:markdown
+					:marked
 						Esta propiedad es usada junto con los métodos `ENV.encrypt()` y `ENV.decrypt()` para encriptar y desencriptar datos. 
 
 						Actualmente se encripta [gw.etag](/pillars/docs/reference/gangway.jade#property-etag) para enviarlo al cliente.
@@ -403,7 +403,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						`.package` es de solo lectura. Devuelve el contenido de `package.json` en un objeto.
 
 			//- Property
@@ -414,7 +414,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						`.version` es de solo lectura. Devuelve la versión del framework instalada.
 
 			//- Property
@@ -425,7 +425,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.path` es de solo lectura y devuelve el path absoluto de la librería pillars.
 
 
@@ -437,7 +437,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.status` es de solo lectura. Devuelve un objeto con todos los routes y plugins que la aplicación tiene añadidos.
 
 
@@ -454,7 +454,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Arranca el servidor HTTP. Puede arrancar sin aceptar parámetros, por lo que se pondría en marcha con los valores por defecto. Acepta como parámetros el conjunto de propiedades [ENV.server](#property-server).
 
 				//- Method syntax
@@ -463,7 +463,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.start( [Server configuration] , [callback] );
 
-					:markdown
+					:marked
 						+ *Server configuration*: Opcional. configuración del conjunto de propiedades [ENV.server](#property-server).
 						+ *callback*: Opcional. Callback que se ejecutará cuando se arranque el entorno.
 
@@ -498,7 +498,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Detiene el servidor HTTP.
 
 				//- Method syntax
@@ -507,7 +507,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.stop( [callback] );
 
-					:markdown
+					:marked
 						+ *callback*: Opcional. Callback que se ejecutará cuando se detenga el entorno.
 
 				section.example
@@ -529,7 +529,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Conecta a una base de datos MongoDB. Acepta como parámetros el conjunto de propiedades [ENV.database](#property-database).
 
 				//- Method syntax
@@ -538,7 +538,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.connect( database configuration [, callback]);
 
-					:markdown
+					:marked
 						+ *database configuration*: [conjunto de propiedades para configurar la base de datos.](#property-database)
 						+ *callback*: Opcional. Callback que se ejecutará cuando se arranque el entorno.
 
@@ -576,7 +576,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Desconecta la base de datos MongoDB.
 
 				//- Method syntax
@@ -585,7 +585,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.disconnect( [callback] );
 
-					:markdown
+					:marked
 						+ *callback*: Opcional. Callback que se ejecutará cuando se desconecte la base de datos.
 
 				section.example
@@ -610,7 +610,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						El método `.addRoute()` añade controladores y rutas a la aplicación, es decir, un objeto de la [Clase Route](route.jade). 
 						Acepta como parámetro el objeto creado previamente, o la configuración para su creación, por lo que lo podemos añadir de dos formas.
 
@@ -620,13 +620,13 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.addRoute( route object );
 
-					:markdown
+					:marked
 						+ *route object*: Objeto route creado previamente.
 
 					codesyntax.
 						ENV.addRoute( [route configuration] , [handler] );
 
-					:markdown
+					:marked
 						+ *route configuration*: Opcional. Objeto de configuración para la creación del route.
 						+ *handler*: Opcional. Manejador para el nuevo route.
 
@@ -678,7 +678,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Captura un objeto tipo route hijo.
 
 				//- Method syntax
@@ -687,7 +687,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.getRoute( route id );
 
-					:markdown
+					:marked
 						+ *route id*: **String** identificador del objeto route.
 
 				section.example
@@ -703,7 +703,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Mueve en la lista de objetos route, el orden del route. Para más información acerca de la lista de objetos route consultar la Clase Route.
 
 				//- Method syntax
@@ -712,7 +712,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.moveRoute();
 
-					:markdown
+					:marked
 						+ *route id*: **String** identificador del objeto route.
 
 				section.example
@@ -728,7 +728,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Elimina un objeto tipo Route hijo. Toma como parámetro el id del route previamente creado. Al eliminar un objeto route de ENV éste dejará de estar disponible en la aplicación, por lo tanto la ruta configurada en path no estará disponible. Podremos volverlo a conectar mediante el método addRoute().
 
 				//- Method syntax
@@ -737,7 +737,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.removeRoute( route id );
 
-					:markdown
+					:marked
 						+ *route id*: **String** identificador del objeto route.
 
 				section.example
@@ -753,7 +753,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						El método `.addPlugin()` añade un objeto de la Clase Plugin a la aplicación.
 
 						Acepta como parámetro el objeto plugin creado previamente o la configuración para la creación del mismo.
@@ -764,13 +764,13 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.addPlugin( plugin );
 
-					:markdown
+					:marked
 						+ *plugin*: **objeto plugin** creado previamente.
 
 					codesyntax.
 						ENV.addPlugin( plugin configuration , handler );
 
-					:markdown
+					:marked
 						+ *plugin configuration*: configuración para la creación del plugin.
 						+ *handler*: manejador que ejecutará el plugin.
 
@@ -812,7 +812,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Captura un objeto tipo Plugin. 
 
 				//- Method syntax
@@ -821,7 +821,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.getPlugin( plugin id );
 
-					:markdown
+					:marked
 						+ *plugin id*: **String** identificador del objeto plugin.
 
 				section.example
@@ -837,7 +837,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Mueve en la cadena de plugins el plugin especificado a otra posición. 
 
 				//- Method syntax
@@ -846,7 +846,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.movePlugin( );
 
-					:markdown
+					:marked
 						+ *plugin id*: **String** identificador del objeto plugin.
 
 				section.example
@@ -863,7 +863,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Elimina un objeto tipo Plugin del entorno. Toma como parámetro el id del plugin previamente creado.
 
 				//- Method syntax
@@ -872,7 +872,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.removePlugin( plugin id );
 
-					:markdown
+					:marked
 						+ *plugin id*: **String** identificador del objeto plugin.
 
 				section.example
@@ -888,7 +888,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Añade un objeto de la **Clase Route** o un objeto de la **Clase Plugin**. Es un método de ahorro de escritura para el desarrollador.
 
 				//- Method syntax
@@ -897,13 +897,13 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.add( route );
 
-					:markdown
+					:marked
 						+ *route*: **objeto route**.
 
 					codesyntax.
 						ENV.add( plugin );
 
-					:markdown
+					:marked
 						+ *plugin*: **objeto plugin**.
 
 				section.example
@@ -931,7 +931,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Método para encriptar datos. Devuelve el parámetro encriptado.
 
 				//- Method syntax
@@ -953,7 +953,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Método para desencriptar datos. Devuelve el parámetro desencriptado.
 
 				//- Method syntax
@@ -976,7 +976,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						El método `.configure()` permite setear en un solo objeto toda la configuración del entorno.
 
 				//- Method syntax
@@ -1027,7 +1027,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Devuelve una ruta absoluta sobre un directorio relativo respecto al directorio de ejecución de la librería `pillars`. 
 
 				//- Method syntax
@@ -1036,7 +1036,7 @@ html(lang=gw.language)
 					codesyntax.
 						ENV.resolve( directory );
 
-					:markdown
+					:marked
 						+ *directory*: **String** del directorio relativo.
 
 				section.example
@@ -1053,7 +1053,7 @@ html(lang=gw.language)
 				h3#property-event-languages: code
 					| languages
 
-				:markdown
+				:marked
 					Cuando la propiedad `.languages` es seteada se emite el evento **'languages'**. 
 
 				:highlight(lang='javascript')
@@ -1063,7 +1063,7 @@ html(lang=gw.language)
 				h3#property-event-database: code
 					| database
 
-				:markdown
+				:marked
 					Se emite el evento **'database'** cuando la conexión a la base de datos es seteada.
 
 				:highlight(lang='javascript')
@@ -1077,7 +1077,7 @@ html(lang=gw.language)
 		section.vblesglobales
 			h2#vblesglobales Anexo - Variables Globales
 
-			:markdown
+			:marked
 				Cuando se realiza la llamada a la librería `require("pillars")`, se setean una serie de variables y métodos globales. 
 
 				Inicialmente `require("pillars")` setea de forma global el objeto `ENV`, el entorno de la aplicación, que también es devuelto por la misma llamada.
@@ -1089,7 +1089,7 @@ html(lang=gw.language)
 				//Sería igual que realizarlo de esta otra forma
 				ENV=require("pillars");
 
-			:markdown
+			:marked
 				Adicionalmente **setea de forma global los siguientes métodos**, alias de los indicados: 
 
 				+ **addRoute()** alias de [ENV.addRoute()](#method-addRoute)

@@ -56,7 +56,7 @@ marked.setOptions({
   }
 });
 templated.addEngine('jade',function compiler(source,path){
-  return jade.compile(source,{filename:path,pretty:true,debug:false,compileDebug:true});
+  return jade.compile(source,{filename:path,pretty:false,debug:false,compileDebug:false});
 });
 
 

@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				La **librería Crier** añade funcionalidades potenciadas de log. Permite definir: 
 				+ **Level**. Nivel del mensaje. Por defecto están definidos los niveles: info, log, alert, error y warn.
 				+ **Groups**: Grupo del mensaje define qué grupo o librería emitió el mensaje. Por ejemplo, una librería llamada 'hola', creará un grupo llamado 'hola' mediante `.addGroup('hola')`, y los mensajes que se emitan desde esta librería se visualizarán en este grupo. 
@@ -31,7 +31,7 @@ html(lang=gw.language)
 			codesyntax.
 				logger.info();
 
-			:markdown
+			:marked
 				Lorem ipsum
 
 			:highlight(lang='javascript')
@@ -47,7 +47,7 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:markdown
+			:marked
 				Lorem ipsum
 			
 						
@@ -64,7 +64,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						Propiedad de **sólo lectura** que contiene la expresión regular de la propiedad `path`. Si modificamos `path`, `pathRegex` se actualiza automáticamente.
 
 		//- Methods
@@ -79,7 +79,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Dado el identificador de un objeto route hijo, elimina el objeto hijo.
 
 				//- Method syntax
@@ -88,7 +88,7 @@ html(lang=gw.language)
 					codesyntax.
 						.removeRoute( route identificator );
 
-					:markdown
+					:marked
 						+ *route identificator*: **String** identificador del objeto route.
 
 				section.example
@@ -107,7 +107,7 @@ html(lang=gw.language)
 				h3#event-idUpdate: code
 					| idUpdate
 
-				:markdown
+				:marked
 					 Evento que se emite cuando el id del route es actualizado.
 
 				:highlight(lang='javascript')

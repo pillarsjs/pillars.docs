@@ -10,8 +10,7 @@
     "pillars": "*",
     "jade": "*",
     "marked": "*",
-    "highlight.js": "*",
-    "nodemailer": "*"
+    "highlight.js": "*"
   },
   "main": "./app.js",
   "license": "MIT"
