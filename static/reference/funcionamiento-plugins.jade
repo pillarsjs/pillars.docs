@@ -12,18 +12,18 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				El **funcionamiento y flujo de trabajo** en Pillars.js se basa en la **Cadena de Plugins**, que está formada por objetos de la [Clase Plugin](clase-plugin.jade).
 
 		section.flujo-funcionamiento
 			h2#flujo-funcionamiento Flujo funcionamiento
-			:markdown
+			:marked
 				La Cadena de Plugins es un objeto de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), localizada en `project.plugins`. Es un Array de *objetos plugin* con métodos para añadir, mover y eliminar plugins del Array. Así, se conforma una **lista ordenada de Plugins** que se ejecutan de manera secuencial en cada petición (*request*).
 
 			p
 				img(src="/img/reference/cadena-de-plugins.png")
 
-			:markdown
+			:marked
 				Pillars.js incorpora una serie de **Plugins nativos** o **built-in** (detallados más abajo). Estos **plugins built-in** se ejecutan de forma secuencial. Al primer plugin le llega la petición y cuando finaliza su ejecución pasa la ejecución al siguiente plugin, de esta forma finaliza el último plugin y Pillars.js ejecuta el manejador/controlador pertinente dada la petición (request).
 
 				Como ya hemos comentado, la Cadena de Plugins es la propiedad `project.plugins` de tipo ObjectArray. Este tipo de objeto dispone de métodos para añadir, mover o eliminar, por lo que podremos crear *plugins* mediante la [Clase Plugin](clase-plugin.jade) e insertarlos en la posición deseada de la Cadena de Plugins.
@@ -42,7 +42,7 @@ html(lang=gw.language)
 				//Captura posterior
 				var myPlugin = project.plugins.get('namePlugin');
 
-			:markdown
+			:marked
 				Mediante `project.plugins.add()` se añade el *plugin* al final de la cadena, siendo el último plugin en ejecutarse. Para insertar el plugin en una ubicación específica: 
 
 			:highlight(lang='javascript')
@@ -51,7 +51,7 @@ html(lang=gw.language)
 				project.plugins.add(myPlugin,'router');
 
 
-			:markdown
+			:marked
 				> Más información sobre el manejo de la estructura [`project.plugins`](project.jade#property-plugins).
 
 				Listado de **plugins built-in** en orden de ejecución:
@@ -74,7 +74,7 @@ html(lang=gw.language)
 
 		section.modificacion-plugins-built-in
 			h2#flujo-modificacion-plugins-built-in Modificación de Plugins
-			:markdown
+			:marked
 				Para modificar propiedades de un plugin built-in en primer lugar deberemos capturarlo, y posteriormente realizar las operaciones pertinentes.
 
 			:highlight(lang='javascript')
@@ -83,12 +83,12 @@ html(lang=gw.language)
 
 		section.plugins-built-in
 			h2#plugins-built-in Plugins built-in
-			:markdown
+			:marked
 				
 			section.plugin
 				h3#plugin-langpath 1. Gestión de la ruta para múltiples idiomas
 				
-				:markdown
+				:marked
 					Plugin: [langPath.js](https://github.com/bifuer/pillars/blob/master/plugins/langPath.js)
 
 					Id: *LangPath*.
@@ -103,7 +103,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-encoding 2. Codificaciones no válidas
 				
-				:markdown
+				:marked
 					 Plugin: [encoding.js](https://github.com/bifuer/pillars/blob/master/plugins/encoding.js). 
 
 					 Id: *Encoding*.
@@ -113,7 +113,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-favicon 3. Plugin favicon
 				
-				:markdown
+				:marked
 					 Plugin: [favicon.js](https://github.com/bifuer/pillars/blob/master/plugins/favicon.js).
 
 					 Id: *favicon*.
@@ -123,7 +123,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-router 4. Plugin de enrutado
 				
-				:markdown
+				:marked
 					 Plugin: [router.js](https://github.com/bifuer/pillars/blob/master/plugins/router.js).
 
 					 Id: *Router*.
@@ -142,7 +142,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-maxUploadSize 5. Máximo tamaño permitido de la petición HTTP
 				
-				:markdown
+				:marked
 					Plugin [maxUploadSize.js](https://github.com/bifuer/pillars/blob/master/plugins/maxUploadSize.js) 
 
 					Id: *MaxUploadSize*.
@@ -161,7 +161,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-cors 6. Compatibilidad con CORS
 				
-				:markdown
+				:marked
 					Plugin: [CORS.js](https://github.com/bifuer/pillars/blob/master/plugins/CORS.js).
 
 					Id: *CORS*.
@@ -181,13 +181,13 @@ html(lang=gw.language)
 					// realizar peticiones a este route concreto.
 					var route = new Route({cors:['www.pillarsjs.com']}, function(gw){...}); 
 
-				:markdown
+				:marked
 
 
 			section.plugin
 				h3#plugin-options 7. Compatibilidad con el método OPTIONS
 				
-				:markdown
+				:marked
 					Plugin: [OPTIONS.js](https://github.com/bifuer/pillars/blob/master/plugins/OPTIONS.js)
 
 					Id: *OPTIONS*.
@@ -198,7 +198,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-sessions 8. Sistema de sesiones
 				
-				:markdown
+				:marked
 					Plugin: [sessions.js](https://github.com/bifuer/pillars/blob/master/plugins/sessions.js)
 
 					Id: *Sessions*.
@@ -213,7 +213,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-directory 9. Directorio estático
 				
-				:markdown
+				:marked
 					Plugin: [directory.js](https://github.com/bifuer/pillars/blob/master/plugins/directory.js)
 
 					Id: *Directory*.
@@ -240,7 +240,7 @@ html(lang=gw.language)
 					});
 					project.routes.add(pillarsStatic);
 
-				:markdown
+				:marked
 					La **configuración del objeto route** debe ser la siguiente para activar el Plugin Directory: 
 					+ **path**. El path espera el parámetro path. *path:'/staticDirecotyName/*:path'*
 					+ **directory**. La propiedad directory que se añade a route consta de dos parámetros: path y listing, para especificar el directorio estático del servidor, y para permitir que se liste el directorio respectivamente.
@@ -250,7 +250,7 @@ html(lang=gw.language)
 			section.plugin
 				h3#plugin-bodyreader 10. Lector del cuerpo de la petición HTTP
 				
-				:markdown
+				:marked
 					Plugin: [bodyReader.js](https://github.com/bifuer/pillars/blob/master/plugins/bodyReader.js)
 
 					Lee el cuerpo de la petición y lo setea en [`gw.content.params`](gangway.jade#property-content). 

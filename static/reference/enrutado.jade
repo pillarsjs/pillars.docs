@@ -12,7 +12,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				El **sistema de enrutado** de Pillars.js se basa en: 
 				+ Objetos de la [Clase Route](clase-route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un *objeto route*. Hay que resaltar que cada *objeto route* se crea con una *configuración determinada* y un *handler*.
 
@@ -24,21 +24,21 @@ html(lang=gw.language)
 					gw.send("Hello World!");
 				});
 
-			:markdown
+			:marked
 				>  En el path están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`,etc.
 				
 				+ `project.routes`, estructura que contiene el árbol de controladores/manejadores disponibles en el proyecto. Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). En esta propiedad se añadirán los objetos Route:
 			:highlight(lang='javascript')
 				project.routes.add(myRoute);				
 
-			:markdown
+			:marked
 				> El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
 
-			:markdown
+			:marked
 		//- Description
 		section.caracteristicas
 			h2#description Características
-			:markdown
+			:marked
 				El sistema de enrutado de Pillars.js tiene las siguientes características: 
 
 				+ **Anidable**. Podemos crear árboles de controladores, que **organizan y agrupan funcionalidades** de la aplicación. El nodo raíz será el que se conecte a `project.routes`. El *objeto route* se puede declarar sin configuración, por lo que toma los valores predeterminados. También se podrá declarar sin manejador, por lo que en este caso el *objeto route* actuaría como **elemento organizativo**.
@@ -71,7 +71,7 @@ html(lang=gw.language)
 
 				project.routes.add(myRoute);
 
-			:markdown
+			:marked
 				+ **Sistema de enrutado más eficiente**. El sistema de enrutado, al tener estructura arbórea, buscará coindidencias en los nodos añadidos directamente a `project.routes`, si un nodo de los añadidos no coincide en algún parámetro con la solicitud, no seguirá buscando en ese árbol y pasará al siguiente nodo.
 
 				+ **Tiempo Real**. Los controladores son conectables y desconectables en tiempo real, de forma que no necesariamente tendremos que detener la aplicación para realizar modificaciones sobre éstos. Un route podemos desconectarlo del árbol de controladores o simplemente desactivarlo mediante su propiedad `.active`.
@@ -82,27 +82,27 @@ html(lang=gw.language)
 			:highlight(lang='javascript')
 				myRoute.routes.get('management').remove('teachers');
 				
-			:markdown
+			:marked
 		//- Description
 		section.uso
 			h2#uso Uso de la Cadena de Plugins
-			:markdown
+			:marked
 				 Tanto `project.routes` como [`Route.prototype.routes`](clase-route.jade#property-routes) son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y mover objetos en su estructura. Ver los métodos de [`project.routes`](project.jade#property-routes).
 
 		section.configuracion-objeto-route
 			h2#configuracion-objeto-route Configuración objeto route
-			:markdown
+			:marked
 				Al instanciar el *objeto route* podemos hacerlo con un [*objeto de configuración*](clase-route.jade#constructor). 
 			:codesyntax
 				route = new Route( configuration, handler );
-			:markdown
+			:marked
 				Estos **parámetros de configuración** determinarán:
 				+ Si se ejecuta el handler de este objeto, ya que la *petición* deberá coincidir con ciertos parámetros de esta configuración.
 				+ Si se ejecutarán determinados Plugins. En este sentido, los parámetros declarados en la *configuración* del *objeto route*, nos servirán para activar, o no, diversos plugins.
 
 		section.ejecucion-handler
 			h3#ejecucion-handler Configuración route y petición
-			:markdown
+			:marked
 				Los *parámetros de configuración* que determinarán si se ejecutará el handler de este mismo objeto son: 
 				+ **path**. Obviamente, si no es su path no se ejecutará. 
 				+ **active**. Obviamente, si el *route* no está activo, no responderá a ninguna solicitud.
@@ -120,7 +120,7 @@ html(lang=gw.language)
 				});
 
 				project.routes.add(myRoute);
-			:markdown
+			:marked
 				De esta forma podremos crear servicios *http* en diferentes puertos, y establecer qué mostraremos en cada uno. 
 
 				> Todos los **parámetros de configuración** son modificables en vivo es decir, si una vez instanciado el objeto modificamos la propiedad `.port` para que acepte conexiones desde cualquier puerto: `myRoute.port = undefined` o `project.routes.get('idRoute').port = undefined;` este *objeto route* atenderá las peticiones dirigidas a cualquier puerto. El resto de *parámetros de configuración* tienen la misma versatilidad.
@@ -132,7 +132,7 @@ html(lang=gw.language)
 				});
 
 				project.routes.add(myRoute);
-			:markdown
+			:marked
 				En el caso del ejemplo, si realizamos una petición a http://127.0.0.1, devolverá un error 404.
 
 				+ **method**. Especifica el método que acepta el *route*, por lo que si la petición se realiza mediante un método diferente al/los definido/s emitirá un error 404.
@@ -143,7 +143,7 @@ html(lang=gw.language)
 
 		section.ejecucion-plugins
 			h3#ejecucion-plugins Configuración route y Plugins
-			:markdown
+			:marked
 				Los **parámetros de configuración** del route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
 
 				> Antes de leer cómo interaccionan objetos route y plugin, recomendamos la lectura de [functionamiento de plugins](funcionamiento-plugins.jade)
@@ -167,10 +167,10 @@ html(lang=gw.language)
 				});
 		
 
-			:markdown
+			:marked
 		section.herencia
 			h2#herencia Herencia objeto route
-			:markdown
+			:marked
 				Los *objetos route* son anidables en estructura de árbol, por lo que hay que tener presente la **herencia** de los *parámetros de configuración* de un *route* cuando éstos estan anidados.
 
 				Los *parámetros de configuración* declarados en un nodo padre, lo heredarán sus descendientes. Si uno de los nodos hijos redefine una propiedad ya definida en los *parámetros de configuración* de un nodo superior, ésta tomará el valor definido en sí mismo.
@@ -178,7 +178,7 @@ html(lang=gw.language)
 			p
 				img(src="/img/reference/herencia.png")
 
-			:markdown
+			:marked
 				En el caso del ejemplo gráfico, se crean tres *objetos route* con la siguiente configuración:
 				+ *myRoute*: que define id, cors, https, port, method, maxUploadSize y un parámetro nuevo creado por el usuario: userParam.
 				+ *son1*: descendiente directo de *myRoute*, y que redefine la propiedad method y maxUploadSize. Por lo que éste sólo aceptará el método GET, y su tamaño máximo de la solicitud sube a 5MB. El resto de propiedades serán las mismas que las de *myRoute*, también dispondrá de la propiedad userParam en true.

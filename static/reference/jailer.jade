@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				La librería Logger añade a Pillars.JS la posibilidad de guardar mensajes de la aplicación, enviando a un almacen definido o que se defina, como por ejemplo bases de datos o un fichero.
 	
 
@@ -28,7 +28,7 @@ html(lang=gw.language)
 			codesyntax.
 				logger.info();
 
-			:markdown
+			:marked
 				Lorem ipsum
 
 			:highlight(lang='javascript')
@@ -44,7 +44,7 @@ html(lang=gw.language)
 		//- Description
 		section.description
 			h2#description Descripción
-			:markdown
+			:marked
 				Lorem ipsum
 			
 						
@@ -61,7 +61,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						Propiedad de **sólo lectura** que contiene la expresión regular de la propiedad `path`. Si modificamos `path`, `pathRegex` se actualiza automáticamente.
 
 		//- Methods
@@ -76,7 +76,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Dado el identificador de un objeto route hijo, elimina el objeto hijo.
 
 				//- Method syntax
@@ -85,7 +85,7 @@ html(lang=gw.language)
 					codesyntax.
 						.removeRoute( route identificator );
 
-					:markdown
+					:marked
 						+ *route identificator*: **String** identificador del objeto route.
 
 				section.example
@@ -104,7 +104,7 @@ html(lang=gw.language)
 				h3#event-idUpdate: code
 					| idUpdate
 
-				:markdown
+				:marked
 					 Evento que se emite cuando el id del route es actualizado.
 
 				:highlight(lang='javascript')
