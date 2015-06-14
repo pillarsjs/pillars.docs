@@ -15,10 +15,10 @@ mixin base(title,path,bodyclass)
 				nav#mainmenu
 					h2 Main menu
 					ul
-						li: a(href="/") Portada
+						li: a(href="/") Home
 						li: a(href="/reference/") Documentación
 						
-						li: a(href="#") Contacto
+						//li: a(href="mailto:hello@pillarsjs.com") Contacto
 
 				nav#social
 					h2 Social links
@@ -56,6 +56,14 @@ mixin base(title,path,bodyclass)
 		//
 		
 		script.
+
+			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+			ga('create', 'UA-64107815-1', 'auto');
+			ga('send', 'pageview');
+
 			(function(){
 				var mainmenu = $('#mainmenu');
 				var swrp = $('<div class="select"></div>');
@@ -167,7 +175,7 @@ mixin reference-layout(title,path,bodyclass)
 							li: a(href="/reference/enrutado.jade") Enrutado
 							li: a(href="/reference/solicitud-y-respuesta.jade") Solicitud y respuesta
 							li: a(href="/reference/funcionamiento-plugins.jade") Plugins
-							li: a(href="#") Servicios
+							//li: a(href="#") Servicios
 
 					li
 						a(href="#") Referencia
@@ -176,21 +184,21 @@ mixin reference-layout(title,path,bodyclass)
 							li: a(href="/reference/clase-route.jade") Clase Route
 							li: a(href="/reference/gangway.jade") Objeto Gangway
 							li: a(href="/reference/clase-plugin.jade") Clase Plugin
-							li: a(href="#") Clase HttpService
+							li: a(href="/reference/http-service.jade") Clase HttpService
 					li
 						a(href="#") Librerías
 						ul
 							li: a(target="_blank" href="https://github.com/bifuer/JSON.decycled") JSON.decycled
 							li: a(target="_blank" href="https://github.com/bifuer/String.format") String.format
 							li: a(target="_blank" href="https://github.com/bifuer/Date.format") Date.format 
-							li: a(href="/reference/procedure.jade") procedure
-							li: a(target="_blank"  href="https://github.com/bifuer/scheduled") scheduled
+							li: a(target="_blank" href="https://github.com/bifuer/procedure") procedure
+							li: a(target="_blank" href="https://github.com/bifuer/scheduled") scheduled
 							li: a(target="_blank" href="https://github.com/bifuer/textualization") textualization
-							li: a(href="/reference/crier.jade") crier
+							li: a(target="_blank" href="https://github.com/bifuer/crier") crier
 							li: a(target="_blank" href="https://github.com/bifuer/ObjectArray") ObjectArray
-							li: a(href="/reference/templated.jade") templated
-							li: a(href="/reference/jailer.jade") jailer
-							li: a(href="/reference/modelator.jade") Modelator					
+							li: a(target="_blank" href="https://github.com/bifuer/templated") templated
+							li: a(target="_blank" href="https://github.com/bifuer/jailer") jailer
+							//li: a(target="_blank" href="/reference/modelator.jade") Modelator					
 
 		#contents
 			block
