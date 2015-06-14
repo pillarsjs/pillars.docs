@@ -1,0 +1,37 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'project',url:'/reference/http-service.jade'}];
+	+reference-layout("Pillars.js Reference - HttpService - 'make it easy!'",path)
+
+		#title
+			h1 Clase HttpService
+				em  Pillars.js Reference
+			a.source(href="https://github.com/bifuer/pillars/blob/master/lib/HttpService.js") Source
+
+		//- Summary
+		section.summary
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				project.services.insert((new HttpService({
+				  id:'http2',
+				  port: 3003
+				})).start());
+
+				
+				var fs = require('fs');
+				project.services.insert((new HttpService({
+				  id:'https',
+				  key: fs.readFileSync('./localhost.key'),
+				  cert: fs.readFileSync('./localhost.crt'),
+				  port: 3001
+				})).start());
+
+				//...
+
+				project.services.get('http2');
+				project.services.get('https');
+
+				//...			
