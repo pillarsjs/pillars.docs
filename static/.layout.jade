@@ -46,159 +46,159 @@ mixin base(title,path,bodyclass)
 					.copyright ©2015 Javier Gallego Martín & Chelo Quilón (Just Married) & individual contributors
 					.license MIT license
 
-		//- 'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
-		//- 'http://fonts.googleapis.com/css?family=Inconsolata:400,700|Source+Sans+Pro:400,400italic,700,700italic'
-		style
-			include ./css/font-awesome.min.css
-		//- 
+	//- 'http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css'
+	//- 'http://fonts.googleapis.com/css?family=Inconsolata:400,700|Source+Sans+Pro:400,400italic,700,700italic'
+	style
+		include ./css/font-awesome.min.css
+	//- 
 
-		style.
+	style.
 
-			@font-face {
-			  font-family: 'Inconsolata';
-			  font-style: normal;
-			  font-weight: 400;
-			  src: local('Inconsolata'), url(http://fonts.gstatic.com/s/inconsolata/v10/BjAYBlHtW3CJxDcjzrnZCIgp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2'), url(http://fonts.gstatic.com/s/inconsolata/v10/BjAYBlHtW3CJxDcjzrnZCLrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
-			}
-			@font-face {
-			  font-family: 'Inconsolata';
-			  font-style: normal;
-			  font-weight: 700;
-			  src: local('Inconsolata Bold'), local('Inconsolata-Bold'), url(http://fonts.gstatic.com/s/inconsolata/v10/AIed271kqQlcIRSOnQH0yf79_ZuUxCigM2DespTnFaw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/inconsolata/v10/AIed271kqQlcIRSOnQH0yRbnBKKEOwRKgsHDreGcocg.woff) format('woff');
-			}
-			@font-face {
-			  font-family: 'Source Sans Pro';
-			  font-style: normal;
-			  font-weight: 400;
-			  src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlJbPFduIYtoLzwST68uhz_Y.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNHq-FFgoDNV3GTKpHwuvtI.woff) format('woff');
-			}
-			@font-face {
-			  font-family: 'Source Sans Pro';
-			  font-style: normal;
-			  font-weight: 700;
-			  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGJkF8H8ye47wsfpWywda8og.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGIqjGYJUyOXcBwUQbRaNH6c.woff) format('woff');
-			}
-			@font-face {
-			  font-family: 'Source Sans Pro';
-			  font-style: italic;
-			  font-weight: 400;
-			  src: local('Source Sans Pro Italic'), local('SourceSansPro-It'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoM2Sl3jWJ3D9poyJPMfASioc.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoM_bce-VcyLJMRR1FC9qWbU8.woff) format('woff');
-			}
-			@font-face {
-			  font-family: 'Source Sans Pro';
-			  font-style: italic;
-			  font-weight: 700;
-			  src: local('Source Sans Pro Bold Italic'), local('SourceSansPro-BoldIt'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/fpTVHK8qsXbIeTHTrnQH6H0cQ2LOPDPk8GfVMt0MqYH3rGVtsTkPsbDajuO5ueQw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/fpTVHK8qsXbIeTHTrnQH6PgYMAt3u4NmhhzLLLPJ5qH3rGVtsTkPsbDajuO5ueQw.woff) format('woff');
-			}
+		@font-face {
+		  font-family: 'Inconsolata';
+		  font-style: normal;
+		  font-weight: 400;
+		  src: local('Inconsolata'), url(http://fonts.gstatic.com/s/inconsolata/v10/BjAYBlHtW3CJxDcjzrnZCIgp9Q8gbYrhqGlRav_IXfk.woff2) format('woff2'), url(http://fonts.gstatic.com/s/inconsolata/v10/BjAYBlHtW3CJxDcjzrnZCLrIa-7acMAeDBVuclsi6Gc.woff) format('woff');
+		}
+		@font-face {
+		  font-family: 'Inconsolata';
+		  font-style: normal;
+		  font-weight: 700;
+		  src: local('Inconsolata Bold'), local('Inconsolata-Bold'), url(http://fonts.gstatic.com/s/inconsolata/v10/AIed271kqQlcIRSOnQH0yf79_ZuUxCigM2DespTnFaw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/inconsolata/v10/AIed271kqQlcIRSOnQH0yRbnBKKEOwRKgsHDreGcocg.woff) format('woff');
+		}
+		@font-face {
+		  font-family: 'Source Sans Pro';
+		  font-style: normal;
+		  font-weight: 400;
+		  src: local('Source Sans Pro'), local('SourceSansPro-Regular'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlJbPFduIYtoLzwST68uhz_Y.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/ODelI1aHBYDBqgeIAH2zlNHq-FFgoDNV3GTKpHwuvtI.woff) format('woff');
+		}
+		@font-face {
+		  font-family: 'Source Sans Pro';
+		  font-style: normal;
+		  font-weight: 700;
+		  src: local('Source Sans Pro Bold'), local('SourceSansPro-Bold'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGJkF8H8ye47wsfpWywda8og.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/toadOcfmlt9b38dHJxOBGIqjGYJUyOXcBwUQbRaNH6c.woff) format('woff');
+		}
+		@font-face {
+		  font-family: 'Source Sans Pro';
+		  font-style: italic;
+		  font-weight: 400;
+		  src: local('Source Sans Pro Italic'), local('SourceSansPro-It'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoM2Sl3jWJ3D9poyJPMfASioc.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/M2Jd71oPJhLKp0zdtTvoM_bce-VcyLJMRR1FC9qWbU8.woff) format('woff');
+		}
+		@font-face {
+		  font-family: 'Source Sans Pro';
+		  font-style: italic;
+		  font-weight: 700;
+		  src: local('Source Sans Pro Bold Italic'), local('SourceSansPro-BoldIt'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/fpTVHK8qsXbIeTHTrnQH6H0cQ2LOPDPk8GfVMt0MqYH3rGVtsTkPsbDajuO5ueQw.woff2) format('woff2'), url(http://fonts.gstatic.com/s/sourcesanspro/v9/fpTVHK8qsXbIeTHTrnQH6PgYMAt3u4NmhhzLLLPJ5qH3rGVtsTkPsbDajuO5ueQw.woff) format('woff');
+		}
 
-		style
-			include ./css/pillarsForms.css
-			include ./js/highlight/styles/monokai_sublime.css
-		//- 
-		
-		script
-			include ./js/jquery.min.js
-		//- 
-		
-		script.
+	style
+		include ./css/pillarsForms.css
+		include ./js/highlight/styles/monokai_sublime.css
+	//- 
+	
+	script
+		include ./js/jquery.min.js
+	//- 
+	
+	script.
 
-			(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','/js/analytics.js','ga');
-			ga('create', 'UA-64107815-1', 'auto');
-			ga('send', 'pageview');
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','/js/analytics.js','ga');
+		ga('create', 'UA-64107815-1', 'auto');
+		ga('send', 'pageview');
 
-			(function(){
-				var mainmenu = $('#mainmenu');
-				var swrp = $('<div class="select"></div>');
-				var select = $('<select onchange="window.open(this.value, \'_self\');"></select>');
-				swrp.append(select);
-				$('h2',mainmenu).after(swrp);
-				$('a',mainmenu).each(function(i,e){
-					var e = $(e);
-					var lvl = e.parents('ul').length;
-					var href = e.attr('href');
-					var selected = window.location.pathname.indexOf(href)===0?' selected="selected" ':'';
-					var space = '';
-					if(lvl>1){
-						for(var i=1;i<lvl;i++){
-							space+='-';
-						}
-						space+='&nbsp;';
+		(function(){
+			var mainmenu = $('#mainmenu');
+			var swrp = $('<div class="select"></div>');
+			var select = $('<select onchange="window.open(this.value, \'_self\');"></select>');
+			swrp.append(select);
+			$('h2',mainmenu).after(swrp);
+			$('a',mainmenu).each(function(i,e){
+				var e = $(e);
+				var lvl = e.parents('ul').length;
+				var href = e.attr('href');
+				var selected = window.location.pathname.indexOf(href)===0?' selected="selected" ':'';
+				var space = '';
+				if(lvl>1){
+					for(var i=1;i<lvl;i++){
+						space+='-';
 					}
-					select.append('<option value="'+href+'"'+selected+'>'+space+e.text()+'</option>');
-				});
-			})();
-			(function(){
-				var scopelinks = $('#scopelinks');
-				var swrp = $('<div class="select"></div>');
-				var select = $('<select onchange="window.open(this.value, \'_self\');"></select>');
-				swrp.append(select);
-				//$('h2',scopelinks).after(swrp);
-				$('#selectnav').append(swrp);
-				$('a',scopelinks).each(function(i,e){
-					var e = $(e);
-					var lvl = e.parents('ul').length;
-					var href = e.attr('href');
-					var selected = (window.location.pathname).indexOf(href)===0?' selected="selected" ':'';
-					var space = '';
-					if(lvl>1){
-						for(var i=1;i<lvl;i++){
-							space+='-';
-						}
-						space+='&nbsp;';
-					}
-					select.append('<option value="'+href+'"'+selected+'>'+space+e.text()+'</option>');
-				});
-			})();
-			(function(){
-				var TOC = $('#TOC');
-				var swrp = $('<div class="select"></div>');
-				var select = $('<select onchange="window.open(this.value, \'_self\');"></select>');
-				var ul = $('<ul></ul>');
-				swrp.append(select);
-				TOC.append('<h2>Table of contents</h2>');
-				//TOC.append(swrp);
-				$('#selectnav').append(swrp);
-				TOC.append(ul);
-				var last = false;
-				var count = 0;
-				$('#contents h2, #contents h3').each(function(i,e){
-					count++;
-					var e = $(e);
-					var t = e.prop('tagName').toLowerCase();
-					var href = '#'+e.attr('id');
-					var selected = (window.location.hash).indexOf(href)===0?' selected="selected" ':'';
-					var space = '';
-					if(t=='h2'){
-						last = $('<li></li>');
-						last.append('<a href="'+href+'">'+e.html()+'</a>');
-						ul.append(last);
-					} else {
-						if(!last.has( "ul" ).length){
-							last.append('<ul></ul>');
-						}
-						$('ul',last).append('<li><a href="'+href+'">'+e.html()+'</a></li>');
-						space = '- ';
-					}
-					select.append('<option value="'+href+'"'+selected+'>'+space+e.text()+'</option>');
-				});
-				if(!count){
-					TOC.hide();
+					space+='&nbsp;';
 				}
-			})();
-			(function(){
-				var w = $(window);
-				var tt = $("#totop");
-				w.on('scroll',function(event){
-					if(w.scrollTop()>50){
-						tt.fadeIn();
-					} else {
-						tt.fadeOut();
+				select.append('<option value="'+href+'"'+selected+'>'+space+e.text()+'</option>');
+			});
+		})();
+		(function(){
+			var scopelinks = $('#scopelinks');
+			var swrp = $('<div class="select"></div>');
+			var select = $('<select onchange="window.open(this.value, \'_self\');"></select>');
+			swrp.append(select);
+			//$('h2',scopelinks).after(swrp);
+			$('#selectnav').append(swrp);
+			$('a',scopelinks).each(function(i,e){
+				var e = $(e);
+				var lvl = e.parents('ul').length;
+				var href = e.attr('href');
+				var selected = (window.location.pathname).indexOf(href)===0?' selected="selected" ':'';
+				var space = '';
+				if(lvl>1){
+					for(var i=1;i<lvl;i++){
+						space+='-';
 					}
-				});
-			})();
+					space+='&nbsp;';
+				}
+				select.append('<option value="'+href+'"'+selected+'>'+space+e.text()+'</option>');
+			});
+		})();
+		(function(){
+			var TOC = $('#TOC');
+			var swrp = $('<div class="select"></div>');
+			var select = $('<select onchange="window.open(this.value, \'_self\');"></select>');
+			var ul = $('<ul></ul>');
+			swrp.append(select);
+			TOC.append('<h2>Table of contents</h2>');
+			//TOC.append(swrp);
+			$('#selectnav').append(swrp);
+			TOC.append(ul);
+			var last = false;
+			var count = 0;
+			$('#contents h2, #contents h3').each(function(i,e){
+				count++;
+				var e = $(e);
+				var t = e.prop('tagName').toLowerCase();
+				var href = '#'+e.attr('id');
+				var selected = (window.location.hash).indexOf(href)===0?' selected="selected" ':'';
+				var space = '';
+				if(t=='h2'){
+					last = $('<li></li>');
+					last.append('<a href="'+href+'">'+e.html()+'</a>');
+					ul.append(last);
+				} else {
+					if(!last.has( "ul" ).length){
+						last.append('<ul></ul>');
+					}
+					$('ul',last).append('<li><a href="'+href+'">'+e.html()+'</a></li>');
+					space = '- ';
+				}
+				select.append('<option value="'+href+'"'+selected+'>'+space+e.text()+'</option>');
+			});
+			if(!count){
+				TOC.hide();
+			}
+		})();
+		(function(){
+			var w = $(window);
+			var tt = $("#totop");
+			w.on('scroll',function(event){
+				if(w.scrollTop()>50){
+					tt.fadeIn();
+				} else {
+					tt.fadeOut();
+				}
+			});
+		})();
 
 
 mixin layout(title,path,bodyclass)
