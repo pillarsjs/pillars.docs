@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				El proyecto es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web.
 
 				`var project = require('pillars');`
@@ -31,7 +31,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.config` contiene las **variables de entorno** del proyecto:
 						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio. 
 							+ *false* indica que no acepta solicitudes cors de ningún origen. 
@@ -49,7 +49,7 @@ html(lang=gw.language)
 						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](funcionamiento-plugins.jade#plugin-directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
 
 
-					:markdown
+					:marked
 						> También podemos setear las **variables de entorno** a través del método `project.configure()`, en ese caso podremos configurar varias a la vez.
 
 						Configuración a través de seteo de propiedades: 
@@ -58,7 +58,7 @@ html(lang=gw.language)
 						project.config.cors = true;
 						project.config.cacheMaxSize = 25*1024*1024;
 
-					:markdown
+					:marked
 						Configuración a través del método `project.configure()`:
 
 					:highlight(lang='javascript')
@@ -76,13 +76,13 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						 
 
 					:highlight(lang='javascript')
 						
 
-					:markdown				
+					:marked				
 
 
 			//- Property
@@ -93,7 +93,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						Contiene el **árbol de controladores**. Cada controlador es creado con una instancia de la [Clase Route](clase-route.jade).
 
 
@@ -111,7 +111,7 @@ html(lang=gw.language)
 						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
-					:markdown				
+					:marked				
 			//- Property
 			section.property
 				h3#property-plugins: code 
@@ -120,7 +120,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						`project.plugins` es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). Es un array que contiene [objetos Plugin](clase-plugin.jade). Solemos llamar a esta propiedad la **Cadena de Plugins**. 
 
 						> Ver [funcionamiento de plugins](funcionamiento-plugins.jade).
@@ -136,7 +136,7 @@ html(lang=gw.language)
 						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
-					:markdown
+					:marked
 			//- Property
 			section.property
 				h3#property-version: code 
@@ -145,7 +145,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						`.version` es de solo lectura. Devuelve la versión del framework instalada.
 
 			//- Property
@@ -156,7 +156,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.path` es de solo lectura y devuelve el path absoluto de la librería pillars.	
 
 
@@ -172,7 +172,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						El método `.configure()` permite setear en un solo objeto todas las **variables de entorno**.
 
 				
@@ -184,7 +184,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Devuelve una ruta absoluta sobre un directorio relativo respecto al directorio de ejecución de la librería `pillars`. 
 
 				//- Method syntax
@@ -193,7 +193,7 @@ html(lang=gw.language)
 					:codesyntax
 						project.resolve( directory );
 
-					:markdown
+					:marked
 						+ *directory*: **String** del directorio relativo.
 
 				section.example

@@ -1,6 +1,7 @@
 @import "pillars.less";
 
 html {
+	height: 100%;
 }
 
 body {
@@ -31,16 +32,17 @@ body {
 		text-indent: -100000px;
 		overflow: hidden;
 		margin: 0.5em;
-		background-image: url('/img/pillars-logo-topbar.png');
+		background-image: url('/img/pillars-logo.png');
 	}
 	#mainmenu {
 		background-image: linear-gradient(45deg, transparent 2em, #ffffff 0px);
 		padding-left: 3em;
 		padding-right: 1em;
 		float: right;
-		font-weight: 700;
+		font-weight: 400;
 		color: @color-primary;
 		text-transform: uppercase;
+		font-style: italic;
 		&>.select {
 			display: none;
 		}
@@ -103,7 +105,7 @@ body {
 		text-indent: -100000px;
 		overflow: hidden;
 		margin: 0.5em;
-		background-image: url('/img/pillars-logo-topbar.png');
+		background-image: url('/img/pillars-logo.png');
 	}
 	.legal {
 		margin: 0.5em;
@@ -314,6 +316,41 @@ a.source {
 			.faclass;
 			content : "\f01b";
 			margin-right: 0.2em;
+		}
+	}
+}
+
+body.home {
+	height: 100%;
+	background-color: @color-primary;
+	#space {
+		height: 100%;
+		background-color: @color-primary;
+		#header {
+			border-color: transparent;
+			#logo {
+				//display:none;
+			}
+			#social {
+				background-image: none;
+				color: #ffffff;
+			}
+		}
+		#selectnav {
+			display: none;
+		}
+		#main {
+			height: 100%;
+			#contents {
+				h1 {
+					display: none;
+				}
+				img {
+					display: block;
+					margin: 30px auto;
+					max-width: 80%;
+				}
+			}
 		}
 	}
 }

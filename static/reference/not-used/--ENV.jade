@@ -15,7 +15,7 @@
 							}
 						};
 
-					:markdown
+					:marked
 						> Nota: El servidor HTTP comprime previamente los envíos a cliente. Esta compresión la realiza dependiendo de los compresores que tenga disponibles el cliente, por defecto si está disponible usa deflate. Con la propiedad `ENV.server.maxZipSize` establecemos a partir de qué tamaño el servidor no comprimirá los archivos.
 
 
@@ -29,7 +29,7 @@
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						La propiedad `.templates` es un conjunto de propiedades para configurar opciones de templates y templates en concreto que utilizará el sistema:
 						+ `cache`: Tipo **Boolean** determina si está activa la caché de templates o no. Por defecto está activa en **true**.
 						+ `directory`: Tipo **String** para determinar la plantilla estática a utilizar al servir directorios estáticos. Por defecto es: **./templates/directory.jade**. Hay que tener en cuenta que el Plugin Directory debe estar activo.
@@ -42,7 +42,7 @@
 							error: './templates/error.jade'
 						};
 
-					:markdown
+					:marked
 						> Nota: Pillars.js cuenta por defecto con Jade como lenguaje de templating. Se pueden añadir más motores con renderer.addEngine().
 
 
@@ -59,7 +59,7 @@
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						Esta propiedad define si el route responderá en https, http o ambas.
 						La propiedad `https` podrá tomar 2 valores: 
 						+ **true**: el objeto route sólo responde en https.
@@ -82,7 +82,7 @@
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Método para encriptar datos. Devuelve el parámetro encriptado.
 
 				//- Method syntax
@@ -104,7 +104,7 @@
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						Método para desencriptar datos. Devuelve el parámetro desencriptado.
 
 				//- Method syntax

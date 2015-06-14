@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				Pillars.js **genera de forma automática** un [objeto gangway](gangway.jade) en cada petición. Contiene como propiedades los **datos del request parseados**, response y métodos para la respuesta. 
 
 				Este objeto está disponible en el *handler* tanto del **objeto route** como en el **objeto plugin**.
@@ -21,7 +21,7 @@ html(lang=gw.language)
 		//- Description
 		section.cabeceras-http
 			h2#cabeceras-http Cabeceras HTTP
-			:markdown
+			:marked
 				Pillars.js parsea y deja accesibles de una forma **directa y homogénea** las cabeceras HTTP: 
 				+ **Accept**, contenido en `req.headers['accept']` de Node.js, especifica qué tipo de contenidos son aceptables para la respueta, su valor es un *string* similar a: `"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"`. Pillars.js setea en [`gw.accepts.types`](gangway.jade#property-accepts) un *array* que contiene esta información, de forma ordenada y homogeneizada.  
 
@@ -50,7 +50,7 @@ html(lang=gw.language)
 					}
 				]
 
-			:markdown
+			:marked
 				+ **Accept-Encoding**. Determina la compresión que se espera de la respuesta. Los valores comunes son gzip, deflate o sdch. La propiedad `req.headers['accept-encoding']` de Node.js contiene un *string* con todos los valores, junto con la calidad, siguiendo la norma [RFC referida a los parámetros de calidad](http://tools.ietf.org/html/rfc7231#section-5.3.1). Un ejemplo de este *string*: `"gzip, deflate, sdch"`. Pillars.js transforma este string en [`gw.accepts.encodings`](gangway.jade#property-accepts), un *array* ordenado con los parámetros de calidad homogeneizados. Por otro lado, la codificación usada en la respueta se setea en [`gw.encoding`](gangway.jade#property-encoding).
 			:highlight(lang='javascript')
 				// gw.accepts.encodings
@@ -73,7 +73,7 @@ html(lang=gw.language)
 				// gw.encoding
 				"gzip"
 
-			:markdown
+			:marked
 				+ **Accept-Language**. La propiedad `req.headers["accept-language"]` de Node.js contiene un *string* con algo similar a `"en,es;q=0.8"` que sigue la norma [RFC de Accepts-Language](http://tools.ietf.org/html/rfc7231#section-5.3.5)  y la norma [RFC referida a los parámetros calidad](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js transforma este *string* en algo accesible y directo, seteando en la propiedad [`gw.accepts.languages`](gangway.jade#property-accepts) un *array* ordenado y homogeneizado, por lo que en `gw.accepts.languages[0].value` tenemos el idioma aceptado para la respuesta. Además, y relacionado con esta propiedad, en [`gw.language`](gangway.jade#property-language) tenemos el idioma que va a usar el servidor para la respuesta.
 
 			:highlight(lang='javascript')
@@ -93,7 +93,7 @@ html(lang=gw.language)
 				// gw.language
 				"en"
 
-			:markdown
+			:marked
 				+ **User-Agent**. Información relativa al cliente disponible en [`gw.ua`](gangway.jade#property-ua), disponible de una forma directa.
 
 			:highlight(lang='javascript')
@@ -104,7 +104,7 @@ html(lang=gw.language)
 					engine: 'Blink',
 					browser: 'Chrome'
 				}
-			:markdown
+			:marked
 				+ **WWW-Authenticate**. Cabecera que emite un diálogo en cliente solicitando usuario y contraseña. Esta cabecera se emite al cliente mediante el método [`gw.authenticate()`](gangway.jade#method-authenticate). Los datos del usuario estarán seteados en [`gw.auth`](gangway.jade#property-auth).
 
 			:highlight(lang='javascript')
@@ -113,11 +113,11 @@ html(lang=gw.language)
 					user: 'UserName',
 					pass: 'PassUser'
 				}
-			:markdown
+			:marked
 		//- Description
 		section.contenido-de-la-peticion
 			h2#contenido-de-la-peticion POST, GET y rutas parametrizadas
-			:markdown
+			:marked
 				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](gangway.jade#property-content) de una forma accesible. Este parseo lo realiza el [Plugin bodyReader.js](funcionamiento-plugins.jade#plugin-bodyreader). En el caso de subida de ficheros, hemos de tener en cuenta: 
 					+ El *objeto route* debe estar configurado para aceptar multipart/form-data y el método post. 
 			:highlight(lang='javascript')
@@ -130,11 +130,11 @@ html(lang=gw.language)
 					function(gw){
 						//...
 					});
-			:markdown
+			:marked
 					+ Los ficheros de la petición serán seteados en [`gw.files`](gangway.jade#property-files) y almacenados en el directorio `/temp` definido en la propiedad `.tempDirectory` del [plugin bodyReader.js](funcionamiento-plugins.jade#plugin-bodyreader).
 				
 					
-			:markdown
+			:marked
 				+ **Query String (GET)**. Seteado en [`gw.query`](gangway.jade#property-query). 
 				+ **Rutas parametrizadas**. Objeto con los parámetros y valores que han llegado al servidor de la ruta parametrizada, seteados en [`gw.pathParams`](gangway.jade#property-pathParams).
 
@@ -143,7 +143,7 @@ html(lang=gw.language)
 		//- Description
 		section.cookies
 			h2#cookies Cookies
-			:markdown
+			:marked
 				Disponemos de herramientas para generar cookies que serán enviadas en la respueta [`gw.setCookie()`](gangway.jade#method-setCookie). Obtenemos los datos recibidos en el encabezado cookie parseados en el objeto JSON [`gw.cookie`](gangway.jade#property-cookie).
 			:highlight(lang='javascript')
 				// Envío de cookies
@@ -158,14 +158,14 @@ html(lang=gw.language)
 		//- Description
 		section.streaming
 			h2#streaming Streaming y Pausas en descargas
-			:markdown
+			:marked
 				En Pillars.js está implementado [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), permitiendo continuar descargas interrumpidas o reproducir un video mediante un reproductor multimedia. La propiedad relacionada con este tipo de solicitudes es [`gw.ranges`](gangway.jade#property-ranges). 
 
 
 		//- Description
 		section.i18n
 			h2#i18n Internacionalización
-			:markdown
+			:marked
 				Para trabajar con **proyectos en varios idiomas** disponemos de la [librería textualization](https://github.com/bifuer/textualization), integrada en el framework, un sistema de internacionalización en dot-notation que usa *nodos de traducción* del tipo: *myProject.hello*, junto con hojas JSON de traducción para los diferentes idiomas: *es.js, en.js, de.js, etc*.
 				
 				Además el objeto gangway dispone del método [`gw.i18n()`](), un alias de `i18n()`, en el que no tenemos que pasar el último parámetro de idioma, ya que gangway en la propiedad [`gw.language`](gangway.jade#property-language) establece el idioma con el que se responderá al usuario.
@@ -204,7 +204,7 @@ html(lang=gw.language)
 				console.log(gw.i18n("i18nSample.hello",user));
 
 
-			:markdown
+			:marked
 				La librería textualization acepta [numerales](https://github.com/bifuer/textualization#numerales) y traducción con [funciones](https://github.com/bifuer/textualization#traducción-con-funciones).
 
 				Por otro lado, permite la internacionalización de las rutas, de forma que ......	

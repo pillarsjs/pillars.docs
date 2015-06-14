@@ -4,7 +4,7 @@ html(lang=gw.language)
 	+reference-layout("Pillars.js Reference - Getting Started - 'make it easy'")
 		h1 Getting Started
 			em  Pillars.js Reference
-		:markdown
+		:marked
 			## Hola Mundo
 
 		:highlight(lang='javascript')
@@ -24,7 +24,7 @@ html(lang=gw.language)
 			// Adición al entorno pillars de la ruta que acabamos de crear
 			pillars.routes.add(route);
 
-		:markdown
+		:marked
 			En primer lugar se realiza la inclusión de la librería **Pillars.js**, luego se instancia el servidor y se pone en marcha. Tanto en la instancia del servidor como en la puesta en marcha, se disponen de opciones para configurar el servidor a arrancar. Estas opciones son: host, puerto, etc. [Ver método createServer() en la referencia](#).
 
 			Posteriormente se crean las **rutas a las que responderá la aplicación**, las cuales se construyen mediante objetos (tipo ObjectArray). Al ser objetos contamos con la versatilidad de añadir y/o eliminar rutas con la aplicación incluso en funcionamiento. [Ver enrutado dinámico]().
@@ -49,14 +49,14 @@ html(lang=gw.language)
 			}
 
 
-		:markdown
+		:marked
 			> Puedes encontrar más información sobre cómo funciona este archivo en el sitio web de [npmjs](https://www.npmjs.org/doc/files/package.json.html).
 
 			Ahora utilizamos *npm* para cargar las dependencias, ejecutamos el comando `npm install` en consola en el directorio del proyecto. Esto creará un directorio */node_modules* en el que se colocarán las dependencias descritas en el archivo *package.json*.
 
 			Ya podemos empezar a utilizar Pillars.js, en el archivo *app.js* escribimos un ejemplo básico para comprobar el funcionamiento, el típico "Hola Mundo" que tienes al principio de la página.
 
-		:markdown
+		:marked
 			## El Framework
 
 			Los conceptos principales de Pillars.js son:
@@ -102,7 +102,7 @@ html(lang=gw.language)
 			//Adición al proyecto
 			pillars.routes.add(myRoute);
 
-		:markdown
+		:marked
 			La **declaración de un objeto route** puede contener: 
 			+ **Parámetros de configuración**, como: 
 				- `.id`: Identificador del objeto.
@@ -137,7 +137,7 @@ html(lang=gw.language)
 			  gw.send('¡Hola Mundo!');
 			});
 
-		:markdown
+		:marked
 			### Anidamiento de objetos route
 			Los objetos Route a su vez pueden tener sub-rutas u objetos route hijos, de la misma forma que se pueden añadir objetos route al proyecto `pillars.routes.add(myRoute)`, se pueden añadir también objetos route a otros objetos route, estos funcionarán como subrutas, permitiendo organizar el árbol de rutas de una forma más orgánica, y como veremos más adelante nos servirá para trabajar con propiedades con herencia y tener un control organizado sobre grupos de controladores.
 
@@ -158,7 +158,7 @@ html(lang=gw.language)
 
 			myRoute.routes.add(myRouteSon);
 
-		:markdown
+		:marked
 			El objeto Route con el id 'Status' responderá a la ruta '/admin/status'. Si desactivamos al Route con el id 'Administration', dejarán de estar disponibles todos sus descendientes.
 
 			Como hemos visto anteriormente en los parámetros de configuración, disponemos de la propiedad `.active` que por defecto es `true` y nos permite desactivar un objeto route junto con su correspondiente descendencia.
@@ -232,7 +232,7 @@ html(lang=gw.language)
 			  gw.send('Has visto este mensaje '+session.count+' veces');
 			}));
 		
-		:markdown
+		:marked
 			En este ejemplo definimos algunas propiedades básicas del entorno y utilizamos la propiedad `.session` de Gangway para contabilizar el número de veces que el usuario recarga la página.
 
 			Hemos configurado una lista de idiomas, al establecer como idioma por defecto el castellano se nos mostrarán los mensajes de consola en este idioma, veremos como utilizar el sistema de traducciones más adelante.
@@ -424,7 +424,7 @@ html(lang=gw.language)
 
 
 
-		:markdown
+		:marked
 			***
 			example.jade
 
@@ -446,7 +446,7 @@ html(lang=gw.language)
 			        h1=h1
 			      #page!=contents
 
-		:markdown
+		:marked
 			En el ejemplo utilizamos [el método `.start()` de ENV](entorno.jade#method-start) para arrancar el servicio. Éste método acepta como parámetro el conjunto de propiedades ENV.server, que en este caso al no haberlo seteado se arrancará el servidor con los valores por defecto.
 
 			Podemos ver el funcionamiento de diversos métodos de Gangway junto con el uso de estructuras anidadas de Route, en las últimas lineas vemos como modificar una estructura ya creada y en funcionamiento añadiendo nuevo elementos o modificando los existentes.
@@ -473,7 +473,7 @@ html(lang=gw.language)
 			});
 			addPlugin(myPlugin);
 
-		:markdown
+		:marked
 			Este plugin de ejemplo envía a la consola los parámetros de cualquier solicitud recibida y pasa el control al siguiente plugin. Plugin a diferencia de Route recibe dos parámetros en el manejador 'gw' y 'next', next es una función que nos permite pasar el control al siguiente Plugin.
 
 			Uno de los Plugins integrados es 'Router' que decide qué objeto Route es el encargado de atender una solicitud concreta, pasando el control al manejador de dicho Route cuando finaliza la cadena de Plugins.
@@ -500,7 +500,7 @@ html(lang=gw.language)
 			});
 			addPlugin(myPlugin);
 
-		:markdown
+		:marked
 			Mediante Plugins podemos actuar tanto antes como después de pasar por el Router, pudiendo por ejemplo modificar la ruta, o métodos antes del Router, o comprobar propiedades del objeto Route cuando éste ya ha sido seleccionado. Cada Plugin puede modificar o extender las propiedades y métodos de Gangway para nuestro manejador, por ejemplo el Plugin 'Sessions' nos ofrece la propiedad `gw.session` en la cual se encarga de insertar los valores almacenados en la sesión y guardar los cambios una vez finalizada la solicitud.
 
 			Los Plugins ofrecen una forma de añadir funcionalidades a Pillars.js o modificar su comportamiento general, esto es útil para crear Plugins genéricos que añadan funciones a cualquier proyecto o para realizar tareas comunes entre diferentes manejadores pudiendo disparar el Plugin sólo ante ciertas configuraciones de Route.

@@ -12,7 +12,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Summary
-			:markdown
+			:marked
 				The summary
 				> this is a blockquote
 
@@ -25,34 +25,34 @@ html(lang=gw.language)
 			section.parameters
 				h3 Parameters
 				.msg.msg-icon.bg-alert Alerta!
-				:markdown
+				:marked
 					Class App can get ~~optionally~~ object with App config with these properties:
 
 				dl
 					dt database
 					dd
-						:markdown
+						:marked
 							...
 
 					dt languges
 					dd
-						:markdown
+						:marked
 							...
 
 					dt port
 					dd
-						:markdown
+						:marked
 							...
 
 					dt host
 					dd
-						:markdown
+						:marked
 							...
 
 		//- Description
 		section.description
 			h2#description Description
-			:markdown
+			:marked
 				Class App description
 
 		//- Properties
@@ -67,7 +67,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						The `port` property get or set...
 
 			//- Property
@@ -78,7 +78,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						The `port` property get or set...
 
 			//- Property
@@ -89,7 +89,7 @@ html(lang=gw.language)
 
 				//- Property description
 				section.description
-					:markdown
+					:marked
 						The `port` property get or set...
 
 		//- Methods
@@ -104,7 +104,7 @@ html(lang=gw.language)
 
 				//- Method description
 				section.description
-					:markdown
+					:marked
 						The `add` method add a new Pillar to the routes...
 
 				//- Method syntax
@@ -118,12 +118,12 @@ html(lang=gw.language)
 						dl
 							dt pillar
 							dd
-								:markdown
+								:marked
 									A Pillar instance  
 
 							dt pillar
 							dd
-								:markdown
+								:marked
 									A Pillar instance  
 
 		//- Examples
@@ -133,12 +133,12 @@ html(lang=gw.language)
 			//- Example
 			section.example
 				h3#example-1 Example 1
-				:markdown
+				:marked
 					Class `App` _Example 1_ lorem ipsum __synopsis__ hola [link to Google!](http://google.com)
 
 				code.codeblock.
 					var app = new App([{database:'',languages:['en'],port:3000,host:'*'}]);
 				
-				:markdown
+				:marked
 					Class App Example 1 Review
 
