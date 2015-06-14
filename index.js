@@ -12,7 +12,6 @@ for(var i=0,l=process.argv.length;i<l;i++){
     args[m[1]]=m[2];
   }
 }
-console.log(args);
 
 // Pillars.js load
 var project = require('pillars').configure({
