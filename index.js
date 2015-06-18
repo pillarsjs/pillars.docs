@@ -26,7 +26,6 @@ project.services.get('http').configure({
 }).start();
 
 // Internacionalization config
-var i18n = global.textualization;
 i18n.languages = ['es'];
 
 // Log manager config
