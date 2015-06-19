@@ -16,7 +16,7 @@ html(lang=gw.language)
 			:marked
 				Welcome to **Pillars.js**, a modular framework for Web Development in Node.js.
 
-				With a simple and modular approach, lets you start in Node.js with a soft learning curve, if you´re an advanced JS/Node developer get JS workbench organized and effective.
+				With a simple and modular approach, lets you start in Node.js with a soft learning curve, and if you´re an advanced JS/Node developer get JS workbench organized and effective.
 
 			:highlight(lang='javascript')
 				var project = require('pillars');
@@ -39,7 +39,7 @@ html(lang=gw.language)
 
 				Make a new directory and add two basic files: *package.json* (application descriptor) and *app.js* (the main projec).
 
-				*package.json* file allows you to set many parameters. Initially it´s enougth describe that you´ll use Pillars.js: 
+				*package.json* file allows to set many parameters. Initially you describe that you use Pillars.js like dependency, is enough:
 
 			:highlight(lang='javascript')
 				{
@@ -49,9 +49,9 @@ html(lang=gw.language)
 				}
 
 			:marked
-				> You can find more info about *package.json* on [npm](https://www.npmjs.org/doc/files/package.json.html).
+				> You can find more info about *package.json* file on [npm](https://www.npmjs.org/doc/files/package.json.html).
 
-				Now, goes to console and execute in  directory `npm install` command. This action will create a *node_modules* directory, which the units described are placed.
+				Now in console execute (in your project directory) `npm install` command. This action will create a *node_modules* directory, which the units described are placed.
 
 				On *app.js* write a basic example like this:
 
@@ -69,25 +69,25 @@ html(lang=gw.language)
 					});
 
 			:marked
-				To run application write on console `node app.js`. 
+				To run application write in console `node app.js`. 
 				> To stop application use `ctrl+c`.
 
 		section.framework
 			h2#framework The framework
 			:marked
 				Main concepts in Pillars.js are:
-				- **Environment/project**: main element to setup and management the project. Allow add route controller (*route object*) and Plugins among others. Get *project* with require sentence: `var project = require('pillars');`
-				- **Route**: route controller, a class to create a *handler* and their *configuration*. Receives a *gangway object* by parameter and are nestable. 
-				- **Gangway**: an object with propierties and methods related with the request management, is a 'clean' wrap for Node *request* and *response*.
-				- **Plugin**: allows create controllers for the general environment, can modify *Gangway* and *Route* performance and access their propierties.
+				- **Environment/project**: main element to setup and management the project. Allows add route controller (*route object*) and Plugins (*plugin object*) among others. Get *project* with require sentence: `var project = require('pillars');`
+				- **Route**: route controller, a class to create a *handler* with a *configuration*. Receives a *gangway object* by parameter and are nestable. 
+				- **Gangway**: an object with properties and methods related with the request management, is a 'clean' wrap for Node *request* and *response*.
+				- **Plugin**: allows create controllers for the general environment, can modify *Gangway* and *Route* performance and access to their properties.
 
 				Pillars.js include aditional libraries developed in parallel: 
 				- **Textualization**: extend i18n support for JS.
-				- **Scheduled**: Manager tasks scheduled to cron style.
-				- **Crier**: Management system logs.
-				- **Procedure**: Utility to provide writing sets of asynchronous sentences. 
+				- **Scheduled**: Manager tasks scheduled with cron style.
+				- **Crier**: Management 'system logs'.
+				- **Procedure**: Utility to provide writing of asynchronous sentences sets.
 				- **Templated**: Manager for template engines with compilation cache.
-				- **ObjectArray**: Intensively used in PIllars.js to organize/manage object sets.
+				- **ObjectArray**: Intensively used in Pillars.js to organize/manage object sets.
 				- **String.format**: Method for *String class*, allows format text templates.
 				- **Date.format**: Method for *Date class*, allows easily format dates.
 				- **JSON.decycled**: Set of methods for *JSON class* that solve circular references provblems among others.
@@ -97,15 +97,15 @@ html(lang=gw.language)
 		section.project
 			h2#project Project (Environment)
 			:marked
-				When `var project = require('pillars')` is used, get an environment reference, or what is the same, the focus of work for the project. Allows set up general system performance and gives central access to methods: route/controller structure, runing Plugins, available services and other propierties of the system.
+				When `var project = require('pillars')` is used, get an environment reference, or what is the same, the focus of work for the project. Allows set up general system performance and gives you central access to: *controllers structure*, *running Plugins*, *available services* and other system properties.
 
-				Invoking for the first time Pillars.js library are globally setted more important classes as *Route* and *Plugin*, that you can use inmediatly.
+				When you invoke Pillars.js library at the first time, more important classes as *Route* and *Plugin* are globally set, so you can use it immediately.
 
-				Pillars.js use *services* as a shared entity in throughout environment, to which can access to interact with it other modules that are included in project. *services* offer a cross structure for all the project code.
+				Pillars.js use *services* as a shared entity throughout environment, to which can access to interact with it other modules that are included in project. *services* offer a cross structure for all the project code.
 
 				Pillars.js has a HTTPService preset, so you don´t need create one. (Unless you need multiple HTTP/S services).
 
-				Get *services* in `project.services` propiertie, this is an [ObjectArray](https://github.com/bifuer/ObjectArray) in which you can get any service of the *services* in your project. Below a simple server set up:
+				Get *services* in `project.services` property, this is an [ObjectArray](https://github.com/bifuer/ObjectArray) in which you can get any service of the *services* in your project. Below a simple server set up:
 
 			:highlight(lang='javascript')
 				var project = require('pillars');
@@ -117,7 +117,7 @@ html(lang=gw.language)
 				}).start();
 
 			:marked
-				Environment vars setting is available in `project.config`, you can set up propierties at once using `project.configure({...})` method:
+				Environment vars setting is available in `project.config`, you can set up properties at once using `project.configure({...})` method:
 
 			:highlight(lang='javascript')
 				var project = require('pillars').configure({
@@ -129,14 +129,14 @@ html(lang=gw.language)
 					});
 
 			:marked
-				Finally we have methods that allows to manage *routes* and *plugins* in application. All controllers and all plugins are located in `project.routes` and in `project.plugins` respectively:
-				- `project.routes.add(new Route())`: add a new controller to system. With `.remove()` you can delete controllers and with `.get()` you can get it for modify those were added. A *route* object has `.routes` propiertie in which you can add other controllers, allowing create tree structures (nesetable). Controller nested inherit configurations of their predecessors.
+				Finally we have methods that allows to manage *routes* and *plugins* in application. All *controllers* and all *plugins* are located in `project.routes` and in `project.plugins` respectively:
+				- `project.routes.add(new Route())`: add a new controller to system. With `.remove()` you can delete controllers and with `.get()` you can get it for modify those were added. A *route* object has `.routes` property in which you can add other controllers, allowing create tree structures (nesetable). Controller nested inherit configurations of their predecessors.
 				- `project.plugins.add(new Plugin())`: add a new plugin to system. With `.remove()` you can delete plugins and with `.get()` you can get it for modify those were added. Pillars.js include by default some plugins that perform essential functions for the system, among them the most important is the *router.js*, plugin that manages the entire routing system.
 
 		section.route
 			h2#route Route Class
 			:marked
-				Class that associates a *handler* with a particular *configuration*. A *route object* consist in a *handler* and a *propierties set* that allows to define when and how execute this *handler*. *route object* basic declaration is leaving defaults options, it´s to say, without this *propierties set*:
+				Class that associates a *handler* with a particular *configuration*. A *route object* consist in a *handler* and a *property set* that allows to define when and how execute this *handler*. *route object* basic declaration is leaving defaults options, it´s to say, without this *property set*:
 
 			:highlight(lang='javascript')
 				var myRoute = new Route(function(gw){
@@ -144,10 +144,10 @@ html(lang=gw.language)
 					});
 
 			:marked
-				Althougth in most cases we need to set *object route* with this *propierties set* as follows:
+				Althougth in most cases we need to set *object route* with this *property set* as follows:
 
 			:highlight(lang='javascript')
-				var myRoute = new Route({ // Propierties set
+				var myRoute = new Route({ // property set
 					  id:'Status',
 					  path:'admin/status',
 					  method:['get','post']
@@ -162,7 +162,7 @@ html(lang=gw.language)
 				- `.method`: all methods.
 
 
-				*route objects* (controllers) can have others *route objects* as children, these works like sub-controllers, allowing to organize the tree controller in an organically way. This allows work with inheritance propierties and have an organized control over controller groups.
+				*route objects* (controllers) can have others *route objects* as children, these works like sub-controllers, allowing to organize the tree controller in an organically way. This allows work with inheritance properties and have an organized control over controller groups.
 
 			:highlight(lang='javascript')
 				var adminArea = new Route({
@@ -182,12 +182,12 @@ html(lang=gw.language)
 			:marked
 				*route object* with `Status` id, respond to '/admin/status' path. If *route* with 'Administration' id is desactivated, this will no longer available neither all his descendants.
 
-				`.active` propierty of *route* allows desactivate a *route object* along with their descendants.
+				`.active` property of *route* allows deactivate a *route object* along with their descendants.
 
 		section.gangway
 			h2#gangway Gangway (gw)
 			:marked
-				If you has worked with Node sure you know about `request` and `response`. In Pillars.js this objects are *Gangway* propierties. 
+				If you has worked with Node sure you know about `request` and `response`. A *gangway object* is the request completely parsed and organizad for use. With each HTTP request to the server, a *gangway object* is generated.
 
 
 					/*
