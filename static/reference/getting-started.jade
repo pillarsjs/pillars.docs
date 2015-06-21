@@ -208,53 +208,47 @@ html(lang=gw.language)
 				- **`.setHeader(name, value)`**: add a header to request.  `getHeader(name)` and `removeHeader(name)` allows read a header value if exists, or delete it. As these aliases, other methods *response* original are included. 
 				- **`.setCookie(name, value, config)`**: Prepare a cookie to attach to response, it will be encrypted through JSON.crypt.
 				- **`.send(data)`**: send specified content to the client and finish petition. If *data* is an *object* will turn into *JSON* and *request* will be sent as *application/json*, if *data* is a *string*, will be sent as *text/html*. There are also explicit methods for each type of answer like: `.html()`, `.json`, `.text`.
+				- **`.file(path, clientname, download)`**: send a file to the client, `clientname` specify a filename to be used in the save dialog, and `download=true` to force the download. By default filename is the original name, and download is *false*. Additionally, file is **compressed** before sent and is cached in memory for successive requests. This method is compatible with HTTP **byte-serve**, so if download is interrupted may continue in a next request from the last byte received, also it is used by video clients to download the video portion requested. This  method also has **automatic cache management**, so if client already has the file, it will not be sent and server responds a *304* code.
+				- **`.cacheck(hash)`**: Allows to manage client cache. Call to cacheck with an identifuing value (*hash, checksum, timestamp for example*) to check if request content is identical to the client has. This method reply *false* if client hasn´t content cached, and *true* along *304* if client has it. The way to use `.cacheck()` is in a simple condition *if* `if(!cacheck(hash)){}`.
+				- **`.authenticate(msg)`**: Send an **authentication HTTP** basic message with a *401* code. Check credentials sent by user in  `.auth` *gangway* property. This object contains user name and password introduced by client, in `.user` y `.pass`. *gangway*properties. `gw.auth.user` and `gw.auth.pass`.
+				- **`.redirect(location)`**: redirects the request to another URL with a *301* code.
+				- **`.render(template, locals)`**: setting template path and parameters for this template, with `.render()` we send to client the result as HTML. Pillars.js allows add templates engine using `templated.addEngine(ext,compiler)`.
+				- **`.error(code, data)`**: allows show error messages manually, we can specify a *status-code (404, 500...)* and an *Error* object if needed. *Error* object won´t shown if `project.config.debug` is *false*.
+			
+		section.plugin
+			h2#plugin Plugin
+			:marked
+				Plugins allow to create global controllers that can access to *object route* properties, extend *gangway* functions or modify framework general behavior.
 
-				- **`.file(path, clientname, download)`**: send a file to the client, `clientname` specify a name to be used in the save dialog and `download=true` to force the download. By default filename is the original name, and download is *false*. Additionally, file is **compressed** before sent and is cached in memory for successive requests. This method is compatible with HTTP **byte-serve**, so if download is interrupted may continue in a next request from the last byte received, also it is used by video clients to download the video portion requested. This  method also has **automatic cache management**, so if client already has the file, it will not be sent and server responds a *304* code.
+				Plugins are the center of requests management in Pillars.js. When an HTTP request is received, a new *gangway object* is created, this is sent to a *Plugin Chain* where plugins are organized and they will passing *gangway* control to the next plugin.
 
+				*Object plugin* construction is similar to *object route* construction, is necessary specify *properties* and a *handler*. Plugins have only two properties; `.id` and `.active`
 
-				
-					/*
-
-					 - **`.cacheck(hash)`**: Nos permite gestionar la caché del cliente, debemos pasar valor identificativo (hash, checksum, timestamp) para comprobar si el contenido solicitado es idéntico al que ya tiene el cliente, este método responderá con *false* si el cliente no tiene cacheado el contenido y *true* junto con un *304* automáticamente si el cliente ya dispone del contenido. La forma ideal de utilizar este método es como condición en una sentencia *if*, de la forma `if(!cacheck(hash)){}`.
-					 - **`.authenticate(msg)`**: Envía un mensaje de *autenticación HTTP básica* con el código *401*. Podremos comprobar las credenciales del usuario en la propiedad `.auth` de Gangway, este objeto contendrá el nombre de usuario y contraseña indicados por el cliente en las propiedades `.user` y `.pass`.
-					 - **`.redirect(location)`**: Redirige la solicitud a otra dirección mediante un código *301*.
-					 - **`.render(template, locals)`**: Definiendo la ruta a un template y la variables de entorno con las que debe trabajar enviaremos al cliente el resultado como HTML. Pillars.js permite añadir motores de plantillas mediante `templated.addEngine(ext,compiler)`.
-					 - **`.error(code, data)`**: Mediante este método podemos mostrar mensajes de *error* manualmente, nos permite especificar un *status-code (404, 500...)* y un objeto *Error* si fuese necesario, el objeto *Error* no se mostrará al cliente si la variable de entorno `debug` es *false*.
-
-					## Plugin
-
-					Los plugins te permiten crear controladores globales que podrán acceder a las propiedades de Route, ampliar las funciones de Gangway o modificar el comportamiento general del framework.
-
-					Son la parte central de la gestión de solicitudes en Pillars.js. Cuando se recibe una solicitud HTTP se instancia un nuevo objeto Gangway, éste es enviado a una cadena de plugins organizados que irán pasando el control de dicho Gangway al siguiente Plugin.
-
-					La construcción de un plugin es muy similar a la de un Route, es necesario especificar unas propiedades y un manejador. Los plugins solo tienen dos propiedades, `.id` y `.active`:
-
-					```javascript
-					myPlugin = new Plugin({
+			:highlight(lang='javascript')
+				myPlugin = new Plugin({
 					  id: 'paramsLog'
 					}, function(gw,next){
 					  console.log(gw.params);
-					  next();
+					  next(); // Call next plugin
 					});
-					project.plugins.add(myPlugin);
-					```
+				
+				project.plugins.add(myPlugin);
 
-					Este plugin de ejemplo envía a la consola los parámetros de cualquier solicitud recibida y pasa el control al siguiente plugin. Plugin a diferencia de Route recibe dos parámetros en el manejador 'gw' y 'next', next es un método que nos permite pasar el control al siguiente Plugin.
+			:marked
+				This plugin send to console parameters of any request received and pass control to the next plugin. Plugin receive two parameters in *handler*: `gw` and `next`, `next` allow pass control to the next plugin.
 
-					Uno de los Plugins integrados, y más importante, es 'Router' que decide qué objeto Route es el encargado de atender una solicitud concreta, pasando el control al manejador de dicho Route cuando finaliza la cadena de Plugins.
+				One of the built-in plugins more important is `router.js`, this plugin decide what *route object* carry out the request. When control arrives to `router.js` plugin, this searches a *route object* to serve the request. If no *route object* is suitable to serve the request, respond a *404* and *plugin chain* is stopped. If one is found, a reference in `gw.routing` is saved, and continue *plugins chain* execution. At the end of *plugins chain*, control is passed to *object route* *handler* that was selected.
 
-					Cuando el control llega al Plugin 'Router', éste busca el Route adecuado para la solicitud, en caso de encontrar uno guarda la referencia en la propiedad `routing` de Gangway y continua la ejecución de la cadena de plugins. En caso contrario reponde con un 404 y detiene la cadena de Plugins.
+				From any Plugin with rear priority to `router.js` plugin, you can get `gw.routing` property, content is:
+				- `gw.routing.routes`: if *route objects* were nested, you can found in this property all *objects route* predecessors, including *object* itself to carry out the request.
+				- `gw.routing.handlers`: *route handler/s* that will serve the request. They will be called at the end of the *plugins chain*.
+				- `gw.routing.inheritance`: object with *route configuration* that carry out the request. Own and inherited from his predecessors.
+				- `gw.routing.check(prop, preset)`: Method to check *route properties*.
 
-					Desde cualquier Plugin con prioridad posterior a 'Router' se tendrá acceso a la propiedad `gw.routing` que tiene el siguiente formato:
-					- `gw.routing.routes`: Cadena de Routes que se ha seguido si estos han sido anidados, en orden de descendencia.
-					- `gw.routing.handlers`: Manejador o manejadores del Route que responderá a la ruta. Serán llamados al finalizar la cadena de Plugins.
-					- `gw.routing.options`: Objeto con las propiedades del Route que atenderá la solicitud, propias y heredadas de otros Routes superiores.
-					- `gw.routing.check(prop, preset)`: Utilidad para comprobar propiedades del Route pudiendo recibir el valor `preset` en caso de no estar definida.
+				Plugins with the help of `gw.routing`, allows to create plugins to be executed only with a specific configuration of *route object*. Next example, we create a plugin that only write a log if *route object* has defined property `log:true`:
 
-					La propiedad `gw.routing` nos permite crear Plugins que sólo se ejecutarán ante configuraciones concretas Route, por ejemplo un Plugin que realize log como el ejemplo anterior pero sólo para objetos Route que tengan la propiedad 'log=true':
-
-					```javascript
-					myPlugin = new Plugin({
+			:highlight(lang='javascript')
+				myPlugin = new Plugin({
 					  id: 'logPlugin'
 					},function(gw,next){
 					  var log = gw.routing.check('log');
@@ -263,9 +257,10 @@ html(lang=gw.language)
 					  }
 					  next();
 					});
-					project.plugins.add(myPlugin);
-					```
+				
+				project.plugins.add(myPlugin);
 
-					Mediante Plugins podemos actuar tanto antes como después de pasar por el Router, pudiendo por ejemplo modificar la ruta o métodos antes del Router o comprobar propiedades del objeto Route cuando éste ya ha sido seleccionado. Cada Plugin puede modificar o extender las propiedades y métodos de Gangway para nuestro manejador, por ejemplo el Plugin 'sessions' nos ofrece la propiedad `gw.session` en la cual se encarga de insertar los valores almacenados en la sesión y guardar los cambios una vez finalizada la solicitud.
+			:marked
+				By Plugins we can act before or after *router.js* plugin, we can change (for example) `path` or `method` before *route object* selection, or check properties in *route object* when has been selected. **A plugin can modify or extend** gangway properties and methods, for example `sessions.js` plugin provides `gw.session` property which  inserts values stored in the session and save changes once request is complete.
 
-					Los Plugins ofrecen una forma de añadir funcionalidades a Pillars.js o modificar su comportamiento general, esto es útil para crear Plugins genéricos que añadan funciones a cualquier proyecto o para realizar tareas comunes entre diferentes manejadores pudiendo disparar el Plugin sólo ante ciertas propiedades/configuraciones de Route.*/
+				Plugins allows a way to add functionalities to Pillars.js, or modify general performance, this is useful to add features to any project or make a common generic task between other plugins or handlers, allowing to execute a plugin only with certain properties of *route object*.
