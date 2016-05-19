@@ -344,13 +344,61 @@ body.home {
 			height: 100%;
 			padding: 0;
 			#contents {
-				h1 {
-					display: none;
+				div#text{
+					text-align: center;
+					h1 {
+						color: white;
+						font-weight: 100;
+						display: inline-block;
+						font-size: 2.0em;
+					}
+					img#node-logo{
+						display: inline-block;
+						margin: 0 0 -8px 0;
+					}
 				}
 				img {
 					display: block;
 					margin: 50px auto;
 					max-width: 80%;
+				}
+			}
+
+			#explanation {
+				width: 80%;
+				margin: 0 10%;
+			}
+			#features{
+				ul{
+					text-align: center;
+				}
+				ul li ul{
+					display: none;
+				}
+				ul li{
+					background-color: white;
+					height: 200px;
+					width: 200px;
+					color: #d40041;
+					display: inline-block;
+					border-radius: 10px;
+					font-size: 25px;
+					line-height: 26px;
+					text-align: center;
+					padding: 61px 10px 5px;
+					vertical-align: top;
+					margin:10px;
+					&:hover{
+						background-color:#d40041;
+						color: white;
+						border: 2px solid white;
+					};
+				}
+				ul li:hover{
+					cursor: pointer;
+					ul{
+						//display: block;
+					}
 				}
 			}
 		}

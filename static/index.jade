@@ -2,5 +2,57 @@ include ./.layout.jade
 doctype html
 html(lang=gw.language)
 	+layout("Pillars.js Reference - 'make it easy'",undefined,'home')
-		h1 Welcome to Pillars.js, web development framework for Node.js
+		div#text
+			h1 Framework de Desarrollo Web para
+			img#node-logo(src="/img/node-logo.png",alt="Node.js logo")
+
 		img(src="/img/cover.png",alt="Pillars.js logo")
+		div#explanation
+			:highlight(lang='javascript')
+						var project = require('pillars'); 
+
+						project.services.get('http').start(); 
+
+						project.routes.add(new Route(function(gw){
+						  gw.html("Hola Mundo!!");
+						});
+		div#features
+			:marked
+				+ **Negociación HTTP**
+					+ Envío de archivos con compresión, gestión de caché y byte-range. Compatible con streaming y recuperación de descargas.
+					+ Gestión de rutas dinámica y configurables 'en caliente'. Puedes desactivar una ruta en caliente, por ejemplo.
+					+ Rutas multiidiomas.
+					+ Parser de solicitudes para form-urlencoded, multipart y json.
+					+ Gestión de solicitudes mediante *Gangway*, envoltura para los objetos *request* y *response* propios de Node.js.
+					+ Control automático de errores en manejadores.
+					+ CORS administrable por ruta.
+					+ Compresión de respuesta automática.
+					+ Negociación automática de caché en el cliente.
+					+ Gestión de Cookies y encriptado.
+					+ etag encriptado con sorpote para múltiples valores.
+				+ **Gestión de Rutas**
+					+ Entorno dinámico en tiempo de ejecución, permite modificar la arquitectura en pleno funcionamiento.
+					+ Controladores anidables por ruta, ofrece una mejor organización de funcionalidades en **árboles de rutas**.
+				+ **Gestión de Servicios**
+				+ **Gestión de Plugins**
+					+ Los **Plugins** permiten extender las posibilidades de los controladores y modificar el funcionamiento del sistema. Si conoces otros frameworks es algo similar a los middleware, pero totalmente diferente :P, ya que tenemos el control sobre qué se ejecuta, cuándo, orden, etc.
+					+ Nombrado de controladores: ofrece organización y control sobre el entorno.
+				+ Request y Response
+					+ asdf
+					+ fasdf
+				+ i18n
+					+ Integración completa de i18n
+					+ Admite de forma transparente para el desarrollo múltiples idiomas.
+					+ Hojas de traducción en JS/JSON
+					+ Gestión de idioma de la solicitud automática
+				+ Motor de Plantillas
+					+ Soporte a cualquier motor de plantillas como mustache, jade, o... 
+					+ Renderizado automático y optimizado.
+				+ **CRON**
+					+ Programación de tareas mediante CRON gracias a la librería Scheduled.
+				+ **Logs**
+					+ Sistema de creación de logs para la monitorización de aplicación, librerías, etc.
+				+ **Dependencias Propias**
+					+ Todas las dependencias han sido creadas y mantenidas por el mismo equipo.
+
+		h2 Getting Started >>
