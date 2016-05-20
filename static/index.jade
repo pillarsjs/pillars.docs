@@ -7,7 +7,7 @@ html(lang=gw.language)
 			img#node-logo(src="/img/node-logo.png",alt="Node.js logo")
 
 		img(src="/img/cover.png",alt="Pillars.js logo")
-		div#explanation
+		div#example
 			:highlight(lang='javascript')
 						var project = require('pillars'); 
 
@@ -16,43 +16,153 @@ html(lang=gw.language)
 						project.routes.add(new Route(function(gw){
 						  gw.html("Hola Mundo!!");
 						});
-		div#features
-			:marked
-				+ **Negociación HTTP**
-					+ Envío de archivos con compresión, gestión de caché y byte-range. Compatible con streaming y recuperación de descargas.
-					+ Gestión de rutas dinámica y configurables 'en caliente'. Puedes desactivar una ruta en caliente, por ejemplo.
-					+ Rutas multiidiomas.
-					+ Parser de solicitudes para form-urlencoded, multipart y json.
-					+ Gestión de solicitudes mediante *Gangway*, envoltura para los objetos *request* y *response* propios de Node.js.
-					+ Control automático de errores en manejadores.
-					+ CORS administrable por ruta.
-					+ Compresión de respuesta automática.
-					+ Negociación automática de caché en el cliente.
-					+ Gestión de Cookies y encriptado.
-					+ etag encriptado con sorpote para múltiples valores.
-				+ **Gestión de Rutas**
-					+ Entorno dinámico en tiempo de ejecución, permite modificar la arquitectura en pleno funcionamiento.
-					+ Controladores anidables por ruta, ofrece una mejor organización de funcionalidades en **árboles de rutas**.
-				+ **Gestión de Servicios**
-				+ **Gestión de Plugins**
-					+ Los **Plugins** permiten extender las posibilidades de los controladores y modificar el funcionamiento del sistema. Si conoces otros frameworks es algo similar a los middleware, pero totalmente diferente :P, ya que tenemos el control sobre qué se ejecuta, cuándo, orden, etc.
-					+ Nombrado de controladores: ofrece organización y control sobre el entorno.
-				+ Request y Response
-					+ asdf
-					+ fasdf
-				+ i18n
-					+ Integración completa de i18n
-					+ Admite de forma transparente para el desarrollo múltiples idiomas.
-					+ Hojas de traducción en JS/JSON
-					+ Gestión de idioma de la solicitud automática
-				+ Motor de Plantillas
-					+ Soporte a cualquier motor de plantillas como mustache, jade, o... 
-					+ Renderizado automático y optimizado.
-				+ **CRON**
-					+ Programación de tareas mediante CRON gracias a la librería Scheduled.
-				+ **Logs**
-					+ Sistema de creación de logs para la monitorización de aplicación, librerías, etc.
-				+ **Dependencias Propias**
-					+ Todas las dependencias han sido creadas y mantenidas por el mismo equipo.
+		ul#features-menu
+			li 
+				a(href="#negociacion-http") Negociación HTTP
+			li 
+				a(href="#gestion-rutas") Gestión de Rutas
+			li 
+				a(href="#gestion-servicios") Gestión de Servicios
+			li 
+				a(href="#gestion-plugins") Gestión de Plugins
+			li 
+				a(href="#motor-plantillas") Motor de Plantillas
+			li 
+				a(href="#req-res") Request&Response
+			li 
+				a(href="#i18n") i18n
+			li 
+				a(href="#cron") CRON
+			li 
+				a(href="#logs") Logs
+			li 
+				a(href="#dependencias") Dependencias Propias
 
-		h2 Getting Started >>
+
+		div#features
+			h2#negociacion-http Negociación HTTP
+			p Estabilidad y funcionalidad. 
+
+			p Tutos:  Configuración del Servidor  ¿| Vídeo Streaming | CORS | Cookies | ? - esto mejor en gw
+			ul 
+				li Envío de archivos con compresión, gestión de caché y byte-range. Compatible con streaming y recuperación de descargas.
+				li Parser de solicitudes para form-urlencoded, multipart y json.			
+				li Control automático de errores en manejadores.
+				li CORS administrable por ruta.
+				li Compresión de respuesta automática.
+				li Negociación automática de caché en el cliente.
+				li Gestión de Cookies y encriptado.
+				li etag encriptado con sorpote para múltiples valores.
+
+			
+			
+			h2#gestion-rutas Gestión de Rutas
+			p Entorno dinámico, controladores Plug&Play. 
+
+			p Tutos: Configuración de ruta | Activar/Desactivar rutas en caliente | Rutas Parametrizadas | Herencia | 
+
+			p Para crear un nueva ruta, instancia un objeto de la clase Route y añádelo a tu proyecto.
+				:highlight(lang='javascript')
+					var myRoute = new Route(*configuración*, *manejador*);
+					project.routes.add(myRoute);
+
+			ul
+				li Todos los controladores del proyecto se encuentran en la propiedad project.routes. 
+				li Gracias a los parámetros de configuración de cada objeto route, podemos capturar el controlador deseado y actuar sobre él.
+
+				:highlight(lang='javascript')
+					project.routes.add( new Route({
+							id:'home',
+							path: '/web'
+						},
+						*manejador*
+					));
+					myRoute = project.routes.get('home');
+
+			ul
+				li Los objetos route (controladores) se pueden añadir, modificar o eliminar de tu proyecto, en caliente.
+					:highlight(lang='javascript')
+						project.routes.add(myRoute);
+						project.routes.remove(myRoute);
+						project.routes.get(id); 
+
+
+				li Además, un objeto route se puede añadir al proyecto, creando una estructura arbórea, de forma que podemos tener objetos route padre, del que 'cuelgan' muchos otros objetos de este tipo. Permite una mejor organización de funcionalidades en **árboles de rutas**.
+				li Rutas parametrizadas. En la configuración de un objeto route, la propiedad path: 
+				:highlight(lang='javascript')
+					path: ':var1:var2:var3'
+					path: '*:restoPath'
+
+			ul
+				li El manejador del objeto route recibe el objeto gw; el objeto gangway, que se genera en cada solicitud, contiene el request y response parseado y vitaminado.
+				:highlight(lang='javascript')
+					gw.ip
+					gw.host
+			ul
+				li Al crear una estructura arbórea de controladores, entra en juego la herencia en los parámetros de configuración de los controladores.
+			
+			
+			h2#req-res Request y Response
+			p Gangway es the way. Olvida el request y el response nativos. Gangway encapsula ambos, ofreciendo propiedades y métodos vitaminados.
+
+			p Tutos: Video Streaming | Propiedades de la solicitud | Métodos para la respuesta | Configuración de route y gangway: los alidados perfectos.
+
+			ul
+				li Accede a propiedades como ,,, directamente.
+				li Métodos para el envío compatible con el protocolo por partes: streaming.
+
+
+				
+			h2#gestion-servicios Gestión de Servicios
+			p Servicios como http, https, mongodb, etc se pueden añadir al proyecto. PillarsJS ofrece un servicio http build-in, no obstante, se pueden añadir, modificar o eliminar los servicios deseados.
+
+				:highlight(lang='javascript')
+					(addcion de algun servicio como mongo o https)
+
+
+			h2#gestion-plugins Gestión de Plugins
+			ul
+				li Los **Plugins** permiten extender las posibilidades de los controladores y modificar el funcionamiento del sistema. Algo similar en otros frameworks son los middleware, pero totalmente diferente, ya que tenemos el control sobre qué se ejecuta, cuándo, orden, etc.
+				li Nombrado de plugins: ofrece organización y control sobre el entorno.
+				li PillarsJS trae una serie de Plugins built-in, esenciales para su funcionamiento. Es posible crear un plugin y decidir en qué lugar a de ejecutarse. 
+				li Los plugins se pueden añadir, modificar o eliminar en caliente. 
+
+
+			h2#i18n i18n
+			Tu Proyecto en múltiples idiomas. Realiza las traducciones en tantas hojas JS/JSON como idiomas implementes, sin necesidad de realizar ninguna traducción en el código.
+
+			ul
+				li Integración completa de i18n
+				li Admite de forma transparente para el desarrollo múltiples idiomas.
+				li Hojas de traducción en JS/JSON
+				li Gestión de idioma de la solicitud automática
+				li Rutas multi-idioma
+
+			p Dibujo: 1 archivo app.js -> en.json, es.json, fr.json. 
+			p Ejemplo hola mundo en 5 idiomas.
+
+
+			h2#motor-plantillas Motor de Plantillas
+			p No dejes de usar tu motor de templating favorito!. Simplemente añádelo como motor mediante la librería templated.
+				:highlight(lang='javascript')
+					ejecmplo en código.
+
+			ul
+				li Soporte a cualquier motor de plantillas como mustache, jade, o... 
+				li Renderizado automático y optimizado.
+
+
+
+			h2#cron CRON
+			ul
+				li Programación de tareas mediante CRON gracias a la librería Scheduled.
+
+			h2#logs Logs
+			ul
+				li Sistema de creación de logs para la monitorización de aplicación, librerías, etc.
+
+			h2#dependencias Dependencias Propias
+			ul
+				li Código robusto. Todas las dependencias han sido creadas, y son mantenidas, por el mismo equipo.
+
+		

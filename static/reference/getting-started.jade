@@ -1,28 +1,266 @@
-getting started 
+include ../.layout.jade
 
-	- Hola Mundo
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars - Make it easy',url:'/reference/'},{label:'Getting Started',url:'/reference/index.jade'}];
+	+reference-layout("Pillars.js Reference - Getting Started - 'Make it easy!'",path)
 
+		#title
+			h1 Getting Started
+				em  Pillars.js Reference
+			
+
+		//- Summary
+		section.summary
+			h2#summary Welcome
+			:marked
+				Welcome to **Pillars.js**, a modular framework for Web Development in Node.js.
+
+				With a simple and modular approach, lets you start in Node.js with a soft learning curve, and if you´re an advanced JS/Node developer get JS workbench organized and effective.
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				project.services.get('http').start();
+
+				project.routes.add(new Route({
+						id: 'myRoute',
+						path: '/mypath',
+						method: ['GET','POST']
+					},function(gw){
+						gw.html("Hello World!!");
+					});
+
+
+		section.environment
+			h2#environment Installing Node.js
+			:marked
+				To start using Pillarsjs need Node.js installed. [Install from here.](https://nodejs.org/) 
+
+				Make a new directory and add two basic files: *package.json* (application descriptor) and *app.js* (the main projec).
+
+				*package.json* file allows to set many parameters. Initially you describe that you use Pillars.js like dependency, is enough:
+
+			:highlight(lang='javascript')
+				{
+				  "dependencies": {
+				    "pillars": "*"
+				  }
+				}
 
 			:marked
-				En el ejemplo:
-				+ Inicializa la librería pillars en la variable *project*.
-				+ Obtiene **en los servicios del proyecto** *project.services*, el servicio HTTP mediante *.get('http')* y lo inicia mediante *.start()*.
-				+ Añade un controlador con los parámetros de configuración por defecto, y enviará al cliente la respuesta HTML "Hola Mundo".
+				> You can find more info about *package.json* file on [npm](https://www.npmjs.org/doc/files/package.json.html).
 
+				Now in console execute (in your project directory) `npm install` command. This action will create a *node_modules* directory, which the units described are placed.
+
+				On *app.js* write a basic example like this:
+
+			:highlight(lang='javascript')
+					var project = require('pillars');
+
+					project.services.get('http').configure({port:3000}).start();
+
+					project.routes.add(new Route({
+					  id: 'Home',
+					  path: '/',
+					  method: ['get','post']
+					},function(gw){
+					  gw.html("Hello World!!");
+					});
 
 			:marked
-				Por lo tanto:
-				+ El entorno o proyecto, es el punto central de anclaje, donde se añaden controladores de ruta, plugins y servicios. `var project = require('pillars');`.
-				+ *project.services* contiene los servicios. Permite la creación y eliminación de éstos.
-				+ *project.routes* contiene todos los controladores del proyecto. Permite crear y añadir, modificar y eliminar controladores. Los controladores se crean mediante la clase Route `var myRoute = new Route(...);` y deben ser añadidos al proyecto: `project.add(myRoute);`.
-				+ El objeto **gw** es la abreviatura de Gangway. Es el objeto que 
+				To run application write in console `node app.js`. 
+				> To stop application use `ctrl+c`.
+
+		section.framework
+			h2#framework The framework
+			:marked
+				Main concepts in Pillars.js are:
+				- **Environment/project**: main element to setup and management the project. Allows add route controller (*route object*) and Plugins (*plugin object*) among others. Get *project* with require sentence: `var project = require('pillars');`
+				- **Route**: route controller, a class to create a *handler* with a *configuration*. Receives a *gangway object* by parameter and are nestable. 
+				- **Gangway**: an object with properties and methods related with the request management, is a 'clean' wrap for Node *request* and *response*.
+				- **Plugin**: allows create controllers for the general environment, can modify *Gangway* and *Route* performance and access to their properties.
+
+				Pillars.js include aditional libraries developed in parallel: 
+				- **Textualization**: extend i18n support for JS.
+				- **Scheduled**: Manager tasks scheduled with cron style.
+				- **Crier**: Management 'system logs'.
+				- **Procedure**: Utility to provide writing of asynchronous sentences sets.
+				- **Templated**: Manager for template engines with compilation cache.
+				- **ObjectArray**: Intensively used in Pillars.js to organize/manage object sets.
+				- **String.format**: Method for *String class*, allows format text templates.
+				- **Date.format**: Method for *Date class*, allows easily format dates.
+				- **JSON.decycled**: Set of methods for *JSON class* that solve circular references provblems among others.
+				- **JSON.crypt**: encryption/decryption utility of JS objects.
 
 
-Conceptos
-	- Gestión de rutas.
-	- Petición y Respuesta: Gangway.
-	- Clase Plugin
-	- ..... 
+		section.project
+			h2#project Project (Environment)
+			:marked
+				When `var project = require('pillars')` is used, get an environment reference, or what is the same, the focus of work for the project. Allows set up general system performance and gives you central access to: *controllers structure*, *running Plugins*, *available services* and other system properties.
 
-Gestión de Rutas
-	- 
+				When you invoke Pillars.js library at the first time, more important classes as *Route* and *Plugin* are globally set, so you can use it immediately.
+
+				Pillars.js use *services* as a shared entity throughout environment, to which can access to interact with it other modules that are included in project. *services* offer a cross structure for all the project code.
+
+				Pillars.js has a HTTPService preset, so you don´t need create one. (Unless you need multiple HTTP/S services).
+
+				Get *services* in `project.services` property, this is an [ObjectArray](https://github.com/bifuer/ObjectArray) in which you can get any service of the *services* in your project. Below a simple server set up:
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				project.services.get('http').configure({
+				  port:3000,
+				  timeout: 30*1000,
+				  hostname: 'sub.dom.ext'
+				}).start();
+
+			:marked
+				Environment vars setting is available in `project.config`, you can set up properties at once using `project.configure({...})` method:
+
+			:highlight(lang='javascript')
+				var project = require('pillars').configure({
+					  debug: true, // false by default
+					  renderReload: true, // stop or start templates cache
+					  cors: false, // Determines permitted souces for CORS
+					  cacheMaxSize : 250*1024*1024, // Set the maximum size of cache memory dedicated to files served
+					  fileMaxAge : 7*24*60*60, // Default expiration of files served
+					});
+
+			:marked
+				Finally we have methods that allows to manage *routes* and *plugins* in application. All *controllers* and all *plugins* are located in `project.routes` and in `project.plugins` respectively:
+				- `project.routes.add(new Route())`: add a new controller to system. With `.remove()` you can delete controllers and with `.get()` you can get it for modify those were added. A *route* object has `.routes` property in which you can add other controllers, allowing create tree structures (nesetable). Controller nested inherit configurations of their predecessors.
+				- `project.plugins.add(new Plugin())`: add a new plugin to system. With `.remove()` you can delete plugins and with `.get()` you can get it for modify those were added. Pillars.js include by default some plugins that perform essential functions for the system, among them the most important is the *router.js*, plugin that manages the entire routing system.
+
+		section.route
+			h2#route Route Class
+			:marked
+				Class that associates a *handler* with a particular *configuration*. A *route object* consist in a *handler* and a *property set* that allows to define when and how execute this *handler*. *route object* basic declaration is leaving defaults options, it´s to say, without this *property set*:
+
+			:highlight(lang='javascript')
+				var myRoute = new Route(function(gw){
+					  gw.send('¡Hola Mundo!');
+					});
+
+			:marked
+				Althougth in most cases we need to set *object route* with this *property set* as follows:
+
+			:highlight(lang='javascript')
+				var myRoute = new Route({ // property set
+					  id:'Status',
+					  path:'admin/status',
+					  method:['get','post']
+					},function(gw){ // Handler
+					  gw.html('¡Hola Mundo!');
+					});
+
+			:marked
+				Route Class set by default:
+				- `.id`: an unique identifier is generated.
+				- `.path`: '/'.
+				- `.method`: all methods.
+
+
+				*route objects* (controllers) can have others *route objects* as children, these works like sub-controllers, allowing to organize the tree controller in an organically way. This allows work with inheritance properties and have an organized control over controller groups.
+
+			:highlight(lang='javascript')
+				var adminArea = new Route({
+				  id: 'Administration',
+				  path: '/admin'
+				},function(gw){
+				  gw.html('Admin area');
+				});
+
+				adminArea.routes.add(new Route({
+				    id: 'Status',
+				    path: '/status'
+				  },function(gw){
+				    gw.html('Admin area: Show status');
+				}))
+
+			:marked
+				*route object* with `Status` id, respond to '/admin/status' path. If *route* with 'Administration' id is desactivated, this will no longer available neither all his descendants.
+
+				`.active` property of *route* allows deactivate a *route object* along with their descendants.
+
+		section.gangway
+			h2#gangway Gangway (gw)
+			:marked
+				If you has worked with Node sure you know about `request` and `response`. A *gangway object* is the request completely parsed and organizad for use. With each HTTP request to the server, a *gangway object* is generated which is received by a *controller*.
+				- **`.cookie`**: return an object with *cookie* contents, if any.
+				- **`.ua`**: and object with information about user agent. `.mobile` indicaated (*boolean*) if the client is a mobile device and other properties give information about operating system and browser (os, engine, browser).
+				- **`.ip`**: IP address of the request.
+				- **`.accepts`**: Accept headers already resolved and organized by priority.
+				- **`.host`**: the hostname or IP address to which the request is made.
+				- **`.method`**: method used by request. (*GET,POST,PUT,DELETE,HEAD*).
+
+				- **`.path`**: path was requested, only the path value without the part of *host* or *query*. this value can be changed internally if for some reason a *controller* redirect this request. To know original path use: `.originalPath` property.
+				- **`.query`**: an object with *query* content of the request.
+				- **`.params`**: an object with all parameters received on the request, either by *GET* or *POST*. *POST* values prevail over *GET* values if them are identical.
+				- **`.files`**: contains only files, if any, that have been sent in the request. In `.params` can also find those files along with other parameters that were sent.
+				- **`.session`**: an object that will maintain its properties between different requests from the same client.
+				- **`.referer`**: if the request was made by a *link*, this value indicates the URL from where reference is made.
+
+				> You can find a more extend description and other properties in reference.
+
+
+				- **`.setHeader(name, value)`**: add a header to request.  `getHeader(name)` and `removeHeader(name)` allows read a header value if exists, or delete it. As these aliases, other methods *response* original are included. 
+				- **`.setCookie(name, value, config)`**: Prepare a cookie to attach to response, it will be encrypted through JSON.crypt.
+				- **`.send(data)`**: send specified content to the client and finish petition. If *data* is an *object* will turn into *JSON* and *request* will be sent as *application/json*, if *data* is a *string*, will be sent as *text/html*. There are also explicit methods for each type of answer like: `.html()`, `.json`, `.text`.
+				- **`.file(path, clientname, download)`**: send a file to the client, `clientname` specify a filename to be used in the save dialog, and `download=true` to force the download. By default filename is the original name, and download is *false*. Additionally, file is **compressed** before sent and is cached in memory for successive requests. This method is compatible with HTTP **byte-serve**, so if download is interrupted may continue in a next request from the last byte received, also it is used by video clients to download the video portion requested. This  method also has **automatic cache management**, so if client already has the file, it will not be sent and server responds a *304* code.
+				- **`.cacheck(hash)`**: Allows to manage client cache. Call to cacheck with an identifuing value (*hash, checksum, timestamp for example*) to check if request content is identical to the client has. This method reply *false* if client hasn´t content cached, and *true* along *304* if client has it. The way to use `.cacheck()` is in a simple condition *if* `if(!cacheck(hash)){}`.
+				- **`.authenticate(msg)`**: Send an **authentication HTTP** basic message with a *401* code. Check credentials sent by user in  `.auth` *gangway* property. This object contains user name and password introduced by client, in `.user` y `.pass`. *gangway*properties. `gw.auth.user` and `gw.auth.pass`.
+				- **`.redirect(location)`**: redirects the request to another URL with a *301* code.
+				- **`.render(template, locals)`**: setting template path and parameters for this template, with `.render()` we send to client the result as HTML. Pillars.js allows add templates engine using `templated.addEngine(ext,compiler)`.
+				- **`.error(code, data)`**: allows show error messages manually, we can specify a *status-code (404, 500...)* and an *Error* object if needed. *Error* object won´t shown if `project.config.debug` is *false*.
+			
+		section.plugin
+			h2#plugin Plugin
+			:marked
+				Plugins allow to create global controllers that can access to *object route* properties, extend *gangway* functions or modify framework general behavior.
+
+				Plugins are the center of requests management in Pillars.js. When an HTTP request is received, a new *gangway object* is created, this is sent to a *Plugin Chain* where plugins are organized and they will passing *gangway* control to the next plugin.
+
+				*Object plugin* construction is similar to *object route* construction, is necessary specify *properties* and a *handler*. Plugins have only two properties; `.id` and `.active`
+
+			:highlight(lang='javascript')
+				myPlugin = new Plugin({
+					  id: 'paramsLog'
+					}, function(gw,next){
+					  console.log(gw.params);
+					  next(); // Call next plugin
+					});
+				
+				project.plugins.add(myPlugin);
+
+			:marked
+				This plugin send to console parameters of any request received and pass control to the next plugin. Plugin receive two parameters in *handler*: `gw` and `next`, `next` allow pass control to the next plugin.
+
+				One of the built-in plugins more important is `router.js`, this plugin decide what *route object* carry out the request. When control arrives to `router.js` plugin, this searches a *route object* to serve the request. If no *route object* is suitable to serve the request, respond a *404* and *plugin chain* is stopped. If one is found, a reference in `gw.routing` is saved, and continue *plugins chain* execution. At the end of *plugins chain*, control is passed to *object route* *handler* that was selected.
+
+				From any Plugin with rear priority to `router.js` plugin, you can get `gw.routing` property, content is:
+				- `gw.routing.routes`: if *route objects* were nested, you can found in this property all *objects route* predecessors, including *object* itself to carry out the request.
+				- `gw.routing.handlers`: *route handler/s* that will serve the request. They will be called at the end of the *plugins chain*.
+				- `gw.routing.inheritance`: object with *route configuration* that carry out the request. Own and inherited from his predecessors.
+				- `gw.routing.check(prop, preset)`: Method to check *route properties*.
+
+				Plugins with the help of `gw.routing`, allows to create plugins to be executed only with a specific configuration of *route object*. Next example, we create a plugin that only write a log if *route object* has defined property `log:true`:
+
+			:highlight(lang='javascript')
+				myPlugin = new Plugin({
+					  id: 'logPlugin'
+					},function(gw,next){
+					  var log = gw.routing.check('log');
+					  if(log===true){
+					    console.log(gw.path,gw.params);
+					  }
+					  next();
+					});
+				
+				project.plugins.add(myPlugin);
+
+			:marked
+				By Plugins we can act before or after *router.js* plugin, we can change (for example) `path` or `method` before *route object* selection, or check properties in *route object* when has been selected. **A plugin can modify or extend** gangway properties and methods, for example `sessions.js` plugin provides `gw.session` property which  inserts values stored in the session and save changes once request is complete.
+
+				Plugins allows a way to add functionalities to Pillars.js, or modify general performance, this is useful to add features to any project or make a common generic task between other plugins or handlers, allowing to execute a plugin only with certain properties of *route object*.
