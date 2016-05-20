@@ -12,6 +12,6 @@
     "marked": "*",
     "highlight.js": "*"
   },
-  "main": "./app.js",
+  "main": "./index.js",
   "license": "MIT"
 }
