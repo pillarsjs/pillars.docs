@@ -1,7 +1,7 @@
 {
   "name": "pillars.docs",
   "description": "Pillars.js docs & reference",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "author": {
     "name": "Javier Gallego Martín",
     "email": "bifuer@gmail.com"
@@ -15,10 +15,7 @@
     "url": "https://github.com/pillarsjs/pillars.docs"
   },
   "dependencies": {
-    "pillars": "*",
-    "jade": "*",
-    "marked": "*",
-    "highlight.js": "*"
+    "pillars": "*"
   },
   "main": "./index.js",
   "license": "MIT"
