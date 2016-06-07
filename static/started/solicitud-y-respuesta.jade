@@ -18,6 +18,45 @@ html(lang=gw.language)
 
 				Este objeto está disponible en el *handler* tanto del **objeto route** como en el **objeto plugin**.
 
+			:highlight(lang='javascript')
+				var myRoute = new Route(function(gw){
+
+					var POST = gw.content.params; 
+
+					var GET = gw.query;
+					/*
+					{
+						id: '37',
+						value: 'lipsum'
+					}
+					*/
+
+					var cookie = gw.cookie;
+
+					var userAgent = gw.ua;
+					/*
+					ua:{ 
+						mobile: false,
+						os: 'Windows NT 6.1; WOW64',
+						engine: 'Blink',
+						browser: 'Chrome'
+					}
+					*/
+
+
+					var id = gw.id; 			// id del objeto gangway para la petición.
+					var ip = gw.ip;			// ip del cliente
+					var browserLang = gw.language;		// Primer idioma del navegador del cliente 
+					var cors = gw.cors; 			// Gestion de orígenes cruzados. 
+					var method = gw.method;		// Método de la petición  GET y/o POST
+					var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+
+					gw.json(gw);
+				});
+
+				
+
+
 		//- Description
 		section.cabeceras-http
 			h2#cabeceras-http Cabeceras HTTP

@@ -1,0 +1,98 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Objeto gangway',url:'/started/gangway.jade'}];
+	+starting-layout("Getting started Pillars.js - Objeto gangway - 'make it easy!'",path)
+
+		#title
+			h1 Internacionalización
+				em  Comenzando con Pillars.js
+			:marked
+		//- Description
+		section.i18n
+			h2#i18n 
+			:marked
+				Para trabajar con **proyectos en varios idiomas** disponemos de la [librería textualization](https://github.com/bifuer/textualization), integrada en el framework, un sistema de internacionalización en dot-notation que usa *nodos de traducción* del tipo: *myProject.hello*, junto con hojas JSON de traducción para los diferentes idiomas: *es.js, en.js, de.js, etc*.
+				
+				Además el objeto gangway dispone del método [`gw.i18n()`](), un alias de `i18n()`, en el que no tenemos que pasar el último parámetro de idioma, ya que gangway en la propiedad [`gw.language`](gangway.jade#property-language) establece el idioma con el que se responderá al usuario.
+
+			:highlight(lang='javascript')
+				//Hoja de traducción ./languages/es.js
+				textualization={
+					hello: "Hola {firstname} {lastname}!!"
+				}
+
+			:highlight(lang='javascript')
+				//Hoja de traducción ./languages/en.js
+				textualization={
+					hello: "Hello {firstname} {lastname}!!"
+				}
+
+			:highlight(lang='javascript')
+				// app.js
+				var i18n = require("textualization");
+
+				//Carga de directorio de traducciones
+				i18n.load("i18nSample","./languages");
+
+				//Definición de los idiomas de la aplicación
+				i18n.languages = ["es","en"];
+
+				var user = {
+				    firstname: "Homer",
+				    lastname: "Simpson"
+				}
+
+				//Mensaje de usuario
+				console.log(i18n("i18nSample.hello",user, "es"));
+				console.log(i18n("i18nSample.hello",user, "en"));
+
+				console.log(gw.i18n("i18nSample.hello",user));
+
+
+			:marked
+				La librería textualization acepta [numerales](https://github.com/bifuer/textualization#numerales) y traducción con [funciones](https://github.com/bifuer/textualization#traducción-con-funciones).
+
+		section.i18n-path
+			h3#i18n-path Internacionalización de path
+			:marked
+				Pillars.js implementa internacionalización de rutas, esto es; definir *objetos route* que atenderán una petición a una URL en los idiomas definidos en el proyecto.
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+				var i18n = require("textualization");
+
+				i18n.load("i18nSample","./languages");
+
+				i18n.languages = ["es","en"];
+
+				var myRoute = new Route({
+						id: 'idRoute',
+						iPath: 'i18nSample.paths.events'
+					},function(gw){
+					//...
+					});
+
+
+			:highlight(lang='javascript')
+				//Hoja de traducción ./languages/es.js
+				textualization={
+					hello: "Hola {firstname} {lastname}!!",
+					paths: {
+						events: "/eventos"
+					}
+				}
+
+			:highlight(lang='javascript')
+				//Hoja de traducción ./languages/en.js
+				textualization={
+					hello: "Hello {firstname} {lastname}!!",
+					paths: {
+						events: "/events"
+					}
+				}
+
+
+
+					

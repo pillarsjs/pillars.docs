@@ -23,7 +23,7 @@ html(lang=gw.language)
 			:highlight(lang='javascript')
 				// package.json file
 				{
-					"name": "Mi aplicación",
+					"name": "myApp",
 					"description": "",
 					"version": "0.0.1",
 					"author": {
@@ -38,7 +38,7 @@ html(lang=gw.language)
 
 
 			:marked
-				Ahora en el archivo app.js  vamos a escribir el código de un sencillo "Hola Mundo". No vamos a configurar nada, por lo que quedarán establecidas las configuraciones por defecto, como es el puerto en el que responderá la aplicación *(puerto 3000)*: 
+				Ahora en el archivo app.js  vamos a escribir el código de un sencillo "Hola Mundo". No vamos a configurar nada, por lo que quedarán establecidas las configuraciones por defecto, como es el puerto en el que responderá la aplicación *(puerto 8080)*: 
 			:highlight(lang='javascript')
 				// app.js file
 				var project = require('pillars');
@@ -47,7 +47,7 @@ html(lang=gw.language)
 
 				project.routes.add(new Route(function(gw){
 					gw.html("Hola Mundo!!");
-				});
+				}));
 
 			:marked
 				Una vez guardados los dos archivos con el código especificado arriba y Node.js instalado, es hora de poner el proyecto en marcha. Para ello, desde la linea de comando y en el directorio del proyecto, ejecutamos el comando *>> npm install*.
@@ -60,5 +60,5 @@ html(lang=gw.language)
 
 				![Captura carga Pillars.js](../img/started/carga-pillarsjs.jpg)
 
-				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:3000](http://localhost:3000).
+				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:3000](http://localhost:8080).
 

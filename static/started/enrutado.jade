@@ -13,34 +13,169 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:marked
-				El **sistema de enrutado** de Pillars.js se basa en: 
-				+ Objetos de la [Clase Route](clase-route.jade). Por cada controlador/manejador que se quiera añadir al proyecto se crea un *objeto route*. Hay que resaltar que cada *objeto route* se crea con una *configuración determinada* y un *handler*.
+				Por cada controlador de ruta a habilitar en el proyecto, creamos un objeto route y lo añadimos al proyecto en la propiedad: *project.routes*.
+ 
+				+ Objetos de la [Clase Route](clase-route.jade). Por cada controlador de ruta que se quiera añadir al proyecto se crea un *objeto route*. Cada *objeto route* se instancia con una *configuración determinada* y un *handler* o *manejador*.
 
 			:highlight(lang='javascript')
-				var myRoute = new Route({
+				var myRoute = new Route(
+				// Objeto de configuración
+				{ 
 					id: 'hello',
-					path: '/'
-				},function(gw){
+					path: '/',
+					method: ["GET","POST"]
+				}, 
+				// Manejador de la petición
+				function(gw){ 
 					gw.send("Hello World!");
 				});
 
 			:marked
-				>  En el path están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`,etc.
 				
-				+ `project.routes`, estructura que contiene el árbol de controladores/manejadores disponibles en el proyecto. Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). En esta propiedad se añadirán los objetos Route:
+				
+				+ `project.routes`, estructura que contiene el árbol de controladores disponibles en el proyecto. En esta propiedad se añadirán los objetos Route:
 			:highlight(lang='javascript')
-				project.routes.add(myRoute);				
+				project.routes.add(myRoute);
 
 			:marked
-				> El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+				
+
+		section.instacia-objeto-route
+			h2#instancia-objeto-route Instancia del objeto route
+		
+			:codesyntax
+				var myRoute = new Route( configuration, handler );
+			:marked
+				Los **parámetros de configuración** juegan un papel determinante, ya que:
+				+ Si la petición de usuario coincide con unos parámetros de configuración determinados, se ejecutará el manejador.
+				+ Si establecemos unos parámetros de configuración determinados, podrá *activar* plugins.
+
+		section.ejecucion-handler
+			h3#ejecucion-handler Configuración route y petición
+			:highlight(lang='javascript')
+				var myRoute = new Route({
+						id:'home',
+
+						//Parámetros de configuración que determinan la ejecutación del manejador
+						path:'/',
+						port:'8080',
+						method:'',
+						active: true,
+						https: false,
+
+						//Otros parámetros de configuración
+						multipart:false,
+						maxUploadSize: 5*1024*1024,
+						cors: false,
+						session:false
+					},
+					function(gw){
+						gw.html("Hola Mundo");
+					}
+				);
+			:marked
+				+ **id**. Identificador del objeto. Será necesario si posteriormente queremos modificar el comportamiento del objeto en caliente.
+				+ **path**. Si no es su path no se ejecutará. 
+				+ **active**. Si el *route* no está activo, no responderá a ninguna solicitud.
+				+ **port**. Si el puerto de la petición no coincide con el declarado en la configuración del *route*, no se ejecutará, emitiendo un Error 404. 
+			:highlight(lang='javascript')
+				// Iniciamos el servicio http en el puerto 3002
+				project.services.get('http').configure({port:3002}).start();
+
+				// Creamos e iniciamos otro servicio http en el puerto 3003
+				project.services.insert((new HttpService({
+				  id:'http2',
+				  port: 3003
+				})).start());
+
+				// Configuración del objeto route para que sólo responda en el puerto 3002
+				var myRoute = new Route({id: 'idRoute',port: 3002},function(gw){
+				  gw.send("Sólo funciona en el puerto 3002");
+				});
+
+				// Adicción del objeto al proyecto.
+				project.routes.add(myRoute);
+			:marked
+				De esta forma podremos crear servicios *http* en diferentes puertos, y establecer qué se ejecutará en cada uno. 
+
+				+ **host**. Si la petición no va dirijida al host definido en el parámetro `.host`, emitirá un error 404, Not found.
+			:highlight(lang='javascript')
+				var myRoute = new Route({host: 'localhost'},function(gw){
+				  gw.send("Sólo funciona para peticiones a localhost");
+				});
+
+				project.routes.add(myRoute);
+			:marked
+				En el caso del ejemplo, si realizamos una petición a http://127.0.0.1, devolverá un error 404.
+
+				+ **method**. Especifica el método que acepta el *route*, por lo que si la petición se realiza mediante un método diferente al/los definido/s emitirá un error 404.
+				+ **https**. Especifica si el objeto acepta peticiones *http*, *https* o ambas. Si la petición se realiza por un protocolo diferente al especificado, emitirá un error 404.
+
+				> Solo los parámetros de configuración definidas en esta sección determinarán si se ejecuta el *handler* o no.
+
+
+		section.mod-parametros-config
+			h3#mod-parametros-config Modificación en caliente de parámetros de configuración
+			:marked
+				Todos los **parámetros de configuración** de un objeto route son modificables en caliente, es decir, con la aplicación iniciada y sin necesidad de pararla.
+			:highlight(lang='javascript')
+				// Modificación de un sólo parámetro
+				project.route.get('hello').method = 'GET';
+
+				//Modificación de varios parámetros a la vez
+				project.route.get('hello').configure({
+					method: 'GET',
+					port: 8081
+				});
+
+			:marked
+
+		
+			:marked
+		//- Description
+		section.uso
+			h2#uso Propiedad project.routes
+			:marked
+				`project.routes` contendrá todos los objetos route creados y añadidos al mismo.
+				Es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray), por lo que dispone de métodos para añadir, buscar y eliminar objetos. 
+
+			:highlight(lang='javascript')
+				project.routes.add(myRoute); 	// Añade el objeto route myRoute
+				project.routes.get('hello'); 	// Obtiene el objeto route con id hello
+				project.routes.remove('hello'); // Elimina el objeto route con id hello
+			:marked
+				> Más info: Métodos de [`project.routes`](../reference/project.jade#property-routes).				 
+		section.ejecucion-plugins
+			h2#ejecucion-plugins Objetos route y plugins
+			:marked
+				Los **parámetros de configuración** del objeto route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
+
+				Para ello, podemos insertar **nuevas propiedades** en el *objeto de configuración del route*, y éstas estarán disponibles para los Plugins en la propiedad de gangway [`gw.routing`](gangway.jade#property-routing).
+
+			:highlight(lang='javascript')
+				// Instancia de objeto plugin. 
+				var myPlugin = new Plugin(function(gw, next){
+					if (gw.routing.inheritance.varToPlugin){
+						console.log("Plugin running");
+					};
+					next();
+				});
+
+				// Instancia del objeto route
+				var myRoute = new Route({
+						path:'/plugin',
+						varToPlugin: true
+					},
+					function(gw){
+						gw.send("Something");
+				});
+		
 
 			:marked
 		//- Description
 		section.caracteristicas
-			h2#description Características
+			h2#description Características del sistema de enrutado
 			:marked
-				El sistema de enrutado de Pillars.js tiene las siguientes características: 
-
 				+ **Anidable**. Podemos crear árboles de controladores, que **organizan y agrupan funcionalidades** de la aplicación. El nodo raíz será el que se conecte a `project.routes`. El *objeto route* se puede declarar sin configuración, por lo que toma los valores predeterminados. También se podrá declarar sin manejador, por lo que en este caso el *objeto route* actuaría como **elemento organizativo**.
 
 			p
@@ -81,93 +216,9 @@ html(lang=gw.language)
 
 			:highlight(lang='javascript')
 				myRoute.routes.get('management').remove('teachers');
-				
 			:marked
-		//- Description
-		section.uso
-			h2#uso Uso de la Cadena de Plugins
-			:marked
-				 Tanto `project.routes` como [`Route.prototype.routes`](clase-route.jade#property-routes) son de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que disponen de métodos para añadir, buscar, eliminar y mover objetos en su estructura. Ver los métodos de [`project.routes`](project.jade#property-routes).
-
-		section.configuracion-objeto-route
-			h2#configuracion-objeto-route Configuración objeto route
-			:marked
-				Al instanciar el *objeto route* podemos hacerlo con un [*objeto de configuración*](clase-route.jade#constructor). 
-			:codesyntax
-				route = new Route( configuration, handler );
-			:marked
-				Estos **parámetros de configuración** determinarán:
-				+ Si se ejecuta el handler de este objeto, ya que la *petición* deberá coincidir con ciertos parámetros de esta configuración.
-				+ Si se ejecutarán determinados Plugins. En este sentido, los parámetros declarados en la *configuración* del *objeto route*, nos servirán para activar, o no, diversos plugins.
-
-		section.ejecucion-handler
-			h3#ejecucion-handler Configuración route y petición
-			:marked
-				Los *parámetros de configuración* que determinarán si se ejecutará el handler de este mismo objeto son: 
-				+ **path**. Obviamente, si no es su path no se ejecutará. 
-				+ **active**. Obviamente, si el *route* no está activo, no responderá a ninguna solicitud.
-				+ **port**. Si el puerto de la petición no coincide con el declarado en la configuración del *route*, no se ejecutará, emitiendo un Error 404. 
-			:highlight(lang='javascript')
-				project.services.get('http').configure({port:3002}).start();
-
-				project.services.insert((new HttpService({
-				  id:'http2',
-				  port: 3003
-				})).start());
-
-				var myRoute = new Route({id: 'idRoute',port: 3002},function(gw){
-				  gw.send("Sólo funciona en el puerto 3002");
-				});
-
-				project.routes.add(myRoute);
-			:marked
-				De esta forma podremos crear servicios *http* en diferentes puertos, y establecer qué mostraremos en cada uno. 
-
-				> Todos los **parámetros de configuración** son modificables en vivo es decir, si una vez instanciado el objeto modificamos la propiedad `.port` para que acepte conexiones desde cualquier puerto: `myRoute.port = undefined` o `project.routes.get('idRoute').port = undefined;` este *objeto route* atenderá las peticiones dirigidas a cualquier puerto. El resto de *parámetros de configuración* tienen la misma versatilidad.
-
-				+ **host**. Si la petición no va dirida al host definido en el parámetro `.host`, emitirá un error 404, Not found.
-			:highlight(lang='javascript')
-				var myRoute = new Route({host: 'localhost'},function(gw){
-				  gw.send("Sólo funciona para peticiones a localhost");
-				});
-
-				project.routes.add(myRoute);
-			:marked
-				En el caso del ejemplo, si realizamos una petición a http://127.0.0.1, devolverá un error 404.
-
-				+ **method**. Especifica el método que acepta el *route*, por lo que si la petición se realiza mediante un método diferente al/los definido/s emitirá un error 404.
-				+ **https**. Especifica si el objeto acepta peticiones *http*, *https* o ambas. Si la petición se realiza por un protocolo diferente al especificado, emitirá un error 404.
-
-				> Solo los parámetros de configuración definidas en esta sección determinarán si se ejecuta el *handler* o no.
 
 
-		section.ejecucion-plugins
-			h3#ejecucion-plugins Configuración route y Plugins
-			:marked
-				Los **parámetros de configuración** del route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
-
-				> Antes de leer cómo interaccionan objetos route y plugin, recomendamos la lectura de [functionamiento de plugins](funcionamiento-plugins.jade)
-
-				Para ello, podemos insertar **nuevas propiedades** en el *objeto de configuración del route*, y éstas estarán disponibles para los Plugins *(siempre y cuando se ejecuten después del plugin router.js)* en la propiedad de gangway [`gw.routing`](gangway.jade#property-routing).
-
-			:highlight(lang='javascript')
-				var myPlugin = new Plugin(function(gw, next){
-					if (gw.routing.inheritance.varToPlugin){
-						console.log("Plugin running");
-					};
-					next();
-				});
-
-				var myRoute = new Route({
-					path:'/plugin',
-					varToPlugin: true
-				},
-				function(gw){
-					gw.send("Something");
-				});
-		
-
-			:marked
 		section.herencia
 			h2#herencia Herencia objeto route
 			:marked
@@ -258,6 +309,13 @@ html(lang=gw.language)
 				  "userParam": true
 				}
 
+			:marked
+				>  En el path están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`,etc.
+
+			:marked
+				> El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+
+				> Antes de leer cómo interaccionan objetos route y plugin, recomendamos la lectura de [functionamiento de plugins](funcionamiento-plugins.jade)
 
 
 

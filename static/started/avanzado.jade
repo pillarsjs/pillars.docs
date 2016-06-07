@@ -1,0 +1,20 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started Pillars.js',url:'/started/'},{label:'Introducción',url:'/started/introduccion.jade'}];
+	+starting-layout("Pillars.js Getting started - Introducción - 'make it easy!'",path)
+
+		#title
+			h1 Avanzado
+				em  Avanzado con Pillars.js
+			
+
+		//- Summary
+		section.summary
+			:marked
+				Hasta ahora hemos visto el funcionamiento básico de Pillars.JS, ahora vamos a ver características avanzadas: 
+				+ Rutas anidadas y herencia de objetos route
+				+ Objetos route y plugins
+
+			
