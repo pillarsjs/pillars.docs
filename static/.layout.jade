@@ -16,11 +16,11 @@ mixin base(title,path,bodyclass)
 					h2 Main menu
 					ul
 						li: a(href="/") Home
-						li: a(href="/reference/") Comenzando
-						li: a(href="/reference/") Tutoriales
-						li: a(href="/reference/") Referencia
-						li: a(href="/reference/") Librerías
-						li: a(href="/reference/") Colabora
+						li: a(href="/started/instalacion.jade") Comenzando
+						li: a(href="/tutorials/") Tutoriales
+						li: a(href="/reference/project.jade") Referencia
+						li: a(href="/libs/") Librerías
+						li: a(href="/getin/") Colabora
 						
 						//li: a(href="mailto:hello@pillarsjs.com") Contacto
 
@@ -214,7 +214,54 @@ mixin reference-layout(title,path,bodyclass)
 	+base(title,path,bodyclass)
 		#leftbar.sidebar
 			nav#scopelinks
-				h2 Reference index
+				h2 Contenido
+				ul
+					li: a(href="/reference/project.jade") project
+					li: a(href="/reference/clase-route.jade") Clase Route
+					li: a(href="/reference/gangway.jade") Objeto Gangway
+					li: a(href="/reference/clase-plugin.jade") Clase Plugin
+					li: a(href="/reference/http-service.jade") Clase HttpService
+									
+		#contents
+			block
+
+		#rightbar.sidebar
+			nav#TOC
+
+
+mixin starting-layout(title,path,bodyclass)
+	+base(title,path,bodyclass)
+		#leftbar.sidebar
+			nav#scopelinks
+				h2 Comenzando
+				ul
+					li: a(href="/started/instalacion.jade") Instalación
+					li: a(href="/started/hola-mundo.jade") Hola Mundo
+					li: a(href="/started/entorno.jade") Entorno y componentes
+					li: a(href="/started/entorno.jade") Enrutado
+					li: a(href="/started/solicitud-y-respuesta.jade") Solicitud y respuesta
+					li: a(href="/started/services.jade") Servicios
+					li: a(href="/started/funcionamiento-plugins.jade") Plugins
+
+					li: a(href="/started/introduccion.jade") Introducción
+					li
+						a(href="/started/entorno.jade") Funcionamiento
+						ul
+							li: a(href="/started/entorno.jade") Entorno
+							li: a(href="/started/enrutado.jade") Enrutado
+							li: a(href="/started/solicitud-y-respuesta.jade") Solicitud y respuesta
+							li: a(href="/started/funcionamiento-plugins.jade") Plugins
+		#contents
+			block
+
+		#rightbar.sidebar
+			nav#TOC
+
+mixin backup-layout(title,path,bodyclass)
+	+base(title,path,bodyclass)
+		#leftbar.sidebar
+			nav#scopelinks
+				h2 Contenido
 				ul
 					li: a(href="/reference/introduccion.jade") Introducción
 					li
@@ -254,3 +301,4 @@ mixin reference-layout(title,path,bodyclass)
 
 		#rightbar.sidebar
 			nav#TOC
+

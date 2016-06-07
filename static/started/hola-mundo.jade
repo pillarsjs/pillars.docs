@@ -1,0 +1,49 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Hola Mundo',url:'/started/hola-mundo.jade'}];
+	+starting-layout("Pillars.js Getting started - Hola Mundo - 'make it easy!'",path)
+
+		#title
+			h1 Hola Mundo
+				em  Comenzando con Pillars.js
+			
+
+		//- Summary
+		section.summary
+			:marked
+				En la sección anterior ya hemos instalado Node.js, las dependencias del proyecto mediante *npm install* y ejecutado "Hola Mundo". Ahora vamos a ver linea a linea, qué se está haciendo:
+				
+			:highlight(lang='javascript')
+				// app.js file
+
+				/* 1*/var project = require('pillars');
+
+				/* 2*/project.services.get('http').start();
+
+				/* 3*/project.routes.add(
+				/* 4*/	new Route(
+				/* 5*/		{
+				/* 6*/			id:"home",
+				/* 7*/			path:"/"
+				/* 8*/		},
+				/* 9*/		function(gw){
+				/*10*/			gw.html("Hola Mundo!!");
+				/*11*/		}
+				/*12*/);
+
+			:marked
+				+ Linea 1. Se declara la variable *project* y se iguala a la *librería pillars*. El objeto *project* estará presente en todo el proyecto, en él está contenida toda la información del proyecto y el proyecto en sí. Información como; rutas, plugins y servicios. 
+				+ Linea 2. Pillars.js trae un servicio http *built-in*, que se captura desde la propiedad *project.services* mediante el método *.get('identificador del servicio')*. Seguidamente lo iniciamos con el método *.start()*
+				+ Linea 3. La propiedad *project.routes* contiene el **enrutado completo del proyecto**. Por lo tanto, en esta propiedad se añadirán todas las rutas *(con su respectivo manejador)* que deseemos estén disponibles en el proyecto. En este caso mediante el método *.add(objeto route a añadir)* se añade un objeto route.
+				+ Linea 4. Creación del objeto route. *var myRoute = new Route(configuracion, manejador)*. [Ver referencia](../reference/clase-route.jade)
+				+ Linea 5 - 8. Objeto de configuración del objeto route. En este caso se configura el identificador del mismo y el path en el que se ejecutará. Por defecto es "/", es por esto que en ejemplos sencillos, no habrás visto el objeto de configuración del objeto route.
+				+ Linea 9 - 11. Manejador del objeto route. El manejador siempre recibirá el *objeto gangway (gw)*. El método *.html()* del *objeto gw*, en la linea 10, envía la respuesta especificada al cliente en formato HTML.
+
+		#title
+			h2 Enrutado
+				
+
+
+

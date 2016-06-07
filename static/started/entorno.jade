@@ -2,8 +2,8 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'project',url:'/reference/project.jade'}];
-	+reference-layout("Pillars.js Reference - project - 'make it easy!'",path)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'entorno',url:'/started/entorno.jade'}];
+	+starting-layout("Comenzando con Pillars.js - entorno - 'make it easy!'",path)
 
 		#title
 			h1 Entorno
@@ -19,8 +19,10 @@ html(lang=gw.language)
 
 				> Cualquier require de 'pillars' devolverá siempre la misma instancia. Todas las librerías Pillars.js se cargan en modo [singleton.](http://es.wikipedia.org/wiki/Singleton)
 
-				El *proyecto* es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web. Desde `project` se van a manejar:
+				El *proyecto* es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web. Desde `project` se van a manejar/acceder:
 				+ Las **variables de entono**, establecidas en [`project.config`](project.jade#property-config).
-				+ Los **controladores de ruta** añadidos, contenidos en [`project.routes`](project.jade#property-routes) y de estructura arbórea.
+				+ Los **controladores de ruta** añadidos, contenidos en [`project.routes`](project.jade#property-routes).
 				+ Los **servicios** instalados, ubicados en [`project.services`](project.jade#property-services). Contamos con un *servicio http* built-in.
-				+ y los **Plugins** o **Cadena de Plugins** que conforman el proyecto, en [`project.plugins`](project.jade#property-plugins).			
+				+ y los **Plugins** añadidos al proyecto, en [`project.plugins`](project.jade#property-plugins).
+
+				Aquí meter hoja de photoshop con resumen gráfico. Componentes.		
