@@ -39,7 +39,7 @@ html(lang=gw.language)
 				+ Linea 3. La propiedad *project.routes* contiene el **enrutado completo del proyecto**. Por lo tanto, en esta propiedad se añadirán todas las rutas *(con su respectivo manejador)* que deseemos estén disponibles en el proyecto. En este caso mediante el método *.add(objeto route a añadir)* se añade un objeto route.
 				+ Linea 4. Creación del objeto route. *var myRoute = new Route(configuracion, manejador)*. [Ver referencia](../reference/clase-route.jade)
 				+ Linea 5 - 8. Objeto de configuración del objeto route. En este caso se configura el identificador del mismo y el path en el que se ejecutará. Por defecto es "/", es por esto que en ejemplos sencillos, no habrás visto el objeto de configuración del objeto route.
-				+ Linea 9 - 11. Manejador del objeto route.
+				+ Linea 9 - 11. Manejador del objeto route. El manejador siempre recibirá el *objeto gangway (gw)*. El método *.html()* del *objeto gw*, en la linea 10, envía la respuesta especificada al cliente en formato HTML.
 
 		#title
 			h2 Enrutado
