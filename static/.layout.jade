@@ -241,16 +241,54 @@ mixin starting-layout(title,path,bodyclass)
 					li: a(href="/started/enrutado.jade") Enrutado
 					li: a(href="/started/solicitud-y-respuesta.jade") Solicitud y respuesta
 					li: a(href="/started/services.jade") Servicios
-					li: a(href="/started/funcionamiento-plugins.jade") Plugins
+					li: a(href="/started/plugins.jade") Plugins
 
 					li: a(href="/started/introduccion.jade") Instroducción
 					li
 						a(href="/started/avanzado.jade") Avanzado
 						ul
 							li: a(href="/started/internacionalizacion.jade") Internacionalización
-							li: a(href="/started/enrutado.jade") Enrutado
+							li: a(href="/started/enrutado-avanzado.jade") Enrutado
 							li: a(href="/started/solicitud-y-respuesta.jade") Solicitud y respuesta
-							li: a(href="/started/funcionamiento-plugins.jade") Plugins
+							li: a(href="/started/cabeceras-http.jade") Cabeceras HTTP
+							li: a(href="/started/plugins-avanzado.jade") Plugins
+		#contents
+			block
+
+		#rightbar.sidebar
+			nav#TOC
+
+mixin tutorials-layout(title,path,bodyclass)
+	+base(title,path,bodyclass)
+		#leftbar.sidebar
+			nav#scopelinks
+				h2 Tutoriales
+				ul
+					li: a(href="/tutorials/configuracion-entorno.jade") Configuración del entorno
+					li: a(href="/tutorials/configuracion-http.jade") Configuración HTTP
+					li: a(href="/tutorials/configuracion-ruta.jade") Configuración de ruta
+					li: a(href="/tutorials/rutas-en-caliente.jade") Activar/Desactivar rutas en caliente
+					li: a(href="/tutorials/rutas-arboreas.jade") Rutas arbóreas					
+					li: a(href="/tutorials/propiedades-solicitud.jade") Propiedades de la Solicitud
+					li: a(href="/tutorials/metodos-respuesta.jade") Métodos para la respuesta
+					li: a(href="/tutorials/cookies.jade") Cookies
+					li: a(href="/tutorials/streaming.jade") Video Streaming
+					li: a(href="/tutorials/get.jade") GET
+					li: a(href="/tutorials/post.jade") POST
+					li: a(href="/tutorials/rutas-parametrizadas.jade") Rutas parametrizadas
+					li: a(href="/tutorials/uso-servicios.jade") Uso de los servicios
+					li: a(href="/tutorials/servicio-mongodb.jade") MongoDB como servicio
+					li: a(href="/tutorials/servicio-https.jade") Servicio https
+					li: a(href="/tutorials/uso-plugins.jade") Uso de Plugins
+					li: a(href="/tutorials/plugins-y-routes.jade") Plugins y routes
+					li: a(href="/tutorials/cadena-plugins.jade") Cadena de Plugins
+					li: a(href="/tutorials/i18n.jade") Hola Mundo en 5 idiomas
+					li: a(href="/tutorials/cron.jade") Programación de tareas
+					li: a(href="/tutorials/logs.jade") Logs
+
+
+
+					
 		#contents
 			block
 

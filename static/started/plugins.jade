@@ -1,0 +1,24 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/reference/'},{label:'Funcionamiento de los Plugins',url:'/reference/funcionamiento-plugin.jade'}];
+	+starting-layout("Getting started Pillars.js - 'make it easy!'",path)
+
+		#title
+			h1 Plugins
+				em  Pillars.js Performance			
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+					
+
+		section.modificacion-plugins-built-in
+			h2#flujo-modificacion-plugins-built-in Modificación de Plugins
+			:marked
+				Para modificar propiedades de un plugin built-in en primer lugar deberemos capturarlo, y posteriormente realizar las operaciones pertinentes.
+
+			:highlight(lang='javascript')
+				project.services.get('BodyReader').tempDirectory = "/temporal";

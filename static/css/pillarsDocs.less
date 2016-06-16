@@ -325,6 +325,33 @@ a.source {
 	}
 }
 
+.tutos{		
+	display: block;
+	margin: 40px 0 0 0;
+	border: 1px solid @color-primary;
+	p, ul, li{
+		display: inline-block;
+		margin: 0;
+	}
+	p{		
+		background-color: @color-primary;
+		color: white;
+		font-size: 0.8em;
+		padding: 5px 10px;
+		vertical-align: top;
+	}
+	ul{
+		padding: 0 20px;
+		display: inline;
+		li{
+			a{
+				font-size: 0.8em;
+				padding: 0 20px;
+				cursor: pointer;
+			}
+		}
+	}
+}
 body.home {
 	height: 100%;
 	background-color: @color-primary;
@@ -437,32 +464,7 @@ body.home {
 					}
 
 				}
-				.tutos{
-					
-					display: block;
-					margin: 40px 0 0 0;
-					p, ul, li{
-						display: inline-block;
-						margin: 0;
-					}
-					p{
-						color: white;
-						font-size: 0.8em;
-						padding: 5px 10px;
-						vertical-align: top;
-					}
-					ul{
-						padding: 0 20px;
-						display: inline;
-						li{
-							a{
-								font-size: 0.8em;
-								padding: 0 20px;
-								cursor: pointer;
-							}
-						}
-					}
-				}
+				
 				.white{
 					background-color: white;
 					h2{
