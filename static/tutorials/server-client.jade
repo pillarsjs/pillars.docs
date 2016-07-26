@@ -2,8 +2,8 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/docs/tutorials/'},{label:'Servidor-Cliente',url:'/pillars/docs/tutorials/server-client.jade'}];
-	+tutorial-layout("Pillars.js Tutorials - Envío de datos de Servidor a Cliente - 'make it easy!'",path)
+	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/tutorials/'},{label:'Servidor-Cliente',url:'/pillars/tutorials/server-client.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - Envío de datos de Servidor a Cliente - 'make it easy!'",path)
 
 		#title
 			h1 Datos Servidor-Cliente
@@ -14,7 +14,7 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:markdown
-				El envío de datos desde el servidor al cliente se realiza siempre dentro de un objeto route, que es el objeto que maneja la petición. Los métodos que realizan envío a cliente, y por tanto componen los encabezados HTTP pertinentes son los siguientes métodos del objeto gangway: 
+				El envío de datos desde el servidor al cliente se realiza siempre dentro del manejador de un objeto route. Los métodos que realizan envío a cliente, y por tanto componen los encabezados HTTP pertinentes, son los siguientes métodos del objeto gangway: 
 
 				+ [gw.send()](../reference/gangway.jade#method-send)
 				+ [gw.html()](#)

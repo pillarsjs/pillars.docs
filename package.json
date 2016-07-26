@@ -6,12 +6,16 @@
     "name": "Javier Gallego Martín",
     "email": "bifuer@gmail.com"
   },
+  "contributors": [{
+    "name": "Chelo Quilón Gómez",
+    "email": "cheloq@gmail.com"
+  }],
   "dependencies": {
     "pillars": "*",
     "jade": "*",
     "marked": "*",
     "highlight.js": "*"
   },
-  "main": "./app.js",
+  "main": "./index.js",
   "license": "MIT"
 }

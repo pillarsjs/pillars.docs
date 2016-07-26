@@ -13,9 +13,9 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:marked
-				Por cada controlador de ruta a habilitar en el proyecto, creamos un objeto route y lo añadimos al proyecto en la propiedad: *project.routes*.
+				Por cada controlador de ruta a habilitar en el proyecto, creamos un *objeto route* y lo añadimos al proyecto en la propiedad: *project.routes*.
  
-				+ Objetos de la [Clase Route](clase-route.jade). Por cada controlador de ruta que se quiera añadir al proyecto se crea un *objeto route*. Cada *objeto route* se instancia con una *configuración determinada* y un *handler* o *manejador*.
+				+ Objetos de la [Clase Route](clase-route.jade). Cada *objeto route* se instancia con una *configuración determinada* y un *handler* o *manejador*.
 
 			:highlight(lang='javascript')
 				var myRoute = new Route(
@@ -56,7 +56,7 @@ html(lang=gw.language)
 				var myRoute = new Route({
 						id:'home',
 
-						//Parámetros de configuración que determinan la ejecutación del manejador
+						//Parámetros de configuración que determinan la ejecución del manejador
 						path:'/',
 						port:'8080',
 						method:'',
@@ -74,8 +74,8 @@ html(lang=gw.language)
 					}
 				);
 			:marked
-				+ **id**. Identificador del objeto. Será necesario si posteriormente queremos modificar el comportamiento del objeto en caliente.
-				+ **path**. Si no es su path no se ejecutará. 
+				+ **id**. Identificador del objeto. Será necesario si posteriormente queremos capturar el objeto para por ejemplo modificar el comportamiento en *caliente*.
+				+ **path**. Si el path de la petición no coincide con el del *objeto route* no se ejecutará el *manejador*. 
 				+ **active**. Si el *route* no está activo, no responderá a ninguna solicitud.
 				+ **port**. Si el puerto de la petición no coincide con el declarado en la configuración del *route*, no se ejecutará, emitiendo un Error 404. 
 			:highlight(lang='javascript')
@@ -83,7 +83,7 @@ html(lang=gw.language)
 				project.services.get('http').configure({port:3002}).start();
 
 				// Creamos e iniciamos otro servicio http en el puerto 3003
-				project.services.insert((new HttpService({
+				project.services.add((new HttpService({
 				  id:'http2',
 				  port: 3003
 				})).start());
@@ -111,7 +111,7 @@ html(lang=gw.language)
 				+ **method**. Especifica el método que acepta el *route*, por lo que si la petición se realiza mediante un método diferente al/los definido/s emitirá un error 404.
 				+ **https**. Especifica si el objeto acepta peticiones *http*, *https* o ambas. Si la petición se realiza por un protocolo diferente al especificado, emitirá un error 404.
 
-				> Solo los parámetros de configuración definidas en esta sección determinarán si se ejecuta el *handler* o no.
+				> Solo los parámetros de configuración definidos en esta sección determinarán si se ejecuta el *handler* o no.
 
 
 		section.mod-parametros-config
@@ -145,183 +145,3 @@ html(lang=gw.language)
 				project.routes.remove('hello'); // Elimina el objeto route con id hello
 			:marked
 				> Más info: Métodos de [`project.routes`](../reference/project.jade#property-routes).				 
-		section.ejecucion-plugins
-			h2#ejecucion-plugins Objetos route y plugins
-			:marked
-				Los **parámetros de configuración** del objeto route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
-
-				Para ello, podemos insertar **nuevas propiedades** en el *objeto de configuración del route*, y éstas estarán disponibles para los Plugins en la propiedad de gangway [`gw.routing`](gangway.jade#property-routing).
-
-			:highlight(lang='javascript')
-				// Instancia de objeto plugin. 
-				var myPlugin = new Plugin(function(gw, next){
-					if (gw.routing.inheritance.varToPlugin){
-						console.log("Plugin running");
-					};
-					next();
-				});
-
-				// Instancia del objeto route
-				var myRoute = new Route({
-						path:'/plugin',
-						varToPlugin: true
-					},
-					function(gw){
-						gw.send("Something");
-				});
-		
-
-			:marked
-		//- Description
-		section.caracteristicas
-			h2#description Características del sistema de enrutado
-			:marked
-				+ **Anidable**. Podemos crear árboles de controladores, que **organizan y agrupan funcionalidades** de la aplicación. El nodo raíz será el que se conecte a `project.routes`. El *objeto route* se puede declarar sin configuración, por lo que toma los valores predeterminados. También se podrá declarar sin manejador, por lo que en este caso el *objeto route* actuaría como **elemento organizativo**.
-
-			p
-				img(src="/img/reference/enrutado.png")
-
-			:highlight(lang='javascript')
-				var myRoute = new Route({
-					id: 'management',
-					path: '/'
-				});
-
-				var myRouteSonOne = new Route({
-					id: 'students',
-					path: '/students'
-				},function(gw){
-					//...
-				});
-
-				var myRouteSonTwo = new Route({
-					id: 'teachers',
-					path: '/teachers'
-				},function(gw){
-					//...
-				});
-
-				myRoute.routes.add(myRouteSonOne);
-				myRoute.routes.add(myRouteSonTwo);
-
-				project.routes.add(myRoute);
-
-			:marked
-				+ **Sistema de enrutado más eficiente**. El sistema de enrutado, al tener estructura arbórea, buscará coindidencias en los nodos añadidos directamente a `project.routes`, si un nodo de los añadidos no coincide en algún parámetro con la solicitud, no seguirá buscando en ese árbol y pasará al siguiente nodo.
-
-				+ **Tiempo Real**. Los controladores son conectables y desconectables en tiempo real, de forma que no necesariamente tendremos que detener la aplicación para realizar modificaciones sobre éstos. Un route podemos desconectarlo del árbol de controladores o simplemente desactivarlo mediante su propiedad `.active`.
-
-			p
-				img(src="/img/reference/remove-teachers.png")
-
-			:highlight(lang='javascript')
-				myRoute.routes.get('management').remove('teachers');
-			:marked
-
-
-		section.herencia
-			h2#herencia Herencia objeto route
-			:marked
-				Los *objetos route* son anidables en estructura de árbol, por lo que hay que tener presente la **herencia** de los *parámetros de configuración* de un *route* cuando éstos estan anidados.
-
-				Los *parámetros de configuración* declarados en un nodo padre, lo heredarán sus descendientes. Si uno de los nodos hijos redefine una propiedad ya definida en los *parámetros de configuración* de un nodo superior, ésta tomará el valor definido en sí mismo.
-
-			p
-				img(src="/img/reference/herencia.png")
-
-			:marked
-				En el caso del ejemplo gráfico, se crean tres *objetos route* con la siguiente configuración:
-				+ *myRoute*: que define id, cors, https, port, method, maxUploadSize y un parámetro nuevo creado por el usuario: userParam.
-				+ *son1*: descendiente directo de *myRoute*, y que redefine la propiedad method y maxUploadSize. Por lo que éste sólo aceptará el método GET, y su tamaño máximo de la solicitud sube a 5MB. El resto de propiedades serán las mismas que las de *myRoute*, también dispondrá de la propiedad userParam en true.
-				+ *son2*: descendiente directo de *myRoute* y que no redefine ninguna propiedad. Por lo que las propiedades serán las mismas que las de su nodo superior *myRoute*.
-
-				Las propiedades obtenidas por herencia estarán disponibles en [`gw.routing.inheritance`](gangway.jade#property-routing).
-
-			:highlight(lang='javascript')
-				var myRoute = new Route({
-						id: 'idRoute',
-						cors: false,
-						https: false,
-						port: 3006,
-						method: ['POST', 'GET'],
-						maxUploadSize: 2*1024*1024,
-						userParam: true
-					},
-					function(gw){
-						gw.json(gw.routing.inheritance);
-				});
-
-				var son1 = new Route({
-						id: 'son1',
-						path: '/son1',
-						method: 'GET',
-						maxUploadSize: 5*1024*1024
-					},
-					function(gw){
-						gw.json(gw.routing.inheritance);
-				});
-
-				var son2 = new Route({
-						id: 'son2',
-						path: '/son2'
-					},
-					function(gw){
-						gw.json(gw.routing.inheritance);
-				});
-
-
-				project.routes.add(myRoute);
-				myRoute.routes.add(son1);
-				myRoute.routes.add(son2);
-
-
-			:highlight(lang='javascript')
-				// > http://localhost:3006/
-				{
-				  "active": true,
-				  "port": 3006,
-				  "method": ["POST","GET"],
-				  "https": false,
-				  "cors": false,
-				  "maxUploadSize": 2097152,
-				  "userParam": true
-				}
-
-				// > http://localhost:3006/son1
-				{
-				  "active": true,
-				  "port": 3006,
-				  "method": ["GET"],
-				  "https": false,
-				  "cors": false,
-				  "maxUploadSize": 5242880,
-				  "userParam": true
-				}
-
-				// > http://localhost:3006/son2
-				{
-				  "active": true,
-				  "port": 3006,
-				  "method": ["POST","GET"],
-				  "https": false,
-				  "cors": false,
-				  "maxUploadSize": 2097152,
-				  "userParam": true
-				}
-
-			:marked
-				>  En el path están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`,etc.
-
-			:marked
-				> El [Plugin router](/funcionamiento-plugins.jade#plugin-router) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
-
-				> Antes de leer cómo interaccionan objetos route y plugin, recomendamos la lectura de [functionamiento de plugins](funcionamiento-plugins.jade)
-
-
-
-
-
-
-
-
-
