@@ -7,13 +7,13 @@ html(lang=gw.language)
 
 		#title
 			h1 Enrutado
-				em  Pillars.js Performance			
+				em  Comenzando con Pillars.js			
 
 		//- Summary
 		section.summary
 			h2#summary Sumario
 			:marked
-				Por cada controlador de ruta a habilitar en el proyecto, creamos un *objeto route* y lo añadimos al proyecto en la propiedad: *project.routes*.
+				Por cada **controlador de ruta** a habilitar en el proyecto, creamos un *objeto route* y lo añadimos al proyecto en la propiedad: *project.routes*.
  
 				+ Objetos de la [Clase Route](clase-route.jade). Cada *objeto route* se instancia con una *configuración determinada* y un *handler* o *manejador*.
 
@@ -38,7 +38,22 @@ html(lang=gw.language)
 				project.routes.add(myRoute);
 
 			:marked
-				
+				También se puede crear el **controlador de ruta** de forma abreviada y sin necesidad de declarar una variable:
+			:highlight(lang='javascript')
+				project.routes.add(
+					new Route(
+						{ 
+							id: 'hello',
+							path: '/',
+							method: ["GET","POST"]
+						}, 				
+						function(gw){ 
+							gw.send("Hello World!");
+						}
+					);
+				);
+
+			:marked
 
 		section.instacia-objeto-route
 			h2#instancia-objeto-route Instancia del objeto route

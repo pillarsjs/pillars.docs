@@ -46,7 +46,7 @@ html(lang=gw.language)
 						+ `.renderReload`: **Boolean**, por defecto es **false**. Lo utiliza el método `gw.render()` para comprobar o no, si el archivo de template ha sufrido cambios desde la última solicitud. Mientras sea *false* sólo se compilará el template en la primera solicitud.
 						+ `.favicon`: **String**, ruta del fichero favicon.ico del sitio. 
 						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
-						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](funcionamiento-plugins.jade#plugin-directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
+						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](../started/plugins-avanzado.jade#plugin-directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
 						+ `.errorTemplate`: **String**. Especifica el template utilizado para las páginas de error. Este es el template utilizado por el método [`gw.error()`](gangway.jade#method-error).
 
 
@@ -78,13 +78,42 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:marked
-						 
+						Actualmente solo contiene el servicio http built-in. 
+						El futuro para *project.services* es que se añadan todos los servicios a utilizar en el proyecto, para de esta forma tener control completo sobre todos estos.
+
+						Para obtener el servicio built-in lo realizamos a través del método *.get()* y el identificador (*id*) del servicio.
 
 					:highlight(lang='javascript')
+						project.services.get('http').start();
+					
+					:marked
+						Para insertar un nuevo servicio http o https, lo podemos realizar a través del método *.add()* o *.insert()*.
+
+					:highlight(lang='javascript')
+						var project = require('pillars');
+
+						project.services.insert((new HttpService({
+						  id:'http2',
+						  port: 3003
+						})).start());
+
 						
+						var fs = require('fs');
+						project.services.insert((new HttpService({
+						  id:'https',
+						  key: fs.readFileSync('./localhost.key'),
+						  cert: fs.readFileSync('./localhost.crt'),
+						  port: 3001
+						})).start());
+
+						//...
+
+						project.services.get('http2');
+						project.services.get('https');
+
+						//...			
 
 					:marked
-
 
 			//- Property
 			section.property
@@ -100,16 +129,16 @@ html(lang=gw.language)
 
 						Este árbol de controladores es modificable en **tiempo real**, es decir, en vivo podremos añadir, eliminar o modificar controladores.
 
-						> Ver [enrutado en Pillars.js](enrutado.jade).
+						> Más información acerca de los controladores en [enrutado en Pillars.js](../started/enrutado.jade).
 
 
-						Es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray), por lo que cuenta con los siguientes métodos para trabajar con la propiedad:
+						Es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray), por lo que cuenta con los siguientes métodos para trabajar con la propiedad:
 
-						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto route* previamente creado.
-						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto route* dado un identificador o la posición del elemento. 
-						+ `.remove(index [, pid])`: elimina un *objeto route*. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
-						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto route*. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
-						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto route* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto route* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto route*. Alias de [`.remove()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto route*. Alias de [`.move()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
 					:marked
@@ -122,7 +151,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:marked
-						`project.plugins` es de tipo [ObjectArray](https://github.com/bifuer/ObjectArray). Es un array que contiene [objetos Plugin](clase-plugin.jade). Solemos llamar a esta propiedad la **Cadena de Plugins**. 
+						`project.plugins` es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray). Es un array que contiene [objetos Plugin](clase-plugin.jade). Solemos llamar a esta propiedad la **Cadena de Plugins**. 
 
 						> Ver [funcionamiento de plugins](funcionamiento-plugins.jade).
 
@@ -130,11 +159,11 @@ html(lang=gw.language)
 
 						Para trabajar con los objetos del array disponemos de los siguientes métodos: 
 
-						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto plugin* previamente creado.
-						+ `.get(index [, pid])`: método [`.get()`](https://github.com/bifuer/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto plugin* dado un identificador o la posición del elemento. 
-						+ `.remove(index [, pid])`: elimina un *objeto plugin*. Alias de [`.remove()`](https://github.com/bifuer/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
-						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto plugin*. Alias de [`.move()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
-						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/bifuer/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto plugin* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto plugin* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto plugin*. Alias de [`.remove()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto plugin*. Alias de [`.move()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 
 					:marked

@@ -12,13 +12,13 @@ html(lang=gw.language)
 
 		//- Summary
 		section.summary
-			h2#summary Sumario
+			h2#summary Sumario  
 			:marked
 				La Clase Plugin permiten ampliar las funcionalidades del framework. 
 
-				Estas funcionalidades pueden afectar a todas las rutas del proyecto o sólo a aquellas en las que la configuración del objeto route lo indique.
+				Estas funcionalidades pueden afectar a todos los controladores del proyecto o sólo a aquellos en los que la configuración del *objeto route* lo indique.
 
-				Es necesario añadir un plugin creado a [`project.plugins`](project.jade#property-plugins).
+				Una vez instanciado el plugin, es necesario añadirlo a [`project.plugins`](project.jade#property-plugins), que es la propiedad de nuestro proyecto *(project)* que contiene a todos los plugins en el mismo.
 					
 		//- Syntax
 		section.syntax
@@ -31,7 +31,7 @@ html(lang=gw.language)
 					+ [id](#property-id): **String** identificador del plugin. Si no se especifica se autogenera.
 					+ [active](#property-active): **Boolean**, indica si está activo o no.
 
-				+ *handler*: Controlador que ejecutará el plugin. El controller siempre recibe como parámetro el [objeto gangway](gangway.jade) y **next**.
+				+ *handler*: Controlador que ejecutará el plugin. El controller siempre recibe como parámetro el [objeto gangway](gangway.jade) y **next**. Que como ya sabemos, el objeto gangway contiene los datos de la petición y tiene métodos para la respuesta, y next que es la forma de indicar al plugin que ejecute, en caso de haberlo, el siguiente plugin.
 
 				
 			:highlight(lang='javascript')
@@ -66,9 +66,9 @@ html(lang=gw.language)
 			:marked
 				La Clase Plugin es primordial en el funcionamiento del framework, ya que éste está construido a base de Plugins que realizan diversas funciones. 	
 
-				> Ver [Funcionamiento de los Plugins](funcionamiento-plugins.jade) en Pillars.js. 
+				> Ver [Funcionamiento de los Plugins](../started/plugins-avanzado.jade) en Pillars.js. 
 			:marked
-				> Un *objeto route* podrá determinar gracias a su *configuración* si se ejecuta un Plugin. [Ver configuración route y plugins.](enrutado.jade#ejecucion-plugins)	
+				> Un *objeto route* podrá determinar gracias a su *configuración* si se ejecuta un Plugin. [Ver configuración route y plugins.](../started/enrutado-avanzado.jade#ejecucion-plugins)	
 
 
 		//- Properties
