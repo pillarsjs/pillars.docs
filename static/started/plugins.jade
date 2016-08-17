@@ -13,12 +13,32 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:marked
-				Cuando hablamos de Plugins, hablamos de un middleware vitaminado y con mucho más control. Esto es, por ejemplo; un plugin de Pillars.js que ejecuta ciertas acciones, podemos configurarlo para que sólo se ejecute en determinados controladores. También podríamos cambiar fácilmente el orden de ejecución de los plugins, o incluso desactivarlos a demanda.
+				Cuando hablamos de Plugins, hablamos de un middleware vitaminado y con mucho más control. 
+
+				Es posible especificar que un plugin sólo se ejecute ante determinadas configuraciones del objeto route.
+				
 		
 		//- Summary
 		section.instancia
 			h2#instancia Instancia del objeto plugin
 			:marked
+				El objeto plugin se crea mediante una instancia de la Clase Plugin. Contiene: un objeto de configuración y el manejador del plugin. Posteriormente lo añadimos a la cadena de plugins del proyecto.
+
+		:highlight(lang='javascript')
+				// Creación de un objeto plugin con id 'idPlugin'
+				var plugin = new Plugin(
+					{
+						id: "idPlugin"
+					},
+					function(gw, next){
+						console.log("Hello from the other side, I'm a plugin");
+						next();
+					}
+				);
+
+				project.plugins.add(plugin);
+		:marked
+			En este caso, al añadir el plugin en la cadena de plugins del proyecto, se añadirá como el último plugin.
 
 		section.modificacion-plugins-built-in
 			h2#flujo-modificacion-plugins-built-in Modificación de Plugins
@@ -27,3 +47,68 @@ html(lang=gw.language)
 
 			:highlight(lang='javascript')
 				project.services.get('BodyReader').tempDirectory = "/temporal";
+
+		section.orden
+			h2#Orden Orden y ejecución de los plugins
+			:marked
+				Todos los plugins "instalados" en el proyecto se ejecutan de forma secuencial, siguiendo un orden. Este orden está definido en la *cadena de plugins*.
+
+				Tenemos la posibilidad de re-ordenar los plugins en esta *cadena de plugins*, que no es más que *project.plugins*, para que se ejecuten en el orden deseado. Como verás más adelante hay plugins del sistema que convendría que sólo modificaras si tienes totalmente claro qué estás haciendo.
+
+				Por ejemplo, creamos y añadimos dos plugins. Uno de ellos escribirá por consola: "Hola soy el plugin 1", y el segundo: "Hola soy el plugin 2". Posteriormente le cambiaremos el orden: 
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				project.services.get('http').start();
+
+				project.routes.add(
+					new Route(
+					    {
+					      id:"home",
+					      path:"/"
+					    },
+					    function(gw){
+					      gw.html("Hola Mundo!!");
+					    }
+					)
+				);
+
+				project.plugins.add(
+					new Plugin(
+						{
+							id: "idPlugin-1"
+						},
+						function(gw, next){							
+							console.log("Hola soy el plugin 1");
+							next();
+						}
+					)
+				);
+				project.plugins.add(
+					new Plugin(
+						{
+							id: "idPlugin-2"
+						},
+						function(gw, next){
+							console.log("Hola soy el plugin 2");
+							next();
+						}
+					)
+				);
+			:marked
+				Al ejecutar la aplicación del ejemplo, vemos que primero se ejecuta el plugin "idPlugin-1" y posteriormente el plugin "idPlugin-2". Hay que tener en cuenta que los plugins son bloqueantes, y que no se ejecutará el siguiente plugin hasta que el que está actuando finalice. Una vez que finalicen de ejecutarse todos los plugins, será entonces cuando pase el control al controlador en cuestión (objeto route encargado de manejar la petición).
+
+				![Captura ejemplo Plugins](../img/started/plugins.jpg)
+
+		section.setup
+			h2#setup Plugins en función de la configuración del controlador
+			:marked
+				Al crear un controlador *(objeto route)*, podemos especificar en su configuración parámetros que estarán disponibles en los plugins, de tal forma que tenemos "comunicación directa" entre controladores y plugins.
+
+				> [Ver ejemplo](enrutado-avanzado.jade#ejecucion-plugins)
+			:marked
+				
+				
+
+				
+

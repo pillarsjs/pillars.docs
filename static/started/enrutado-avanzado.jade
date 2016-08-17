@@ -8,13 +8,9 @@ html(lang=gw.language)
 		#title
 			h1 Enrutado Avanzado
 				em  Pillars.js Performance			
-
-
-		section.avanzado
-			h2#avanzado Avanzado
-
+		
 		section.ejecucion-plugins
-			h3#ejecucion-plugins Objetos route y plugins
+			h2#ejecucion-plugins Objetos route y plugins
 			:marked
 				Los **parámetros de configuración** del objeto route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
 
@@ -45,7 +41,7 @@ html(lang=gw.language)
 
 
 		section.caracteristicas
-			h3#description Características del sistema de enrutado
+			h2#description Características del sistema de enrutado
 			:marked
 				+ **Anidable**. Podemos crear árboles de controladores, que **organizan y agrupan funcionalidades** de la aplicación. El nodo raíz será el que se conecte a `project.routes`. El *objeto route* se puede declarar sin configuración, por lo que toma los valores predeterminados. También se podrá declarar sin manejador, por lo que en este caso el *objeto route* actuaría como **elemento organizativo**.
 
@@ -93,7 +89,7 @@ html(lang=gw.language)
 		
 
 		section.herencia
-			h3#herencia Herencia objeto route
+			h2#herencia Herencia objeto route
 			:marked
 				Los *objetos route* son anidables en estructura de árbol, por lo que hay que tener presente la **herencia** de los *parámetros de configuración* de un *route* cuando éstos estan anidados.
 
