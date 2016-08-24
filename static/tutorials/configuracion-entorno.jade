@@ -2,48 +2,86 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/docs/tutorials/'},{label:'Configuración de ENV',url:'/pillars/docs/tutorials/configuracion-entorno.jade'}];
-	+tutorials-layout("Pillars.js Tutorials - Configuración de ENV - 'make it easy!'",path)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Configuración del entorno',url:'/tutorials/configuracion-entorno.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - Configuración del entorno - 'make it easy!'",path)
 
 		#title
-			h1 Configuración de ENV
+			h1 Configuración del entorno
 				em  Tutoriales Pillars.js
 			
 		section.descripcion
-			h2#ENV ENV
 
 			:markdown
-				Cuando realizamos la inclusión del framework Pillars.js mediante `require("pillars")`, nos es devuelto un objeto ENV. Este objeto contiene: 
-				+ **Configuración de parámetros que conforman el entorno**: parámetros del servidor http, parámetros de la base de datos, del servidor smtp, idioma con el que se responderá al cliente, etc.
-				+ **Métodos** para arrancar/detener el servidor http y la conexión a la base de datos.
-				+ **Métodos para añadir/eliminar controladores** (objetos route) a la aplicación. 
-				+ **Métodos para añadir/eliminar plugins** a la aplicación. 
-				+ **Propiedades** para conocer qué controladores y plugins están añadidos a la aplicación y en qué orden.
+				Cuando realizamos la inclusión del framework Pillars.js mediante `var project = require("pillars")` nos es devuelto un objeto, que como hemos visto en la sección *comenzando* [entorno y componentes](../started/entorno.jade), contiene una configuración **mínima inicial** y sobre el que se contruye el resto de la aplicación. La **configuración del entorno** se encuentra en [project.config](../reference/project.jade#property-config), y vamos a poder configurar:
 
-
+		section.descripcion
+			h2#cors cors
 			:markdown
-				Para definir una aplicación con los siguientes parámetros: 
-				+ Disponible en dos idiomas, español e inglés.
-				+ Que muestre los posibles errores
-				+ Disponible en el puerto 80
-				+ Que el tamaño máximo de subida de ficheros sean 50MB.
 
-				Los setearíamos de la siguiente forma: 
+		section.descripcion
+			h2#maxUploadSize maxUploadSize
+			:markdown
+				Si el servidor va a recibir subida de archivos, ten en cuenta que el valor máximo predefinido son 5MB. Para modificarlo:
 
 			:highlight(lang='javascript')
-				ENV.configure({
-					languages: ['es','en'],
-					debug: true,
-					server:{
-						port: 80,
-						maxUploadSize: 1024*1024*50;
-					}
-				});
-
+				var project = require("pillars");
+				project.config.maxUploadSize=10*1024*1024;
 			:markdown
-				> [Ver el objeto ENV en la referencia](/pillars/docs/reference/entorno.jade).
-				
-				Como hemos visto en el ejemplo de "Hola Mundo" se ejecuta `addRoute()`.... ver: variables globales.
+				En el caso de que desemos mantener el mismo límite en toda la aplicación, y que en uno o varios controladores sea diferente, podemos coonfigurarlo mediante el *objeto de configuración* del controlador:
 
-			.msg.msg-icon.bg-alert Estamos completando la referencia. ¡Disculpa las molestias!. Síguenos en las redes sociales para estar al tanto de las actualizaciones de la documentación. 
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.config.maxUploadSize = 1 * 1024 * 1024; // 1MB
 
+				project.routes.add(new Route({
+						maxUploadSize:10*1024*1024,
+						path:"/uploads-photos"
+					},function(gw){
+						/...
+					}));
+
+		section.descripcion
+			h2#maxCacheFileSize maxCacheFileSize
+			:markdown
+
+
+
+		section.descripcion
+			h2#cacheMaxSamples cacheMaxSamples
+			:markdown
+
+
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+
+		section.descripcion
+			h2#cacheMaxItems cacheMaxItems
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#fileMaxAge fileMaxAge
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown

@@ -92,7 +92,7 @@ html(lang=gw.language)
 				+ **id**. Identificador del objeto. Será necesario si posteriormente queremos capturar el objeto para por ejemplo modificar el comportamiento en *caliente*.
 				+ **path**. Si el path de la petición no coincide con el del *objeto route* no se ejecutará el *manejador*. 
 				+ **active**. Si el *route* no está activo, no responderá a ninguna solicitud.
-				+ **port**. Si el puerto de la petición no coincide con el declarado en la configuración del *route*, no se ejecutará, emitiendo un Error 404. 
+				+ **port**. Si el puerto de la petición no coincide con el declarado en la configuración del *route*, no se ejecutará este manejador. En este caso, podríamos tener una aplicación que sirviera en dos puertos, y tener diferentes controladores de ruta declarados para los diferentes puertos con funcionalidades independientes. 
 			:highlight(lang='javascript')
 				// Iniciamos el servicio http en el puerto 3002
 				project.services.get('http').configure({port:3002}).start();
