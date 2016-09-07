@@ -11,7 +11,7 @@ body {
 
 #space {
 	margin: 0 auto;
-	background-color: #ffffff;
+	background-color: #ffffff;	
 }
 
 #header {
@@ -95,7 +95,7 @@ body {
 	min-height: 15em;
 	padding: 2em 1em;
 	color: #ffffff;
-
+	margin-top: 30px;
 	.logo {
 		float: left;
 		clear: both;
@@ -154,10 +154,10 @@ body {
 	display: table;
 	table-layout: fixed;
 	width: 100%;
-	max-width: 1200px;
 	margin: 0 auto;
 	padding: 2em 0 0;
 	position: relative;
+	max-width: 1400px;
 }
 .sidebar {
 	width: 16em;
@@ -289,6 +289,10 @@ a.source {
 
 }
 
+.home #contents{
+	padding: 0;
+}
+
 #totop {
 	display: none;
 	bottom: 0;
@@ -321,6 +325,33 @@ a.source {
 	}
 }
 
+.tutos{		
+	display: block;
+	margin: 40px 0 0 0;
+	border: 1px solid @color-primary;
+	p, ul, li{
+		display: inline-block;
+		margin: 0;
+	}
+	p{		
+		background-color: @color-primary;
+		color: white;
+		font-size: 0.8em;
+		padding: 5px 10px;
+		vertical-align: top;
+	}
+	ul{
+		padding: 0 20px;
+		display: inline;
+		li{
+			a{
+				font-size: 0.8em;
+				padding: 0 20px;
+				cursor: pointer;
+			}
+		}
+	}
+}
 body.home {
 	height: 100%;
 	background-color: @color-primary;
@@ -343,9 +374,18 @@ body.home {
 		#main {
 			height: 100%;
 			padding: 0;
-			#contents {
+			max-width: none;
+			div#cover{
+				text-align: center;
 				h1 {
-					display: none;
+					color: white;
+					font-weight: 100;
+					display: inline-block;
+					font-size: 2.0em;
+				}
+				img#node-logo{
+					display: inline-block;
+					margin: 0 0 -8px 0;
 				}
 				img {
 					display: block;
@@ -353,9 +393,162 @@ body.home {
 					max-width: 80%;
 				}
 			}
+				
+			#example {
+				width: 80%;
+				margin: 0 10%;
+			}
+			#features-menu{
+				margin: 60px 0;
+				background-color: white;
+				width: 100%;
+				text-align: center;
+				li{
+					display: inline-block;
+					list-style-type: none;
+					margin:0;
+					a{
+						text-transform: uppercase;
+						display: inline-block;
+						color: @color-primary;
+						font-size: 0.8em;
+						padding: 35px 5px;
+					}
+					&:hover{
+						a{
+							text-decoration: none;
+							background-color: @color-primary;
+							cursor: pointer;
+							color: white;
+						}
+					}
+				}
+
+			}
+			#features{
+				.feature{
+					max-width: 1200px;
+					margin: 0 auto;
+					padding: 80px 0;
+					h2{
+						margin:20px 0 20px 0;
+						display: inline-block;
+						width: 49%;
+						text-align: center;
+						font-size: 5em;
+						line-height: 1em;
+						vertical-align: top;
+						span{
+							font-size: 0.3em;
+							font-weight: 100;
+							font-style: italic;
+							padding: 0 0 0 10px;
+							display: block;
+						}
+					}
+					ul.list{
+						display: inline-block;
+						width: 49%;
+						margin: 0 0 0 20px;
+						list-style-type: none;
+						li{
+							font-size: 0.95em;
+							padding: 6px 0;
+							margin: 0;
+							font-style: italic;
+							line-height: 1em;
+						}
+					}
+					pre.highlight{
+						margin-top: 60px;
+					}
+
+				}
+				
+				.white{
+					background-color: white;
+					h2{
+						color: @color-primary;
+					}
+					ul.list{
+						
+
+						li{
+							color: #555;
+							border-top:1px solid rgba(0,0,0,0.1);
+							&:last-child{
+								border-bottom: 1px solid rgba(0,0,0,0.1);
+							}
+							
+						}
+					}
+					.tutos{
+						border: 1px solid @color-primary;
+						p{
+							background-color: @color-primary;
+						}
+						ul li a{
+
+						}
+					}
+				}
+				.pink{
+					background-color: @color-primary;
+					h2{
+						color: white;
+					}
+					ul.list{
+						li{
+							color: white;
+							border-top:1px solid rgba(255,255,255,0.3);
+							&:last-child{
+								border-bottom: 1px solid rgba(255,255,255,0.3);
+							}
+						}
+					}
+					.tutos{
+						border: 1px solid white;
+						p{
+							background-color: white;
+							color: @color-primary;
+						}
+						ul li a{
+							color: white;
+						}
+					}
+				}
+				#http{
+					.feature ul.list{
+						padding-top: 20px;
+					}
+				}
+				#rutas{
+					.feature ul.list{
+						padding-top: 43px;
+					}
+				}
+				#gw{
+					.feature ul.list{
+						padding-top: 50px;
+					}
+				}
+				#services{
+					.feature ul.list{
+						padding-top: 93px;
+					}
+				}
+				#plugins{
+					.feature ul.list{
+						padding-top: 43px;
+					}
+				}
+
+				
+			}
 		}
 	}
 }
+
 
 @media (max-width: 1200px) {
 	#rightbar {

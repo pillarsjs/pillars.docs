@@ -1,0 +1,107 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Cabeceras HTTP',url:'/started/cabeceras-http.jade'}];
+	+starting-layout("Getting started Pillars.js - Cabeceras HTTP - 'make it easy!'",path)
+
+		#title
+			h1 Cabeceras HTTP
+				em  Pillars.js Performance
+
+			:marked
+				Pillars.js parsea y deja accesibles de una forma **directa y homogénea** las cabeceras HTTP: 
+				+ **Accept**, contenido en `req.headers['accept']` de Node.js, especifica qué tipo de contenidos son aceptables para la respueta, su valor es un *string* similar a: `"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"`. Pillars.js setea en [`gw.accepts.types`](gangway.jade#property-accepts) un *array* que contiene esta información, de forma ordenada y homogeneizada.  
+
+			:highlight(lang='javascript')
+				// gw.accepts.types
+				[
+					{
+						value: "text/html",
+						q: 100
+					},
+					{
+						value: "application/xhtml+xml",
+						q: 100
+					},
+					{
+						value: "image/webp",
+						q: 100
+					},
+					{
+						value: "application/xml",
+						q: 90
+					},
+					{
+						value: "*/*",
+						q: 80
+					}
+				]
+
+			:marked
+				+ **Accept-Encoding**. Determina la compresión que se espera de la respuesta. Los valores comunes son gzip, deflate o sin compresión. La propiedad `req.headers['accept-encoding']` de Node.js contiene un *string* con todos los valores, junto con la calidad, siguiendo la norma [RFC referida a los parámetros de calidad](http://tools.ietf.org/html/rfc7231#section-5.3.1). Un ejemplo de este *string*: `"gzip, deflate, sdch"`. Pillars.js transforma este string en [`gw.accepts.encodings`](gangway.jade#property-accepts), un *array* ordenado con los parámetros de calidad homogeneizados. Por otro lado, la codificación usada en la respueta se setea en [`gw.encoding`](gangway.jade#property-encoding).
+			:highlight(lang='javascript')
+				// gw.accepts.encodings
+				[
+					{
+						value: "gzip",
+						q: 100
+					},
+					{
+						value: "deflate",
+						q: 100
+					},
+					{
+						value: "sdch",
+						q: 100
+					}
+				]
+
+			:highlight(lang='javascript')
+				// gw.encoding
+				"gzip"
+
+			:marked
+				+ **Accept-Language**. La propiedad `req.headers["accept-language"]` de Node.js contiene un *string* con algo similar a `"en,es;q=0.8"` que sigue la norma [RFC de Accepts-Language](http://tools.ietf.org/html/rfc7231#section-5.3.5)  y la norma [RFC referida a los parámetros calidad](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js transforma este *string* en algo accesible y directo, seteando en la propiedad [`gw.accepts.languages`](gangway.jade#property-accepts) un *array* ordenado y homogeneizado, por lo que en `gw.accepts.languages[0].value` tenemos el idioma aceptado para la respuesta. Además, y relacionado con esta propiedad, en [`gw.language`](gangway.jade#property-language) tenemos el idioma que va a usar el servidor para la respuesta.
+
+			:highlight(lang='javascript')
+				// gw.accepts.languages
+				[
+					{
+						value: "en",
+						q: 100
+					},
+					{
+						value: "es",
+						q: 80
+					}
+				]
+
+			:highlight(lang='javascript')
+				// gw.language
+				"en"
+
+			:marked
+				+ **User-Agent**. Información relativa al cliente disponible en [`gw.ua`](gangway.jade#property-ua), disponible de una forma directa.
+
+			:highlight(lang='javascript')
+				// gw.ua 
+				{ 
+					mobile: false,
+					os: 'Windows NT 6.1; WOW64',
+					engine: 'Blink',
+					browser: 'Chrome'
+				}
+			:marked
+				+ **WWW-Authenticate**. Cabecera que emite un diálogo en cliente solicitando usuario y contraseña. Esta cabecera se emite al cliente mediante el método [`gw.authenticate()`](gangway.jade#method-authenticate). Los datos del usuario estarán seteados en [`gw.auth`](gangway.jade#property-auth).
+
+			:highlight(lang='javascript')
+				// gw.auth
+				{
+					user: 'UserName',
+					pass: 'PassUser'
+				}
+
+
+
+					

@@ -1,0 +1,40 @@
+getting started 
+
+	- Hola Mundo
+
+
+			:marked
+				En el ejemplo:
+				+ Inicializa la librería pillars en la variable *project*.
+				+ Obtiene **en los servicios del proyecto** *project.services*, el servicio HTTP mediante *.get('http')* y lo inicia mediante *.start()*.
+				+ Añade un controlador con los parámetros de configuración por defecto, y enviará al cliente la respuesta HTML "Hola Mundo".
+
+
+			:marked
+				Por lo tanto:
+				+ El entorno o proyecto, es el punto central de anclaje, donde se añaden controladores de ruta, plugins y servicios. `var project = require('pillars');`.
+				+ *project.services* contiene los servicios. Permite la creación y eliminación de éstos.
+				+ *project.routes* contiene todos los controladores del proyecto. Permite crear y añadir, modificar y eliminar controladores. Los controladores se crean mediante la clase Route `var myRoute = new Route(...);` y deben ser añadidos al proyecto: `project.add(myRoute);`.
+				+ El objeto **gw** es la abreviatura de Gangway. Es el objeto que 
+
+
+Conceptos
+	- Gestión de rutas.
+		Las rutas se crean mediante los controladores. Para añadir una ruta a tu web deberás instanciar un objeto de la Clase Route y añadirlo a tu proyecto.
+
+		var myRoute = new Route(configuración, manejador);
+		project.routes.add(myRoute);
+
+		Al instanciar un objeto route, podemos solo especificar el manejador, por lo que no será necesario establecer ninguna configuración, y se ejecutará con la configuración por defecto; como en el ejemplo de "Hola Mundo".
+
+		La configuración de un objeto route contiene: 
+
+
+
+
+	- Petición y Respuesta: Gangway.
+	- Clase Plugin
+	- ..... 
+
+Gestión de Rutas
+	- 

@@ -4,7 +4,8 @@ var arvRegexp = /^([\w]+)\=(.*)$/;
 var args = {
   port: 3000,
   debug: true,
-  timeout: 10000
+  timeout: 10000,
+  renderReload: true
 };
 for(var i=0,l=process.argv.length;i<l;i++){
   if(arvRegexp.test(process.argv[i])){

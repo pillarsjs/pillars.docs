@@ -1,0 +1,66 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Instalación',url:'/started/instalacion.jade'}];
+	+starting-layout("Pillars.js Getting started - Instalación - 'make it easy!'",path)
+
+		#title
+			h1 Instalación
+				em  Comenzando con Pillars.js
+			
+
+		//- Summary
+		section.summary
+			:marked
+				Si no tienes instalado Node.js, puedes hacerlo desde [aquí](http://nodejs.org).
+
+				Crea un directorio de trabajo, y crea dos archivos:
+				+ **package.json**. En el que se describen datos como; autoría, dependencias y colaboradores de la aplicación.
+				+ **app.js**. Aplicación en node.js.
+
+				Un archivo package.json sencillo, será donde se describan sólo las dependencias y algunos datos de la aplicación Node.js.
+			:highlight(lang='javascript')
+				// package.json file
+				{
+					"name": "myApp",
+					"description": "",
+					"version": "0.0.1",
+					"author": {
+						"name": "Tu nombre",
+						"email": "Tu email"
+					},
+					"dependencies": {
+						"pillars": "*"
+					},
+					"main": "./app.js"
+				}
+
+
+			:marked
+				Ahora en el archivo app.js  vamos a escribir el código de un sencillo "Hola Mundo". No vamos a configurar nada, por lo que quedarán establecidas las configuraciones por defecto, como es el puerto en el que responderá la aplicación *(puerto 8080)*: 
+			:highlight(lang='javascript')
+				// app.js file
+				var project = require('pillars');
+
+				project.services.get('http').start();
+
+				project.routes.add(new Route(function(gw){
+					gw.html("Hola Mundo!!");
+				}));
+
+			:marked
+				Una vez guardados los dos archivos con el código especificado arriba y Node.js instalado, es hora de poner el proyecto en marcha. Para ello, desde la linea de comando y en el directorio del proyecto, ejecutamos el comando *>> npm install*.
+
+				**Npm** es el manejador de paquetes por defecto para Node.js. Npm se instala automáticamente junto con Node.js. Mediante el comando *npm install*, obtiene las dependencias del proyecto especificadas en el archivo *package.json*, y las instala en el directorio *node_modules*. Por lo que una vez ejecutado el comando tendrás en este directorio a Pillars.js.
+
+				Seguidamente, ejecutamos la aplicación mediante el comando *>> node app.js*.
+
+				Observa en consola la carga de Pillars.js: 
+
+				![Captura carga Pillars.js](../img/started/carga-pillarsjs.jpg)
+
+				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:8080](http://localhost:8080).
+
+				> Pillars.js integra sistema de traducciones, por lo que podríamos visualizar la consola en el idioma deseado, siempre y cuando la traducción al idioma correspondiente esté realizada. [**Colabora** si dominas un idioma en el que no está traducida! :)](https://github.com/pillarsjs/pillars/tree/master/languages)
+

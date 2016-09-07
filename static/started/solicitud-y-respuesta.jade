@@ -1,0 +1,135 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Objeto gangway',url:'/started/gangway.jade'}];
+	+starting-layout("Getting started Pillars.js - Objeto gangway - 'make it easy!'",path)
+
+		#title
+			h1 Solicitud y Respuesta
+				em  Comenzando con Pillars.js
+			a.source(href="https://github.com/bifuer/pillars/blob/master/lib/gangway.js") Source
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+				Pillars.js **genera de forma automática** un [objeto gangway](../reference/gangway.jade) en cada petición. Contiene como propiedades los **datos del request parseados**, response y métodos para la respuesta. 
+
+				Este objeto está disponible en el *handler* tanto del **objeto route** como en el **objeto plugin**.
+
+			:highlight(lang='javascript')
+				var myRoute = new Route(function(gw){
+
+					var POST = gw.content.params; 
+
+					var GET = gw.query;
+					/*
+					{
+						id: '37',
+						value: 'lipsum'
+					}
+					*/
+
+					var cookie = gw.cookie;
+
+					var userAgent = gw.ua;
+					/*
+					ua:{ 
+						mobile: false,
+						os: 'Windows NT 6.1; WOW64',
+						engine: 'Blink',
+						browser: 'Chrome'
+					}
+					*/
+
+
+					var id = gw.id; 			// id del objeto gangway para la petición.
+					var ip = gw.ip;			// ip del cliente
+					var browserLang = gw.language;		// Primer idioma del navegador del cliente 
+					var cors = gw.cors; 			// Gestion de orígenes cruzados. 
+					var method = gw.method;		// Método de la petición  GET y/o POST
+					var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+
+					gw.json(gw);
+				});
+
+				
+
+
+		
+			:marked
+		//- Description
+		section.contenido-de-la-peticion
+			h2#contenido-de-la-peticion POST, GET y rutas parametrizadas
+			:marked
+				+ **Query String (GET)**. Se conoce como Query String a la parte de la URL que contiene los datos que se deben pasar a aplicaciones. Comúnmente, en PHP, lo que se conocía como el *GET*. 
+					Por lo tanto, si se recibe una petición con datos en el query string, se encontrará seteado en [`gw.query`](../reference/gangway.jade#property-query).
+			:highlight(lang='javascript')
+				// Se visita http://sub.dom.ext/a/b/c?a=A&b=B
+				//> gw.query: {a:'A',b:'B'}
+				gw.send("Has enviado mediante Query String 'a' co el valor: " + gw.query['a'] + 
+					" y 'b' con el valor: " + gw.query['b'] );
+			:marked
+				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](../reference/gangway.jade#property-content) de una forma accesible. En el caso de subida de ficheros, hemos de tener en cuenta que el *objeto route* debe estar configurado para aceptar multipart/form-data. En el caso de no estar definido `method`, aceptará todos.
+			:highlight(lang='javascript')
+				var myRoute = new Route(
+					{
+						path: '/uploads',
+						multipart: true
+					},
+					function(gw){
+						//...
+					});
+			:marked
+					Los ficheros de la petición serán seteados en [`gw.files`](../reference/gangway.jade#property-files) y almacenados en el directorio `/temp`. Si deseamos cambiar este directorio temporal, podemos hacerlo mediante la propiedad `.tempDirectory` del [plugin bodyReader.js](../reference/funcionamiento-plugins.jade#plugin-bodyreader).
+				
+					
+			:marked
+				
+				+ **Rutas parametrizadas**. El uso de rutas parametrizadas tiene que estar declarado en el *objeto route*. Una vez declarado, podremos extraer de una URL partes de la misma. Para realizar esta *extración* usamos la propiedad [`gw.pathParams`](../reference/gangway.jade#property-pathParams).
+
+			:highlight(lang='javascript')
+					var route = new Route({path:'/:var1/:var2'},function(gw){
+						gw.json(gw.pathParams);
+					});
+					//Consultando localhost:300/users/john imprime:
+					//>{var1: 'users', var2:'john'}
+			:marked
+				Para simplificar la metodología de trabajo con la información que llega en la petición. Tanto el query string (GET), como el contenido de la petición (POST) y las rutas parametrizadas, se encuentran también seteados en [`gw.params`](../reference/gangway.jade#property-params). Esto es una copia, simplemente más accesible de todos los datos obtenidos en la solicitud.
+		//
+			div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Petición GET
+								a Petición POST
+								a Petición POST con ficheros
+
+		//- Description
+		section.cookies
+			h2#cookies Cookies
+			:marked
+				Disponemos de herramientas para setear cookies [`gw.setCookie()`](../reference/gangway.jade#method-setCookie), las cuales una vez que enviemos respuesta al cliente, también serán enviadas en dicha respuesta . Obtenemos los datos recibidos en el encabezado cookie parseados en el objeto JSON [`gw.cookie`](../reference/gangway.jade#property-cookie).
+			:highlight(lang='javascript')
+				// Envío de cookies
+				gw.setCookie("id", "YourId");
+				gw.send("Hola!");
+
+			:highlight(lang='javascript')
+				// Recepción de cookies
+				var id = gw.cookies.id;
+				gw.send("Your id cookie is": + id);
+				
+		//- Description
+		section.streaming
+			h2#streaming Streaming y Pausas en descargas
+			:marked
+				En Pillars.js está implementado [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), permitiendo continuar descargas interrumpidas o reproducir un video mediante un reproductor multimedia. La propiedad relacionada con este tipo de solicitudes es [`gw.ranges`](../reference/gangway.jade#property-ranges). 
+
+//
+			div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Emisión Streaming

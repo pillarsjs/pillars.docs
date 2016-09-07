@@ -1,0 +1,87 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Configuración del entorno',url:'/tutorials/configuracion-entorno.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - Configuración del entorno - 'make it easy!'",path)
+
+		#title
+			h1 Configuración del entorno
+				em  Tutoriales Pillars.js
+			
+		section.descripcion
+
+			:markdown
+				Cuando realizamos la inclusión del framework Pillars.js mediante `var project = require("pillars")` nos es devuelto un objeto, que como hemos visto en la sección *comenzando* [entorno y componentes](../started/entorno.jade), contiene una configuración **mínima inicial** y sobre el que se contruye el resto de la aplicación. La **configuración del entorno** se encuentra en [project.config](../reference/project.jade#property-config), y vamos a poder configurar:
+
+		section.descripcion
+			h2#cors cors
+			:markdown
+
+		section.descripcion
+			h2#maxUploadSize maxUploadSize
+			:markdown
+				Si el servidor va a recibir subida de archivos, ten en cuenta que el valor máximo predefinido son 5MB. Para modificarlo:
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.config.maxUploadSize=10*1024*1024;
+			:markdown
+				En el caso de que desemos mantener el mismo límite en toda la aplicación, y que en uno o varios controladores sea diferente, podemos coonfigurarlo mediante el *objeto de configuración* del controlador:
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.config.maxUploadSize = 1 * 1024 * 1024; // 1MB
+
+				project.routes.add(new Route({
+						maxUploadSize:10*1024*1024,
+						path:"/uploads-photos"
+					},function(gw){
+						/...
+					}));
+
+		section.descripcion
+			h2#maxCacheFileSize maxCacheFileSize
+			:markdown
+
+
+
+		section.descripcion
+			h2#cacheMaxSamples cacheMaxSamples
+			:markdown
+
+
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+
+		section.descripcion
+			h2#cacheMaxItems cacheMaxItems
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#fileMaxAge fileMaxAge
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown
+		section.descripcion
+			h2#cacheMaxSize cacheMaxSize
+			:markdown

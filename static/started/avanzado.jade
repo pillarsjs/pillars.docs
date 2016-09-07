@@ -1,0 +1,23 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started Pillars.js',url:'/started/'},{label:'Introducción',url:'/started/introduccion.jade'}];
+	+starting-layout("Pillars.js Getting started - Introducción - 'make it easy!'",path)
+
+		#title
+			h1 Avanzado
+				em  Avanzado con Pillars.js
+			
+
+		//- Summary
+		section.summary
+			:marked
+				Hasta ahora hemos visto el funcionamiento básico de Pillars.JS, seguidamente veremos las características avanzadas: 
+				+ **Internacionalización**. Pillars.js es totalmente internacionalizable. Es posible cambiar de idioma: la consola, las URL's de nuestra aplicación, y por supuesto los mensajes de usuario, en función de la petición del cliente. Esto lo hacemos gracias a la librería textualization la cual realiza una capa de abstracción, entre la programación de la aplicación y los mensajes de usuario, mediante **nodos**, permitiendo dejar de lado los mensajes de usuario y traducciones mientras se desarrolla. De esta forma se realizan las labores de redacción de mensajes de usuario de forma independiente a la programación en Node.
+				+ Enrutado.
+				+ Cabeceras HTTP
+				+ Plugins
+
+
+			

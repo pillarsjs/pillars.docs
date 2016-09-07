@@ -1,0 +1,196 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Enrutado Avanzado',url:'/started/enrutado-avanzado.jade'}];
+	+starting-layout("Pillars.js Performance - Enrutado Avanzado - 'make it easy!'",path)
+
+		#title
+			h1 Enrutado Avanzado
+				em  Pillars.js Performance			
+		
+		section.ejecucion-plugins
+			h2#ejecucion-plugins Objetos route y plugins
+			:marked
+				Los **parámetros de configuración** del objeto route adquieren bastante importancia al combinar *objetos route y plugins*, ya que estos parámetros estarán disponibles también en los plugins, por lo que en podremos "activar" plugins. 
+
+				Para ello, podemos insertar **nuevas propiedades** en el *objeto de configuración del route*, y éstas estarán disponibles para los Plugins en la propiedad de gangway [`gw.routing`](gangway.jade#property-routing).
+
+			:highlight(lang='javascript')
+				// Instancia de objeto plugin. 
+				var myPlugin = new Plugin(function(gw, next){
+					if (gw.routing.inheritance.varToPlugin){
+						console.log("Plugin running");
+					};
+					next();
+				});
+
+				// Instancia del objeto route
+				var myRoute = new Route({
+						path:'/plugin',
+						varToPlugin: true
+					},
+					function(gw){
+						gw.send("Something");
+				});
+		
+
+			:marked
+		//- Description
+		
+
+
+		section.caracteristicas
+			h2#description Características del sistema de enrutado
+			:marked
+				+ **Anidable**. Podemos crear árboles de controladores, que **organizan y agrupan funcionalidades** de la aplicación. El nodo raíz será el que se conecte a `project.routes`. El *objeto route* se puede declarar sin configuración, por lo que toma los valores predeterminados. También se podrá declarar sin manejador, por lo que en este caso el *objeto route* actuaría como **elemento organizativo**.
+
+			p
+				img(src="/img/reference/enrutado.png")
+
+			:highlight(lang='javascript')
+				var myRoute = new Route({
+					id: 'management',
+					path: '/'
+				});
+
+				var myRouteSonOne = new Route({
+					id: 'students',
+					path: '/students'
+				},function(gw){
+					//...
+				});
+
+				var myRouteSonTwo = new Route({
+					id: 'teachers',
+					path: '/teachers'
+				},function(gw){
+					//...
+				});
+
+				myRoute.routes.add(myRouteSonOne);
+				myRoute.routes.add(myRouteSonTwo);
+
+				project.routes.add(myRoute);
+
+			:marked
+				+ **Sistema de enrutado más eficiente**. El sistema de enrutado, al tener estructura arbórea, buscará coindidencias en los nodos añadidos directamente a `project.routes`, si un nodo de los añadidos no coincide en algún parámetro con la solicitud, no seguirá buscando en ese árbol y pasará al siguiente nodo.
+
+				+ **Tiempo Real**. Los controladores son conectables y desconectables en tiempo real, de forma que no necesariamente tendremos que detener la aplicación para realizar modificaciones sobre éstos. Un route podemos desconectarlo del árbol de controladores o simplemente desactivarlo mediante su propiedad `.active`.
+
+			p
+				img(src="/img/reference/remove-teachers.png")
+
+			:highlight(lang='javascript')
+				myRoute.routes.get('management').remove('teachers');
+			:marked
+
+
+		
+
+		section.herencia
+			h2#herencia Herencia objeto route
+			:marked
+				Los *objetos route* son anidables en estructura de árbol, por lo que hay que tener presente la **herencia** de los *parámetros de configuración* de un *route* cuando éstos estan anidados.
+
+				Los *parámetros de configuración* declarados en un nodo padre, lo heredarán sus descendientes. Si uno de los nodos hijos redefine una propiedad ya definida en los *parámetros de configuración* de un nodo superior, ésta tomará el valor definido en sí mismo.
+
+			p
+				img(src="/img/reference/herencia.png")
+
+			:marked
+				En el caso del ejemplo gráfico, se crean tres *objetos route* con la siguiente configuración:
+				+ *myRoute*: que define id, cors, https, port, method, maxUploadSize y un parámetro nuevo creado por el usuario: userParam.
+				+ *son1*: descendiente directo de *myRoute*, y que redefine la propiedad method y maxUploadSize. Por lo que éste sólo aceptará el método GET, y su tamaño máximo de la solicitud sube a 5MB. El resto de propiedades serán las mismas que las de *myRoute*, también dispondrá de la propiedad userParam en true.
+				+ *son2*: descendiente directo de *myRoute* y que no redefine ninguna propiedad. Por lo que las propiedades serán las mismas que las de su nodo superior *myRoute*.
+
+				Las propiedades obtenidas por herencia estarán disponibles en [`gw.routing.inheritance`](gangway.jade#property-routing).
+
+			:highlight(lang='javascript')
+				var myRoute = new Route({
+						id: 'idRoute',
+						cors: false,
+						https: false,
+						port: 3006,
+						method: ['POST', 'GET'],
+						maxUploadSize: 2*1024*1024,
+						userParam: true
+					},
+					function(gw){
+						gw.json(gw.routing.inheritance);
+				});
+
+				var son1 = new Route({
+						id: 'son1',
+						path: '/son1',
+						method: 'GET',
+						maxUploadSize: 5*1024*1024
+					},
+					function(gw){
+						gw.json(gw.routing.inheritance);
+				});
+
+				var son2 = new Route({
+						id: 'son2',
+						path: '/son2'
+					},
+					function(gw){
+						gw.json(gw.routing.inheritance);
+				});
+
+
+				project.routes.add(myRoute);
+				myRoute.routes.add(son1);
+				myRoute.routes.add(son2);
+
+
+			:highlight(lang='javascript')
+				// > http://localhost:3006/
+				{
+				  "active": true,
+				  "port": 3006,
+				  "method": ["POST","GET"],
+				  "https": false,
+				  "cors": false,
+				  "maxUploadSize": 2097152,
+				  "userParam": true
+				}
+
+				// > http://localhost:3006/son1
+				{
+				  "active": true,
+				  "port": 3006,
+				  "method": ["GET"],
+				  "https": false,
+				  "cors": false,
+				  "maxUploadSize": 5242880,
+				  "userParam": true
+				}
+
+				// > http://localhost:3006/son2
+				{
+				  "active": true,
+				  "port": 3006,
+				  "method": ["POST","GET"],
+				  "https": false,
+				  "cors": false,
+				  "maxUploadSize": 2097152,
+				  "userParam": true
+				}
+
+			:marked
+				>  En el path están soportadas las rutas parametrizadas por lo que están permitidas las formas `path:'/*:var'`, `path:'/:var'`,etc.
+
+			:marked
+				> El **Plugin router** (built-in) es el encargado de realizar el enrutado en base a los objetos route añadidos a `project.routes`.
+
+				
+
+
+
+
+
+
+
+
+

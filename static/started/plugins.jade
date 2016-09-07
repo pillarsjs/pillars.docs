@@ -1,0 +1,142 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/reference/'},{label:'Funcionamiento de los Plugins',url:'/reference/funcionamiento-plugin.jade'}];
+	+starting-layout("Getting started Pillars.js - 'make it easy!'",path)
+
+		#title
+			h1 Plugins
+				em  Comenzando con Pillars.js			
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+				Cuando hablamos de Plugins, hablamos de middleware vitaminado y con mucho más control. Las características principales son:
+				
+				- Todos los plugins instaladados en el sistema se ejecutan de forma **secuencial**, por lo que tienen un orden. Este orden se puede modificar.
+				- Un plugin instalado se puede ejecutar de forma **global** *en toda la aplicación*, o sólo en **determinados controladores**.
+				- Un plugin se puede activar y desactivar "en caliente".
+				- Cuando creamos un plugin le asignamos un identificador, para posteriormente poder trabajar con el. 
+				- El framework Pillars.js tiene diez plugins built-in. Puedes consultarlos [aquí](plugins-avanzado.jade#plugins-built-in).
+				- Todos los plugins, tanto los built-in como los instalados, están localizados en la denominada **cadena de plugins**, es decir, en **project.plugins**.
+
+		
+		//- Summary
+		section.instancia
+			h2#instancia Instancia del objeto plugin
+			:marked
+				Creamos un plugin mediante una instancia de la [Clase Plugin](../reference/clase-plugin.jade). La instancia consta de dos partes; por un lado un **objeto de configuración** y por otro el **manejador** del plugin. Para que el plugin esté "instalado" debemos añadirlo a la cadena de plugins del proyecto *project.plugins*.
+
+		:highlight(lang='javascript')
+				// Creación de un objeto plugin con id 'idPlugin'
+				var plugin = new Plugin(
+					// Objeto de configuración
+					{
+						id: "idPlugin"
+					},
+					// Manejador
+					function(gw, next){
+						console.log("Hello from the other side, I'm a plugin");
+						next();
+					}
+				);
+
+				// Añadimos el plugin a la cadena de plugins
+				project.plugins.add(plugin);
+		:marked
+			Al añadir el plugin en la cadena de plugins del proyecto, se añadirá como el último plugin, por lo que se ejecutará el último.
+			Por otro lado, te recomendamos la notación más corta y sin necesidad de declarar variables intermedias: 
+		:highlight(lang='javascript')
+				project.plugins.add(
+					new Plugin(
+						{
+							id: "idPlugin"
+						},
+						function(gw, next){
+							console.log("Hello from the other side, I'm a plugin");
+							next();
+						}
+					)
+				);
+					
+		:marked
+		section.modificacion-plugins-built-in
+			h2#flujo-modificacion-plugins-built-in Modificación de Plugins
+			:marked
+				Para modificar propiedades de un plugin en primer lugar deberemos capturarlo mediante su identificador, y posteriormente realizar las operaciones pertinentes.
+
+			:highlight(lang='javascript')
+				project.plugins.get('BodyReader').tempDirectory = "/temporal";
+			:marked
+				En este caso hemos capturado el plugin built-in [BodyReader](plugins-avanzado.jade#plugin-bodyreader) y hemos modificado la propiedad *tempDirectory*. De esta forma cambiamos la ruta temporal donde se guardarán los archivos en la aplicación (*petición POST con subida de archivos*).
+
+		section.orden
+			h2#Orden Orden y ejecución de los plugins
+			:marked
+				Todos los plugins "instalados" en el proyecto se ejecutan de forma secuencial, siguiendo un orden. Este orden está definido en la *cadena de plugins*.
+
+				Tenemos la posibilidad de re-ordenar los plugins en esta *cadena de plugins* para que se ejecuten en el orden deseado. *Como verás más adelante hay plugins del sistema que convendría que sólo modificaras si tienes totalmente claro qué estás haciendo ;).*
+
+				Veamos un ejemplo. Creamos y añadimos dos plugins. Uno de ellos escribirá por consola: "Hola soy el plugin 1", y el segundo: "Hola soy el plugin 2". Posteriormente le cambiaremos el orden: 
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				project.services.get('http').start();
+
+				project.routes.add(
+					new Route(
+					    {
+					      id:"home",
+					      path:"/"
+					    },
+					    function(gw){
+					      gw.html("Hola Mundo!!");
+					    }
+					)
+				);
+
+				project.plugins.add(
+					new Plugin(
+						{
+							id: "idPlugin-1"
+						},
+						function(gw, next){							
+							console.log("Hola soy el plugin 1");
+							next();
+						}
+					)
+				);
+				project.plugins.add(
+					new Plugin(
+						{
+							id: "idPlugin-2"
+						},
+						function(gw, next){
+							console.log("Hola soy el plugin 2");
+							next();
+						}
+					)
+				);
+			:marked
+				Al ejecutar la aplicación del ejemplo, vemos que primero se ejecuta el plugin "idPlugin-1" y posteriormente el plugin "idPlugin-2". Hay que tener en cuenta que los plugins son bloqueantes, y que no se ejecutará el siguiente plugin hasta que el que está actuando finalice. Una vez que finalicen de ejecutarse todos los plugins, será entonces cuando pase el control al controlador en cuestión (objeto route encargado de manejar la petición).
+
+				![Captura ejemplo Plugins](../img/started/plugins.jpg)
+
+				Para cambiar el orden de ejecución en la cadena de plugins contamos con métodos de ordenación, puedes consultarlos en la [librería ObjectArray](https://github.com/pillarsjs/ObjectArray). En el caso del ejemplo, para hacer que el "idPlugin-2" se ejecute antes que "idPlugin-1", podemos utilizar el método *.moveAfter()*, que mueve el objeto con el identificador especificado como primer parámetro, a la posición siguiente del objeto cuyo identificador especificamos como segundo valor:
+			:highlight(lang='javascript')
+					project.plugins.moveAfter("idPlugin-1","idPlugin-2");
+
+		section.setup
+			h2#setup Pasar datos de un controlador a un plugin.
+			:marked
+				Al crear un controlador *(objeto route)*, podemos especificar en su configuración parámetros que estarán disponibles en los plugins, de tal forma que tenemos "comunicación directa" entre controladores y plugins.
+
+				> [Ver ejemplo](enrutado-avanzado.jade#ejecucion-plugins)
+			:marked
+				
+				
+
+				
+
