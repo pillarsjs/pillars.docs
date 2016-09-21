@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			:marked
-				En la sección anterior ya hemos instalado Node.js, las dependencias del proyecto mediante *npm install* y ejecutado "Hola Mundo". Ahora vamos a ver linea a linea, qué se está haciendo. Extendemos el código para mayor claridad:
+				En la sección anterior ya hemos instalado Node.js, las dependencias del proyecto mediante *npm install* y ejecutado "Hola Mundo". Este es el código completo para el "Hola Mundo":
 				
 			:highlight(lang='javascript')
 				// app.js file
@@ -22,7 +22,8 @@ html(lang=gw.language)
 
 				project.services.get('http').start();
 
-				var myRoute = new Route(
+				project.routes.add(
+					new Route(
 						{
 							id:"home",
 							path:"/"
@@ -30,20 +31,41 @@ html(lang=gw.language)
 						function(gw){
 							gw.html("Hola Mundo!!");
 						}
+					)
 				);
-
-				project.routes.add(myRoute);
-
-			:marked
-				+ Linea 1. Se declara la variable *project* y se iguala a la *librería pillars*. El objeto *project* estará presente en todo el proyecto, en él está contenida toda la información del proyecto y el proyecto en sí. Información como; rutas, plugins y servicios. 
-				+ Linea 2. Pillars.js contiene un servicio http *built-in*, que se captura desde la propiedad *project.services* mediante el método *.get('identificador del servicio')*. Seguidamente lo iniciamos con el método *.start()*
-				+ Linea 3. Creamos el *objeto route* con *configuración* y *manejador*. La petición de usuario deberá coincidir con la configuración del *objeto route* para que el manejador entre en acción.
-				+ Linea 4. Creación del objeto route. *var myRoute = new Route(configuracion, manejador)*. [Ver referencia](../reference/clase-route.jade)
-				+ Linea 5 - 8. Objeto de configuración del objeto route. En este caso se configura el identificador del mismo y el path en el que se ejecutará. Por defecto es "/", es por esto que en ejemplos sencillos no habrás visto este objeto de configuración, ya que si va todo por defecto, se pude omitir.
-				+ Linea 9 - 11. Manejador del objeto route. El manejador siempre recibirá el *objeto gangway (gw)*. El método *.html()* del *objeto gw*, en la linea 10, envía la respuesta especificada al cliente en formato HTML.
-				+ Linea 12. La propiedad *project.routes* contiene el **enrutado completo del proyecto**. Por lo tanto, en esta propiedad se añadirán todas las instancias de la *Clase Route* (*objetos route*) que estarán disponibles en el proyecto, mediante el método *.add(objeto route a añadir)*.
-
 				
+			:marked
+					Ahora veamos, paso a paso, qué estamos haciendo:
+			:highlight(lang='javascript')
+					var project = require('pillars');
+			:marked
+					Se declara la variable *project* y se iguala a la *librería pillars*. El objeto *project* estará presente en todo el proyecto, en él está contenida toda la información del proyecto y el proyecto en sí. Información como; rutas, plugins y servicios.
+			:highlight(lang='javascript')
+					project.services.get('http').start();
+			:marked
+				Pillars.js contiene un servicio http *built-in*, que se captura desde la propiedad *project.services* mediante el método *.get('identificador del servicio')*. Seguidamente lo iniciamos con el método *.start()*
+			:highlight(lang='javascript')
+				project.routes.add(
+					new Route(
+						// Objeto de configuración
+						{
+							id:"home",
+							path:"/"
+						},
+						// Manejador
+						function(gw){
+							gw.html("Hola Mundo!!");
+						}
+					)
+				);			
+			:marked
+				Ahora accedemos a la propiedad *project.routes*, que contiene todos los controladores de la aplicación, y le añadimos un nuevo controlador mediante el método *.add()*. 
 
+				Creamos el *objeto route* con *configuración* y *manejador*. La petición de usuario deberá coincidir con la configuración del *objeto route* para que el manejador entre en acción.
+			
+				Para crear un controlador, creamos una instancia de la clase Route, *var myRoute = new Route(configuracion, manejador)*. [Ver referencia](../reference/clase-route.jade)
+				En *objeto de configuración* del objeto route, se configura el identificador del mismo y el path en el que se ejecutará. Por defecto es "/", es por esto que en ejemplos sencillos no habrás visto este objeto de configuración, ya que si va todo por defecto, se pude omitir.
+				En cuanto al *manejador* del objeto route; El manejador siempre recibirá el *objeto gangway (gw)*. El método *.html()* del *objeto gw*, envía la respuesta especificada al cliente en formato HTML, y es la última instrucción que se ejecutará.
+			
 
 
