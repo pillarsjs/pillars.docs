@@ -15,7 +15,7 @@ html(lang=gw.language)
 
 						project.routes.add(new Route(function(gw){
 						  gw.html("Hola Mundo!!");
-						});
+						}));
 		ul#features-menu
 			li 
 				a(href="#negociacion-http") Negociación HTTP
@@ -80,7 +80,7 @@ html(lang=gw.language)
 									method:"post|get"
 								},
 								// Manejador
-								function(gw){/
+								function(gw){
 									gw.send("Hello from the other side");
 								}
 							);
@@ -112,7 +112,7 @@ html(lang=gw.language)
 					:highlight(lang='javascript')
 							var myRoute = new Route(
 								{
-									id:"users"
+									id:"users",
 									path:"/users"
 								},
 								function(gw){
@@ -207,7 +207,7 @@ html(lang=gw.language)
 							var myPlugin = new Plugin(
 								// Configuración del plugin
 								{
-									id:"idPlugin"
+									id:"idPlugin",
 									active: true
 								},
 								// Manejador del Plugin
@@ -222,11 +222,11 @@ html(lang=gw.language)
 
 							// Modificación del Plugin
 							project.plugins.get('idPlugin').configure({
-								active: false;
+								active: false
 							});
 
 							// Eliminación del Plugin
-							project.plugins.delete(); ????
+							project.plugins.delete(); // ????
 				//
 					div.tutos
 						p TUTORIALES
