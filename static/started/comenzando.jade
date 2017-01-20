@@ -9,7 +9,6 @@ html(lang=gw.language)
 			h1 Comenzando
 				em  con Pillars.js
 			
-
 		//- Summary
 		section.instalacion
 			h2#instalacion Instalación			
@@ -32,7 +31,6 @@ html(lang=gw.language)
 					},
 					"main": "./app.js"
 				}
-
 
 			:marked
 				Ahora en el **archivo app.js**  vamos a escribir el código de un sencillo "Hola Mundo". No vamos a configurar nada, por lo que **quedarán establecidas las configuraciones por defecto**, como es el puerto en el que responderá la aplicación *(puerto 3000)*: 
@@ -79,14 +77,37 @@ html(lang=gw.language)
 			:marked
 					La idea de Pillars.js es que todos los elementos que componen tu aplicación, sean accesibles y modificables en caliente. Entonces... ¿Qué elementos básicos componen una aplicación web en Pillars.js?
 
-					- Los **controladores de ruta**, que no es más que la porción de código que se ejecutará en las determinadas rutas o URLs de la aplicación web. Se construyen con instancias de la clase Route, y se añade esta instancia de tu controlador al proyecto.
 					- Los **servicios**, son aquellos que tu aplicación va a tener/servir, por ejemplo el servicio http, un servicio mongoDB, etc. 
+
+					- Los **controladores de ruta**, que no es más que la porción de código que se ejecutará en las determinadas rutas o URLs de la aplicación web. Se construyen con instancias de la clase Route, y se añade esta instancia al proyecto. Veamos el objeto route de forma algo más extendida: 
+
+			:highlight(lang='javascript')
+					project.routes.add(
+						new Route(							
+							{	// Objeto de configuración. Aquí se configura en qué casos actuará con controlador. 
+								id:"home",	// El identificador del controlador. Si más tarde 
+									//queremos modificarlo, necesitamos saber cómo se llama.
+								path:"/suma",	// La ruta o path en la que queremos que se ejecute
+								method: "GET",	// El método o métodos que acepta
+								port:3000,		// El puerto en el que estará disponible
+
+							},
+							// Manejador. Aquí se especifica qué hará el controlador.
+							function(gw){
+								gw.send("");
+							}
+						)
+					);
+
+			:marked
+					
 					- **Gangway**, es la pasarela (*de ahí el nombre*)
 					- Los **datos de la petición**. Son los datos que vienen en cada petición de usuario, por ejemplo, si un usuario pide cierta URL con datos en el GET (query string), tendremos un objeto con toda esta información. 
 					- **Métodos para la respuesta**. Son todos aquellos métodos que podemos usar para enviar datos al cliente.
 					- El **middleware**, este concepto es más avanzado, pero para que no se quede en el tintero.. son porciones de código que se pueden ejecutar para toda la aplicación, o solo para varios controladores de ruta con ciertas características. 
 
 					Ahora veamos, paso a paso, qué estamos haciendo:
+
 			:highlight(lang='javascript')
 					var project = require('pillars');
 			:marked
