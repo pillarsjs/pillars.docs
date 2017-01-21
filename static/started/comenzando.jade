@@ -43,14 +43,14 @@ html(lang=gw.language)
 				project.services.get('http').start();
 
 				//Creación del controlador de ruta
-				project.routes.add(new Route(
+				project.routes.add(Route(
 					//Configuración del controlador
 					{
 						id: "idControlador",
 						method: ["GET","POST"],
 						path: '/'
 					},
-					//Manejador de la petición
+					//Manejador del controlador
 					function(gw){
 						gw.html("Hola Mundo!!");
 				}));
@@ -58,88 +58,341 @@ html(lang=gw.language)
 			:marked
 				> En principio, puedes ver en el código de app.js que hay cosas como Route, routes, project, gw, etc. En principio, no te rayes, copia y pega el código, estos conceptos los vamos a ver en un momento.
 
-				Una vez guardados los dos archivos con el código especificado arriba (*y Node.js instalado*), es hora de poner el proyecto en marcha. Para ello, desde la linea de comando y en el directorio del proyecto, ejecutamos el comando *>> npm install*.
+				Una vez guardados los dos archivos con el código especificado arriba (*y Node.js instalado*), es hora de poner el proyecto en marcha. Para ello, desde la linea de comando y en el directorio del proyecto, ejecutamos el comando  `npm install`.
 
-				**Npm** es el manejador de paquetes por defecto para Node.js. Npm se instala automáticamente junto con Node.js. Mediante el comando *npm install*, obtiene las dependencias del proyecto especificadas en el archivo *package.json*, y las instala en el directorio *node_modules*. Por lo que una vez ejecutado el comando tendrás en este directorio a Pillars.js.
+				**Npm** es el manejador de paquetes por defecto para Node.js. Npm se instala automáticamente junto con Node.js. Mediante el comando `npm install`, obtiene las dependencias del proyecto especificadas en el archivo *package.json*, y las instala en el directorio *node_modules*. Por lo que una vez ejecutado el comando tendrás en este directorio a Pillars.js.
 
-				Seguidamente, ejecutamos la aplicación mediante el comando *>> node app.js*.
+				Seguidamente, ejecutamos la aplicación mediante el comando `node app.js`.
 
 				Observa en consola la carga de Pillars.js: 
 
 				![Captura carga Pillars.js](../img/started/carga-pillarsjs.jpg)
 
-				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:8080](http://localhost:3000).
+				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:3000](http://localhost:3000).
 
 				> Pillars.js integra sistema de traducciones, por lo que podríamos visualizar la consola en el idioma deseado, siempre y cuando la traducción al idioma correspondiente esté realizada. [**Colabora** si dominas un idioma en el que no está traducida! :)](https://github.com/pillarsjs/pillars/tree/master/languages)
 
 		section.elementos
 			h2#elementos Elementos			
 			:marked
-					La idea de Pillars.js es que todos los elementos que componen tu aplicación, sean accesibles y modificables en caliente. Entonces... ¿Qué elementos básicos componen una aplicación web en Pillars.js?
+					En esta sección vamos a ver los elementos esenciales que componen Pillars.js. Estos son: servicios, enrutado, gangway y middleware. Veamos cada uno de ellos: 
 
-					- Los **servicios**, son aquellos que tu aplicación va a tener/servir, por ejemplo el servicio http, un servicio mongoDB, etc. 
+					- Los **servicios**, son aquellos que tu aplicación va a implementar/servir, por ejemplo el servicio http, un servicio mongoDB, etc. Todos los servicios de la aplicación van a estar seteados en **project.services**.
 
-					- Los **controladores de ruta**, que no es más que la porción de código que se ejecutará en las determinadas rutas o URLs de la aplicación web. Se construyen con instancias de la clase Route, y se añade esta instancia al proyecto. Veamos el objeto route de forma algo más extendida: 
+			:highlight(lang='javascript')
+					project.services.get('http').start();
+					/* Tomamos con el método .get('http') el servicio http de project.services.
+					Este servicio tiene un método .start(), además de otros. Si queremos configurar
+					por ejemplo, el puerto en el que servirá la aplicación, utilizaremos 
+					el método .configure(), de la siguiente forma: */
+
+
+					project.services.get('http').configure({
+						port: 3001,	// Puerto en el que responderá el servicio						
+						timeout: 8000	/* Tiempo que se toma el servidor antes de enviar el 
+						error timeout, error HTTP 408 */
+					}).start();
+
+
+			:marked
+					> Cómo crear un [servicio https](../reference/http-service.jade)
+
+					> Por ahora solo tenemos el servicio http y https implementados, ¿te animas a colaborar e implementar otros? :-)
+			:marked
+					> Si no estás familiarizado con los datos de una petición, abre las herramientas de desarrollador de tu navegador, y en la opción Network, en el caso de Google Chrome, al solicitar una URL (solicítala con el panel Network abierto), verás que si clicas en el archivo solicitado, se abre a la derecha un panel con información, esta información son los datos de la petición. En 'General' y 'Request Headers' verás qué es lo que pides/envías al servidor.
+
+					- Los **controladores y el enrutado**. Dada una petición, un *controlador de ruta* es el elemento que atiende a esa petición, siempre y cuando, los parámetros de la petición coincidan con los del controlador, claro. 
+
+					Por ejemplo, si la petición es un GET a '/', atenderá el controlador de ruta que esté configurado de esta forma. Sin embargo si la petición fuera un POST, y el controlador sólo está configurado para atender peticiones GET, pues este controlador no atendería la petición.
+
+					Un controlador de ruta se crea mediante **instancia de la clase Route** `var myRoute = new Route (...)`, y **se añaden al proyecto** `project.routes.add(myRoute)`. Con estos dos pasos creamos el enrutado de la aplicación.
+
+					Un *objeto route* se crea mediante un *objeto de configuración* y un *manejador*.
+					`var myRoute = new Route(configuración, manejador)`
+
+					Veamos la creación de un *objeto route* con todos los parámetros de configuración posibles:
 
 			:highlight(lang='javascript')
 					project.routes.add(
-						new Route(							
-							{	// Objeto de configuración. Aquí se configura en qué casos actuará con controlador. 
-								id:"home",	// El identificador del controlador. Si más tarde 
-									//queremos modificarlo, necesitamos saber cómo se llama.
-								path:"/suma",	// La ruta o path en la que queremos que se ejecute
-								method: "GET",	// El método o métodos que acepta
-								port:3000,		// El puerto en el que estará disponible
+						Route(
 
+							// Configuración del controlador. Aquí se configura en qué casos actuará
+							{
+										  /* ---- Parámetros que deben coincidir con la petición para que
+										  el controlador atienda la petición*/
+										  id:"home", /* El identificador del controlador. Si más tarde 
+										  queremos modificarlo, necesitamos saber cómo se llama.*/
+										  path:"/suma", /* La ruta o path en la que queremos que se ejecute */
+										  method: "GET", /* El método o métodos que acepta, 
+										  puede aceptar varios a la vez */
+										  port:3000, /* El puerto en el que estará disponible */
+										  host: undefined, /* hostname en el que responderá, undefined responde a todos. 
+										  Puedes arrancar un ejemplo configurando host en localhost y verás
+										  que si visitas 127.0.01 no responde.*/
+										  https: false, /* si responde en https o no*/
+										  /* ---- Parámetros de configuración adicional, 
+										  no tienen porque coincidir con la petición para que ésta sea atendida*/
+										  active: true, /* si no está activo, no atenderá ninguna petición */
+										  multipart: false, /* si acepta archivos o no*/
+										  maxUploadSize: 0, /* tamaño máximo del archivo en caso de aceptarlos*/
+										  cors: false, /* si acepta cors*/
+										  session: false /* si activamos las sesiones o no*/
 							},
-							// Manejador. Aquí se especifica qué hará el controlador.
-							function(gw){
-								gw.send("");
+							
+
+
+
+
+
+
+							/* Manejador. Esta es 'la porción de código' que se ejecuta, 
+							siempre y cuando la petición del usuario, coincida con los parámetros de
+							configuración que están arriba */
+							function(gw){ /*El manejador siempre recibe gw*/
+								gw.send("Hola Mundo");
 							}
 						)
 					);
 
+					/* Nótese que hemos añadido el objeto route en la misma sentencia que lo hemos creado
+					Mediante project.routes.add() */
+
+
 			:marked
+					En el ejemplo anterior, el *objeto route* que hemos declarado, responderá en la ruta **/suma**, y tan sólo emitiría un "Hola Mundo" *(es decir, lo especificado en el manejador)*.
+
+					> Como has visto, el controlador de ruta (objeto route) se instancia pasándole un objeto de configuración (configuración del controlador), que determinará si el manejador del controlador entra en acción o no; y el manejador, que es la porción de código a ejecutar una vez entre 'en acción'.
+					> La configuración del controlador se puede omitir, por lo que todos los parámetros se establecerán a los valores por defecto.
 					
-					- **Gangway**, es la pasarela (*de ahí el nombre*)
-					- Los **datos de la petición**. Son los datos que vienen en cada petición de usuario, por ejemplo, si un usuario pide cierta URL con datos en el GET (query string), tendremos un objeto con toda esta información. 
-					- **Métodos para la respuesta**. Son todos aquellos métodos que podemos usar para enviar datos al cliente.
-					- El **middleware**, este concepto es más avanzado, pero para que no se quede en el tintero.. son porciones de código que se pueden ejecutar para toda la aplicación, o solo para varios controladores de ruta con ciertas características. 
+					- **Gangway**, es la pasarela (*de ahí el nombre*) entre cliente y servidor. **Contendrá todos los datos de la petición**, (*ip, host, url, contenido del get o query string, del post si lo hubiese y un largo etc.*) la respuesta, **y métodos para la respueta**, como `gw.json()` para enviar un json, `gw.file()` para enviar un archivo o `gw.render()` que renderiza una plantilla y la envía al cliente.
 
-					Ahora veamos, paso a paso, qué estamos haciendo:
+					Gangway estará presente tanto en el manejador de los objetos route, como en el manejador de los middleware. 
 
-			:highlight(lang='javascript')
-					var project = require('pillars');
-			:marked
-					Se declara la variable *project* y se iguala a la *librería pillars*. El objeto *project* estará presente en todo el proyecto, en él está contenida toda la información del proyecto y el proyecto en sí. Información como; rutas, middleware y servicios.
+					Un ejemplo de información que contiene gangway:
 
 			:highlight(lang='javascript')
-					project.services.get('http').start();
-			:marked
-				Pillars.js contiene un servicio http *built-in*, que se captura desde la propiedad *project.services* mediante el método *.get('identificador del servicio')*. Seguidamente lo iniciamos con el método *.start()*
-			:highlight(lang='javascript')
-				project.routes.add(
-					new Route(
-						// Objeto de configuración
+					project.routes.add(Route(function(gw){
+
+						var POST = gw.content.params; 
+
+						var GET = gw.query;
+						/*
 						{
-							id:"home",
-							path:"/"
+							id: '37',
+							value: 'lipsum'
+						}
+						*/
+
+						var cookie = gw.cookie;
+
+						var userAgent = gw.ua;
+						/*
+						ua:{ 
+							mobile: false,
+							os: 'Windows NT 6.1; WOW64',
+							engine: 'Blink',
+							browser: 'Chrome'
+						}
+						*/
+						var id = gw.id; 			// id del objeto gangway para la petición.
+						var ip = gw.ip;			// ip del cliente
+						var browserLang = gw.language;		// Primer idioma del navegador del cliente 
+						var cors = gw.cors; 			// Gestion de orígenes cruzados. 
+						var method = gw.method;		// Método de la petición  GET y/o POST
+						var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+
+						gw.json(gw);
+					});
+			:marked
+					Gangway tiene bastantes propiedades y métodos, por lo que recomendamos que se utilice la referencia para consultas.
+
+					- El **middleware**, este concepto es más avanzado si no has tocado node.js, pero para que no se quede en el tintero... son *porciones de código* que se ejecutan en toda la aplicación, **o solo en ciertos controladores de ruta con ciertas características.**
+					Por lo tanto, podremos crear middleware que se aplique en toda la aplicación web, o que solo se ejecute en ciertos controladores, dependiendo de la configuración de estos. 
+
+					Creación de middleware:
+
+			:highlight(lang='javascript')
+				project.middlewares.add(
+					Middleware({ //Configuración del middleware
+							id: "idMiddleware", /* Identificador del middleware, es necesario para
+							posteriormente capturarlo y modificarlo si es necesario*/
+							active: true /* Indica si está activo, y por lo tanto si se aplica*/
 						},
-						// Manejador
-						function(gw){
-							gw.html("Hola Mundo!!");
+						/* El manejador del middleware siempre acepta por parámetro a gw y next. 
+						Al finalizar el manejador siempre debemos realizar la llamada a next() */
+						function(gw, next){ 
+							console.log("Hello from a middleware");
+							next();
 						}
 					)
-				);			
-			:marked
-				Ahora accedemos a la propiedad *project.routes*, que contiene todos los controladores de la aplicación, y le añadimos un nuevo controlador mediante el método *.add()*. 
+				);
 
-				Creamos el *objeto route* con *configuración* y *manejador*. La petición de usuario deberá coincidir con la configuración del *objeto route* para que el manejador entre en acción.
+			:marked
+					Un middleware, también se puede crear con la configuración por defecto, por lo que se puede omitir el objeto de configuración. 
+
+					Y también podemos crear un middleware que sólo se ejecute ante ciertas configuraciones de un controlador: 
+
+			:highlight(lang='javascript')
+				project.middleware.add(
+					Middleware(function(gw, next){
+						if (gw.routing.inheritance.varToMiddleware){
+							console.log("Middleware running");
+						};
+						next();
+				}));
+
+				project.routes.add(
+					Route({
+							path:'/middleware',
+							varToMiddleware: true
+						},
+						function(gw){
+							gw.send("Something");
+				}));
 			
-				Para crear un controlador, creamos una instancia de la clase Route, *var myRoute = new Route(configuracion, manejador)*. [Ver referencia](../reference/clase-route.jade)
-				En *objeto de configuración* del objeto route, se configura el identificador del mismo y el path en el que se ejecutará. Por defecto es "/", es por esto que en ejemplos sencillos no habrás visto este objeto de configuración, ya que si va todo por defecto, se pude omitir.
-				En cuanto al *manejador* del objeto route; El manejador siempre recibirá el *objeto gangway (gw)*. El método *.html()* del *objeto gw*, envía la respuesta especificada al cliente en formato HTML, y es la última instrucción que se ejecutará.
-
-		section.controlador
-			h2#controlador Controlador de ruta
 			:marked
+					
+
+		section.entorno
+			h2#entorno Configuración del entorno
+			:marked
+				Acabamos de ver que tenemos servicios, controladores de ruta, middleware y gangway, pues bien, todo esto corre en el entorno de la aplicación, que es **project**. El proyecto es configurable en varios aspectos, por un lado está lo relacionado con el servidor físico, ciertas configuraciones nos permitirán optimizar el uso de RAM *(podemos configurar cómo se comporta el cacheo)*; y adicionalmente hay otros aspectos relativos a la depuración en modo debug o el favicon; y otros relacionados con el sistema de templating *(definir cuál será el template de errores y algunos otros)*
+
+				> [Consulta el listado completo de variables de entorno](../reference/project.jade#property-config)
+
+			:highlight(lang='javascript')
+				project.configure({
+					debug: true,
+					cors: true,
+					cacheMaxSize: 25*1024*1024
+				});
+
+		section.dinamico
+			h2#dinamico Dinámico
+			:marked
+				Los elementos primordiales de Pillars.js son de tipo [Object Array](https://github.com/pillarsjs/ObjectArray) (OA), dotando así al proyecto de un dinamismo *... mágico*. OA es un **Array de objetos** que ofrece métodos para el manejo de dichos objetos *(insertar, buscar, mover, etc.)*
+
+				Las propiedades del proyecto que son de tipo OA son: 
+				- **project.services**. Donde se encuentran todos los servicios del proyecto
+				- **project.routes**. Donde se encuentran todos los controladores del proyecto
+				- **project.middleware**. Donde se encuentran todo el middleware del proyecto
+
+				Los métodos básicos que podemos ejecutar sobre estas propiedades son: 
+				- Añadir un nuevo objeto `.add(objeto)`
+				- Tomar un objeto dado un id `.get('idObjeto')`. 
+				> La infraestructura ofrece gran versatilidad, ya que los objetos *(route, middleware y service)* son creados con una configuración inicial. Esta configuración se convierte en propiedades de estos objetos, las cuales pueden ser modificadas en **caliente**. Ejemplo: `.get('id').active = false`
+				- Eliminar un objeto `.remove('idObjeto')`.
+
+				> Recuerda: aunque se instancien estos objetos sin una configuración mínima, tendrán de base unos valores por defecto. Por lo que muchas de las propiedades existirán con unos valores seteados, aunque no los hayas seteado tu.
+
+				Gracias a esta arquitectura, nos encontramos con una metodología homogénea *además de dinámica*, en el que crear y manejar propiedades de diferente índole siguen la misma nomenclatura.
+			:highlight(lang='javascript')
+				/* *** Declaración de un controlador, un middleware y un servicio HTTP *** */
+				var myRoute = Route({id:"idRoute"},function(gw){/*...*/});
+				var myMiddleware = Middleware({id:"idMiddleware"},function(gw,next){/*...*/});
+				var myHTTP = new HttpService({id:'idHttp'})
+
+				/* *** Manejo de project.routes - los controladores *** */
+				project.routes.add(myRoute);  // Añadimos un controlador al proyecto
+				project.routes.get("idRoute").active = false; // Desactivamos el Controlador
+				project.routes.get("idRoute").session = true; // Activamos las sesiones en el controlador
+				// Tb podemos setearlos de una sola vez con el método .configure()
+				project.routes.get("idRoute").configure({ 
+						active: true,
+						session: true
+					});
+				project.routes.remove("idRoute") // Eliminar el controlador del proyecto
+
+				/* *** Manejo de project.middleware *** */
+				project.middleware.add(myMiddleware); // Añadimos Middleware al proyecto
+				project.middleware.get("idMiddleware").active = false; // Desactivamos el Middleware
+				project.middleware.get("idMiddleware") //
+				project.middleware.remove("idMiddleware"); // Eliminar el Middleware del proyecto
+
+				/* *** Manejo de project.services *** */
+				project.service.add(myHTTP);
+				project.service.get("idHttp").start(); /* Los servios además cuenta con métodos 
+				característicos de un servicio, como pueden ser .start() y .stop().*/
+
+				// En este instrucción, tomamos el servicio, configuramos y arrancamos
+				project.service.get("idHttp").configure({
+						port: 3000,
+						timeout: 8000
+				}).start();
+
+		section.anidamiento
+			h2#anidamiento Anidamiento
+			:marked
+				No queremos que se quede por ver, aunque sea muy brevemente, otra de las versatilidades de la infraestructura, y es que, **los controladores son anidables**. Por lo tanto, podemos **agrupar los controladores** de la aplicación por funcionalidades *(o lo que te parezca)*.
+
+				Esto a su vez, nos dará mayor control, ya que por ejemplo, podremos desactivar `project.routes.get('idPadre').active = false` una sección completa de la aplicación web.
+
+			:highlight(lang='javascript')
+				var routeFather = Route ({id:'idFather'}/*...*/);
+				var routeSon1 = Route (/*...*/);
+				var routeSon2 = Route (/*...*/);
+
+				routerFather.routes.add('routeSon1');
+				routerFather.routes.add('routeSon2');
+
+				project.routes.add(routerFather);
+
+				project.routes.get('idFather').active = false;
+
+
+			.msg.msg-icon.bg-info Hasta aquí hemos visto el core de Pillars.js, es decir, los elementos básicos para poder empezar a trabajar. Seguidamente vamos a ver funcionalidades integradas en el framework bastante útiles.
+
+		section.directorio
+			h2#directorio Directorio estático
+			:marked
+				Para crear un directorio estático, lo hacemos de la siguiente forma:
+			:highlight(lang='javascript')
+				project.routes.add(
+					Route({
+						id:'pillarsDocsStatic',
+						path:'/*:path',
+						directory:{
+							path:'./static', // path en el que se montará el directorio estático
+							listing:true  // Si permite listados del directorio
+						}
+					}
+				)); // No tiene manejador ;)
+
+			:marked
+				Tiene unas ventajas y características dignas de mencionar:  
+
+
+		section.templating
+			h2#directorio Templating
+			:marked
+				Mustache, Jade, ... Sea cual sea tu templating favorito, puedes usarlo, además **con ventajas** ;)
+				Uso.
+
+
+				Configuración de los templates genéricos para todo el sitio.
+
+				Métodos relacionados con el templating
+
+				Ventajas de Pillars.js respecto al templating
+
+
+
+				> De momento está integrado Jade, pero puedes integrar el tuyo y estará disponible para la comunidad ;), puedes ver aquí cómo se integra un templating. 
+
+
+		section.sesiones
+			h2#sesiones Sesiones
+			:marked
+				Contamos con sesiones con persistencia en memoria, para activarlas en un controlador de ruta determinado, tan sólo hay que establecer el valor **session** a **true** en su configuración.
+
+				> Ejemplo sesiones
+			
+
+		section.t12n
+			h2#t12n Internacionalización
+			:marked
+				Pillars.js cuenta con una librería de Internacionalización adicional, puedes encontarla aquí. 
+				Esta librería permite contruir un sitio multiidioma mediante hojas JSON.
+				Los path de ruta, también son internacionalizables.
+
+
