@@ -97,7 +97,7 @@ html(lang=gw.language)
 			:marked
 					Ten en cuenta que Pillars.js tiene por defecto instanciado un servicio http, con id 'http', es por esto, que no tenemos que añadirlo.
 
-					> Cómo crear un [servicio http/https](../reference/http-service.jade)
+					> Cómo crear un [servicio http/https](../reference/servicios.jade)
 
 					> Por ahora solo tenemos el servicio http y https implementados, ¿te animas a colaborar e implementar otros? :-)
 			:marked
@@ -399,6 +399,8 @@ html(lang=gw.language)
 				Pillars.js cuenta con una librería de Internacionalización adicional, puedes encontarla aquí. 
 				Esta librería permite contruir un sitio multiidioma mediante hojas JSON.
 				Los path de ruta, también son internacionalizables.
+
+				Pillars.js es totalmente internacionalizable. Es posible cambiar de idioma: la consola, las URL's de nuestra aplicación, y por supuesto los mensajes de usuario, en función de la petición del cliente. Esto lo hacemos gracias a la librería textualization la cual realiza una capa de abstracción, entre la programación de la aplicación y los mensajes de usuario, mediante nodos, permitiendo dejar de lado los mensajes de usuario y traducciones mientras se desarrolla. De esta forma se realizan las labores de redacción de mensajes de usuario de forma independiente a la programación en Node.
 
 
 

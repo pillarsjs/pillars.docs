@@ -13,18 +13,33 @@ html(lang=gw.language)
 
 						project.services.get('http').start(); 
 
+						// Convención antes que configuración
 						project.routes.add(new Route(function(gw){
-						  gw.html("Hola Mundo!!");
+							gw.send("Hola mundo!");
+						}));
+
+						// Controladores flexibles en configuración:
+						project.routes.add(new Route({
+								method: ["GET","POST"], // Múltiples métodos
+								port: 8080	,			// Puerto específico
+								path: "/hola",
+								https: false,
+								cors: true,
+								session: true 
+							},function(gw){
+								gw.session.counter = gw.session.counter || 0;
+								gw.session.counter++;
+						  		gw.html("Hola!!, tu IP es: " + gw.ip + " y esta es tu visita nº "+ gw.session.counter);
 						});
 		ul#features-menu
 			li 
 				a(href="#negociacion-http") Negociación HTTP
 			li 
-				a(href="#gestion-rutas") Gestión de Rutas
+				a(href="#enrutado") Enrutado
 			li 
 				a(href="#req-res") Request&Response
 			li 
-				a(href="#gestion-plugins") Gestión de 
+				a(href="#middleware") Middleware
 			li 
 				a(href="#i18n") i18n
 			li 
@@ -61,32 +76,25 @@ html(lang=gw.language)
 			div.pink#rutas
 				div.feature
 					ul.list
-						li Entorno dinámico. Añade, modifica o elimina controladores en caliente
-						li Parámetros de configuración por defecto
-						li Controladores anidables por ruta. Mejor organización de funcionalidades en <strong>árboles de rutas</strong>
-						li Los <strong>Plugins</strong> permiten extender las posibilidades de los controladores y modificar el funcioamiento del sistema
+						li Acceso en vivo a todos los controladores del sistema
+						li Todos los controladores de tu aplicación en <strong>project.routes</strong>
+						li Convención antes que configuración
+						li Añade, modifica o elimina controladores en caliente
+						li Mejor organización de funcionalidades en <strong>árboles de controladores</strong>
 						li Nombrado de controladores; ofrece organización y control sobre el entorno
-						li Herencia en las estructuras arbóreas de controladores
-
-					h2#gestion-rutas Gestión de Rutas
+						li Comunicación middleware y controladores
+					h2#enrutado Enrutado
 						span Entorno dinámico
 
 					:highlight(lang='javascript')
-							var myRoute = new Route(
-								// Objeto de configuración del controlador
-								{
+							// Añade el objeto route a project.routes
+							project.routes.add(new Route({
 									id:"home",
 									path:"/web",
-									method:"post|get"
-								},
-								// Manejador
-								function(gw){/
+									method:["POST"|"GET"]
+								},function(gw){
 									gw.send("Hello from the other side");
-								}
-							);
-
-							// Añade lel objeto al proyecto
-							project.routes.add(myRoute);
+							}));
 				//
 					div.tutos
 						p TUTORIALES
@@ -106,8 +114,7 @@ html(lang=gw.language)
 				
 					ul.list
 						li Gangway is the way. Olvida el request y response nativos. Gangway encapsula ambos, ofreciendo propiedades y métodos vitaminados.
-						li Accede a propiedades como ,,, directamente.
-						li Métodos para el envío compatible con el protocolo por partes: streaming
+						li Con tan solo un gw.file(), haces streaming!
 
 					:highlight(lang='javascript')
 							var myRoute = new Route(
@@ -188,45 +195,32 @@ html(lang=gw.language)
 								a Servicio https
 								
 
-			div.pink#plugins
+			div.pink#middleware
 				div.feature
-					h2#gestion-plugins Gestión de Plugins
+					h2#middleware Middleware
 						span Middleware vitaminado
 
 					ul.list
-						li Los <strong>Plugins</strong> permiten extender las posibilidades de los controladores y modificar el funcionamiento del sistema
-						li Nombrado de plugins: ofrece organización y control sobre el entorno
-						li Todos los plugins del proyecto se encuentran en <strong>project.plugins</strong>
-						li Los plugins se pueden añadir, modificar o eliminar en caliente. 
-						li PillarsJS tiene una serie de Plugins built-in, esenciales para su funcionamiento.
-						li Es posible crear un plugin y decidir en qué lugar a de ejecutarse, gracias a la <strong>Cadena de Plugins</strong>
+						li El <strong>Middleware</strong> permite extender las posibilidades de los controladores y modificar el funcionamiento del sistema
+						li Nombrado de middleware: ofrece organización y control sobre el entorno
+						li Todos los middleware del proyecto se encuentran en <strong>project.middleware</strong>
+						li Los middleware se pueden añadir, modificar o eliminar en caliente. 
+						li PillarsJS tiene una serie de Middleware built-in, esenciales para su funcionamiento.
+						li Es posible crear un middleware y decidir en qué lugar a de ejecutarse, en caliente.
 						
 					:highlight(lang='javascript')
 							var project = require('pillars');
 
-							var myPlugin = new Plugin(
-								// Configuración del plugin
-								{
-									id:"idPlugin"
+							project.middleware.add(new Middleware({
+									id:"idMiddleware",
 									active: true
-								},
-								// Manejador del Plugin
-								function(gw,next){
-									//gw.miValor
+								},function(gw,next){
+									// Do something
 									next();
-								}
-							);
+								});
 
-							// Añadimos el plugin creado a los plugins del proyecto
-							project.plugins.add(myPlugin);
 
-							// Modificación del Plugin
-							project.plugins.get('idPlugin').configure({
-								active: false;
-							});
-
-							// Eliminación del Plugin
-							project.plugins.delete(); ????
+				
 				//
 					div.tutos
 						p TUTORIALES
@@ -249,16 +243,7 @@ html(lang=gw.language)
 					h2#i18n i18n
 						span Internacionalización eficiente
 
-					:highlight(lang='javascript')
-						var project = require('pillars');
-						project.services.get('http').start();
-
-						var myRoute = new Route({
-
-							},
-							function(gw){
-								gw.i18n('miMensaje',{ip: ip});
-							}); 
+			
 
 				//
 					div.tutos
@@ -274,7 +259,7 @@ html(lang=gw.language)
 						span Usa tu motor favorito
 					
 					ul.list
-						li Soporte a cualquier motor de plantillas como mustache, jade,...
+						li Soporte a diferentes motores de plantillas
 						li Renderizado automático y optimizado.
 				//
 					:highlight(lang='javascript')
@@ -292,6 +277,7 @@ html(lang=gw.language)
 					ul.list
 						li Programación de tareas mediante CRON gracias a la librería Scheduled
 						li Acceso a todas las tareas programadas en el proyecto
+						li Acceso en vivo a las tareas programas: modificación, eliminación, ...
 					h2#cron CRON
 						span Librería Scheduled
 				//

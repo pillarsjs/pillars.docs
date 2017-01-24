@@ -14,26 +14,19 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:marked
-				Pillars.js **genera de forma automática** un *objeto gangway* en cada petición. Tiene como propiedades los **datos del request parseados** y métodos para la respuesta. 
+				Pillars.js **genera de forma automática** un *objeto gangway* en cada petición. Tiene como propiedades los **datos del request parseados** y **métodos para la respuesta**.
 
-				Este objeto está disponible en el *handler* tanto del **objeto route**, como en el **objeto plugin**.				
-		
-		//- Syntax
-		section.syntax
-			h2#syntax Sintaxis
+				Pasea los datos del **request** y los setea en sus propiedades para que sean más accesibles y usables directamente. Además sus métodos están vitaminados, por ejemplo `gw.file()`, que envía archivos, tiene implementado **byte-serving**, esto quiere decir que permite **descargas por partes y streaming** :)
+
+				Este objeto está disponible en el *handler* tanto del **objeto route**, como en el **objeto middleware**.
+
 			:highlight(lang='javascript')
 				var myRoute = new Route(function(gw){
 
 					var POST = gw.content.params; 
 
 					var GET = gw.query;
-					/*
-					{
-						id: '37',
-						value: 'lipsum'
-					}
-					*/
-
+				
 					var cookie = gw.cookie;
 
 					var userAgent = gw.ua;
@@ -58,15 +51,6 @@ html(lang=gw.language)
 				});
 
 				
-
-		//- Description
-		section.description
-			h2#description Descripción
-			:marked
-				Gangway parsea los datos del request y los setea en sus propiedades de una forma usable y accesible directamente. 
-
-				Algunos parses, como el parser del contenido de la petición HTTP, es posible desactivarlos para que no ocupen tiempo de proceso, si fuera necesario. 
-							
 		//- Properties
 		section.properties
 			h2#properties Propiedades
@@ -224,7 +208,7 @@ html(lang=gw.language)
 						+ `.type`: Encabezado *Content-Type* de la solicitud.
 						+ `.length`: Encabezado *Content-length* de la solicitud, indica el tamaño en bytes del cuerpo.
 						+ `.boundary`: Aparece solo en las solicitudes POST del tipo *multipart/form-data*. Es extraido de *Content-type*.
-						+ `.params`: Es la ubicación donde el Plugin *BodyReader* guardará los parámetros recibidos en el cuerpo de la solicitud. Estos son copiados también en la propiedad [`gw.params`](#property-params), donde se combinan con los recibidos mediante GET.
+						+ `.params`: Es la ubicación donde el middleware *BodyReader* guardará los parámetros recibidos en el cuerpo de la solicitud. Estos son copiados también en la propiedad [`gw.params`](#property-params), donde se combinan con los recibidos mediante GET.
 
 			//- Property
 			section.property
@@ -567,7 +551,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:marked
-						Idioma que va a usar el servidor para la respuesta.  Está basado en la URL utilizada para la solicitud, esta propiedad es establecida por el [Plugin LangPath](funcionamiento-plugins.jade#plugin-langpath).  
+						Idioma que va a usar el servidor para la respuesta.  Está basado en la URL utilizada para la solicitud, esta propiedad es establecida por el [Middleware LangPath](middleware.jade#langpath).  
 
 
 			//- Property
@@ -591,7 +575,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:marked
-						Cabeceras relacionas con solicitudes CORS para la respuesta al cliente. Estas propiedades son definidas por el [Plugin CORS](funcionamiento-plugins.jade#plugin-cors) automáticamente.
+						Cabeceras relacionas con solicitudes CORS para la respuesta al cliente. Estas propiedades son definidas por el [Middleware CORS](middleware.jade#cors) automáticamente.
 
 					:highlight(lang='javascript')
 						//cors: {
@@ -659,7 +643,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:marked
-						Propiedad no nativa del *objeto gangway*. Es añadida por el *Plugin router.js*. Contiene un referencia a todos los *objetos route* por los que va pasando Pillars.js hasta llegar al que atenderá la petición. En `gw.routing` encontramos: 
+						Propiedad no nativa del *objeto gangway*. Es añadida por el *Middleware router.js*. Contiene un referencia a todos los *objetos route* por los que va pasando Pillars.js hasta llegar al que atenderá la petición. En `gw.routing` encontramos: 
 						+ `inheritance`: *parámetros de configuración* declarados en el *objeto route* que atiende la petición y sus antecesores en el caso de ser una estructura arbórea. Finalmente queda un listado de propiedades heredadas. 
 						> [Ver herencia de *parámetros de configuración* de un *objeto route* en una estructura arbórea.](enrutado.jade#herencia)
 						+ `routes`: dada una estructura arbórea, array que contiene todos los *objetos route* que se recorren en el árbol hasta llegar al que atiende finalmente la petición.
@@ -683,7 +667,7 @@ html(lang=gw.language)
 				//- Property description
 				section.description
 					:marked
-						Propiedad no nativa del *objeto gangway*. Es añadida por el [Plugin sessions.js](https://github.com/pillarsjs/pillars/blob/master/plugins/sessions.js). Contiene los datos de la sesión.
+						Propiedad no nativa del *objeto gangway*. Es añadida por el [Middleware sessions.js](https://github.com/pillarsjs/pillars/blob/master/middleware/sessions.js). Contiene los datos de la sesión.
 						
 						
 
@@ -1179,3 +1163,45 @@ html(lang=gw.language)
 					h4 Ejemplo
 					:highlight(lang='javascript')
 						gw.error(500);
+
+		//- Description
+		section.contenido-de-la-peticion
+			h2#contenido-de-la-peticion POST, GET y rutas parametrizadas
+			:marked
+				+ **Query String (GET)**. Se conoce como Query String a la parte de la URL que contiene los datos que se deben pasar a aplicaciones. Comúnmente, en PHP, lo que se conocía como el *GET*. 
+					Por lo tanto, si se recibe una petición con datos en el query string, se encontrará seteado en [`gw.query`](../reference/gangway.jade#property-query).
+			:highlight(lang='javascript')
+				// Se visita http://sub.dom.ext/a/b/c?a=A&b=B
+				//> gw.query: {a:'A',b:'B'}
+				gw.send("Has enviado mediante Query String 'a' co el valor: " + gw.query['a'] + 
+					" y 'b' con el valor: " + gw.query['b'] );
+			:marked
+				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](../reference/gangway.jade#property-content) de una forma accesible. En el caso de subida de ficheros, hemos de tener en cuenta que el *objeto route* debe estar configurado para aceptar [multipart/form-data](enrutado.jade#property-multipart). En el caso de no estar definido `method`, aceptará todos.
+			:highlight(lang='javascript')
+				var myRoute = new Route(
+					{
+						path: '/uploads',
+						multipart: true
+					},
+					function(gw){
+						//...
+					});
+			:marked
+					Los ficheros de la petición serán seteados en [`gw.files`](../reference/gangway.jade#property-files) y almacenados en el directorio `/temp`. Si deseamos cambiar este directorio temporal, podemos hacerlo mediante la propiedad `.tempDirectory` del [plugin bodyReader.js](../reference/funcionamiento-plugins.jade#plugin-bodyreader).
+
+			.msg.msg-icon.bg-info No olvides cambiar los archivos de ubicación, ya que en /temp sólo se almacenan temporalmente hasta que el manejador del controlador finaliza.
+				
+					
+			:marked
+				
+				+ **Rutas parametrizadas**. El uso de rutas parametrizadas tiene que estar declarado en el *objeto route*. Una vez declarado, podremos extraer de una URL partes de la misma. Para realizar esta *extración* usamos la propiedad [`gw.pathParams`](../reference/gangway.jade#property-pathParams).
+
+			:highlight(lang='javascript')
+					var route = new Route({path:'/:var1/:var2'},function(gw){
+						gw.json(gw.pathParams);
+					});
+					//Consultando localhost:300/users/john imprime:
+					//>{var1: 'users', var2:'john'}
+			:marked
+				Para simplificar la metodología de trabajo con la información que llega en la petición. Tanto el query string (GET), como el contenido de la petición (POST) y las rutas parametrizadas, se encuentran también seteados en [`gw.params`](../reference/gangway.jade#property-params). Esto es una copia, simplemente más accesible de todos los datos obtenidos en la solicitud.
+	

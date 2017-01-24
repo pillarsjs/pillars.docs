@@ -16,7 +16,7 @@ mixin base(title,path,bodyclass)
 					h2 Main menu
 					ul
 						li: a(href="/") Home
-						li: a(href="/started/instalacion.jade") Comenzando
+						li: a(href="/started/comenzando.jade") Comenzando
 						//li: a(href="/tutorials/configuracion-entorno.jade") Tutoriales
 						li: a(href="/reference/project.jade") Referencia
 						//li: a(href="/libs/") Librerías
@@ -102,16 +102,14 @@ mixin base(title,path,bodyclass)
 	
 	script
 		include ./js/jquery.min.js
-	//- 
 	
+	//  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	//	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	//	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	//	})(window,document,'script','/js/analytics.js','ga');
+	//	ga('create', 'UA-64107815-1', 'auto');
+	//	ga('send', 'pageview');
 	script.
-
-		<!--(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','/js/analytics.js','ga');
-		ga('create', 'UA-64107815-1', 'auto');
-		ga('send', 'pageview');-->
 
 		(function(){
 			var mainmenu = $('#mainmenu');
@@ -217,10 +215,11 @@ mixin reference-layout(title,path,bodyclass)
 				h2 Contenido
 				ul
 					li: a(href="/reference/project.jade") project
-					li: a(href="/reference/clase-route.jade") Clase Route
-					li: a(href="/reference/gangway.jade") Objeto Gangway
-					li: a(href="/reference/clase-plugin.jade") Clase Plugin
-					li: a(href="/reference/http-service.jade") Clase HttpService
+					li: a(href="/reference/enrutado.jade") Enrutado
+					li: a(href="/reference/gangway.jade") Gangway
+					li: a(href="/reference/middleware.jade") Middleware
+					li: a(href="/reference/servicios.jade") Servicios
+					li: a(href="/reference/cabeceras-http.jade") Cabeceras HTTP
 									
 		#contents
 			block
@@ -235,20 +234,20 @@ mixin starting-layout(title,path,bodyclass)
 			nav#scopelinks
 				h2 Comenzando
 				ul
-					li: a(href="/started/instalacion.jade") Instalación
-					li: a(href="/started/hola-mundo.jade") Hola Mundo
-					li: a(href="/started/entorno.jade") Entorno y componentes
-					li: a(href="/started/enrutado.jade") Enrutado
-					li: a(href="/started/solicitud-y-respuesta.jade") Solicitud y respuesta
-					li: a(href="/started/services.jade") Servicios
-					li: a(href="/started/plugins.jade") Plugins					
-					li
-						a(href="/started/avanzado.jade") Avanzado
-						ul
-							li: a(href="/started/internacionalizacion.jade") Internacionalización
-							li: a(href="/started/enrutado-avanzado.jade") Enrutado							
-							li: a(href="/started/cabeceras-http.jade") Cabeceras HTTP
-							li: a(href="/started/plugins-avanzado.jade") Plugins
+					li: a(href="/started/comenzando.jade") Comenzando
+					//li: a(href="/started/hola-mundo.jade") Hola Mundo
+					//li: a(href="/started/entorno.jade") Entorno y componentes
+					//li: a(href="/started/enrutado.jade") Enrutado
+					//li: a(href="/started/solicitud-y-respuesta.jade") Solicitud y respuesta
+					//li: a(href="/started/services.jade") Servicios
+					//li: a(href="/started/plugins.jade") Plugins					
+					//li
+					//	a(href="/started/avanzado.jade") Avanzado
+					//	ul
+					//		li: a(href="/started/internacionalizacion.jade") Internacionalización
+					//		li: a(href="/started/enrutado-avanzado.jade") Enrutado							
+					//		li: a(href="/started/cabeceras-http.jade") Cabeceras HTTP
+					//		li: a(href="/started/plugins-avanzado.jade") Plugins
 		#contents
 			block
 
