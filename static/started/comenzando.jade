@@ -2,8 +2,8 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Getting started',url:'/started/'},{label:'Instalación',url:'/started/instalacion.jade'}];
-	+starting-layout("Pillars.js Getting started - Instalación - 'make it easy!'",path)
+	- var path = [{label:'Getting started',url:'/started/'},{label:'Comenzando',url:'/started/comenzando.jade'}];
+	+starting-layout("Pillars.js Getting started - Comenzando - 'make it easy!'",path)
 
 		#title
 			h1 Comenzando
@@ -33,7 +33,7 @@ html(lang=gw.language)
 				}
 
 			:marked
-				Ahora en el **archivo app.js**  vamos a escribir el código de un sencillo "Hola Mundo". No vamos a configurar nada, por lo que **quedarán establecidas las configuraciones por defecto**, como es el puerto en el que responderá la aplicación *(puerto 3000)*: 
+				Ahora en el **archivo app.js**  vamos a escribir el código de un sencillo "Hola Mundo". No vamos a configurar nada, por lo que **quedarán establecidas las configuraciones por defecto**, como es el puerto en el que responderá la aplicación *(puerto 8080)*: 
 			:highlight(lang='javascript')
 				// app.js file
 				//Inclusión de la librería pillars
@@ -43,7 +43,7 @@ html(lang=gw.language)
 				project.services.get('http').start();
 
 				//Añadimos un nuevo controlador de ruta
-				project.routes.add(Route(
+				project.routes.add(new Route(
 					//Configuración del controlador
 					{
 						id: "idControlador",
@@ -68,7 +68,7 @@ html(lang=gw.language)
 
 				![Captura carga Pillars.js](../img/started/carga-pillarsjs.jpg)
 
-				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:3000](http://localhost:3000).
+				Al no configurar nada, la consola por defecto está en inglés. Puedes ver tu *"Hola Mundo"* en [http://localhost:8080](http://localhost:8080).
 
 				> Pillars.js integra sistema de traducciones, por lo que podríamos visualizar la consola en el idioma deseado, siempre y cuando la traducción al idioma correspondiente esté realizada. [**Colabora** si dominas un idioma en el que no está traducida! :)](https://github.com/pillarsjs/pillars/tree/master/languages)
 
@@ -117,7 +117,7 @@ html(lang=gw.language)
 					Veamos la creación de un *objeto route* con todos los parámetros de configuración:
 
 			:highlight(lang='javascript')
-					project.routes.add(Route({
+					project.routes.add(new Route({
 							  // Configuración del controlador. Aquí se configura en qué casos actuará
 				
 							  id:"home", /* El identificador del controlador. Si más tarde 
@@ -171,7 +171,7 @@ html(lang=gw.language)
 					Un ejemplo de información que contiene gangway:
 
 			:highlight(lang='javascript')
-					project.routes.add(Route(function(gw){
+					project.routes.add(new Route(function(gw){
 
 						var POST = gw.content.params; 
 
@@ -210,7 +210,7 @@ html(lang=gw.language)
 					Creación de middleware:
 
 			:highlight(lang='javascript')
-				project.middleware.add(Middleware({ //Configuración del middleware
+				project.middleware.add(new Middleware({ //Configuración del middleware
 						id: "idMiddleware", /* Identificador del middleware, es necesario para
 						posteriormente capturarlo y modificarlo si es necesario*/
 						active: true /* Indica si está activo, y por lo tanto si se aplica*/
@@ -229,14 +229,14 @@ html(lang=gw.language)
 					Y también podemos crear un middleware que sólo se ejecute ante ciertas configuraciones de un controlador: 
 
 			:highlight(lang='javascript')
-				project.middleware.add(Middleware(function(gw, next){
+				project.middleware.add(new Middleware(function(gw, next){
 					if (gw.routing.inheritance.varToMiddleware){
 						console.log("Middleware running");
 					};
 					next();
 				}));
 
-				project.routes.add(Route({
+				project.routes.add(new Route({
 						path:'/middleware',
 						varToMiddleware: true
 					},function(gw){
@@ -286,8 +286,8 @@ html(lang=gw.language)
 				Gracias a esta arquitectura, nos encontramos con una metodología homogénea *además de dinámica*, al crear y manejar propiedades de diferente índole siguendo la misma nomenclatura.
 			:highlight(lang='javascript')
 				/* *** Declaración de un controlador, un middleware y un servicio HTTP *** */
-				var myRoute = Route({id:"idRoute"},function(gw){/*...*/});
-				var myMiddleware = Middleware({id:"idMiddleware"},function(gw,next){/*...*/});
+				var myRoute = new Route({id:"idRoute"},function(gw){/*...*/});
+				var myMiddleware = new Middleware({id:"idMiddleware"},function(gw,next){/*...*/});
 				var myHTTP = new HttpService({id:'idHttp'});
 
 				/* *** Manejo de project.routes - los controladores *** */
@@ -325,9 +325,9 @@ html(lang=gw.language)
 				Esto a su vez, nos dará mayor control, ya que por ejemplo, podremos desactivar `project.routes.get('idPadre').active = false` una sección completa de la aplicación web.
 
 			:highlight(lang='javascript')
-				var routeFather = Route ({id:'idFather'},function(gw){/*...*/});
-				var routeSon1 = Route(function(gw){/*...*/});
-				var routeSon2 = Route(function(gw){/*...*/});
+				var routeFather = new Route ({id:'idFather'},function(gw){/*...*/});
+				var routeSon1 = new Route(function(gw){/*...*/});
+				var routeSon2 = new Route(function(gw){/*...*/});
 
 				project.routes.add(routerFather);
 				routerFather.routes.add(routeSon1).add(routeSon2);
@@ -335,12 +335,20 @@ html(lang=gw.language)
 				project.routes.get('idFather').active = false;
 
 
-			.msg.msg-icon.bg-info Hasta aquí hemos visto el core de Pillars.js, es decir, los elementos básicos para poder empezar a trabajar. Seguidamente vamos a ver funcionalidades integradas en el framework bastante útiles.
+			.msg.msg-icon.bg-info Hasta aquí hemos visto el core de Pillars.js, es decir, los elementos básicos que forman parte del núcleo. Próximamente tendremos lista la parte de la documentación que trata sobre otras funcionalidades ampliadas, gracias al middleware integrado y al ecosistema de librerías.
 
+
+			.msg.msg-icon.bg-info Por otra parte te agradecemos feedback sobre este documento. Puedes mandarlo a hello@pillarsjs.com Gracias!
+
+
+			//.msg.msg-icon.bg-alert De aquí en adelante no está desarrollado ni revisado. Aquí puedes parar de leer.
+
+	//
 		section.directorio
 			h2#directorio Directorio estático
 			:marked
-				Para crear un directorio estático, lo hacemos de la siguiente forma:
+				Directoy es un middleware integrado en Pillars.js. Éste nos permite crear un directorio estático de una forma sencilla: 
+
 			:highlight(lang='javascript')
 				project.routes.add(
 					Route({
@@ -354,7 +362,9 @@ html(lang=gw.language)
 				)); // No tiene manejador ;)
 
 			:marked
-				Tiene unas ventajas y características dignas de mencionar:  
+				En este caso, tu aplicación tendrá el directorio `/static` montado como un directorio estático. Tiene unas ventajas y características dignas de mencionar, y es que Pillars.js implementa un sistema de cacheo excepcional. Éste se encarga de cachear los archivos que se solicitan, de forma que una vez que se pida un fichero, éste no se volverá a leer en disco (siempre y cuando no haya sido modificado), sino que estará en la caché, por lo que se ahorran lecturas de disco. Para controlar y poder configurar datos como: número de archivos  máximo en caché, o tamaño de la caché.
+
+				Esta caché también tiene su propio sistema de limpeza de archivos que no se utilizan.
 
 
 		section.templating
@@ -391,3 +401,8 @@ html(lang=gw.language)
 				Los path de ruta, también son internacionalizables.
 
 
+
+		section.scheduled
+			h2#scheduled Scheduled
+			:marked
+				Programación de tareas CRON
