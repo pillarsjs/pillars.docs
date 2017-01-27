@@ -1,0 +1,114 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Configuración de la aplicación',url:'/tutorials/configuracion-aplicacion.jade'}];
+	+reference-layout("Pillars.js Tutorials - Configuración de la aplicación - 'make it easy!'",path)
+
+		#title
+			h1 Configuración de la aplicación
+				em  Tutoriales Pillars.js
+			
+		section.descripcion
+
+			:marked
+				Cuando realizamos la inclusión de Pillars.js `var project = require("pillars")`, **es devuelto un objeto**, el cual estamos seteando en `project`.
+				
+				> Cualquier require de 'pillars' devolverá siempre la misma instancia. Todas las librerías Pillars.js se cargan en modo [singleton.](http://es.wikipedia.org/wiki/Singleton)
+
+				`project` contiene una **configuración mínima inicial**, *convención sobre configuración*, por lo que en principio no hay que preocuparse por configurar el proyecto. No obstante en esta sección vamos a ver qué propiedades del proyecto podemos configurar, dónde se engloban, y su relación con otros elementos de Pillars.js.
+
+		section.cache
+			h2#cache Optimización RAM
+			:marked
+				En Pillars.js podemos configurar cómo se comporta el cacheo, lo que permite, en función de las características de la aplicación, optimizar el uso de RAM.
+
+				**¿Cómo funciona el cacheo?** 
+
+				Se define un tamaño máximo de caché para la aplicación, por defecto son 250MB. En este espacio, se cachean archivos, plantillas, etc. Es decir, todo lo que suponga un envío de fichero en la respuesta HTTP. Por lo que tenemos una caché con archivos que han sido solicitados.
+
+				**¿Qué ventajas tiene?**
+
+				Evita lecturas en disco, por lo que si el archivo no ha sido modificado, se sigue enviando el archivo ubicado en la caché. 
+
+				**¿Se limpia la cache en algún momento mientras la aplicación está en marcha?**
+
+				Por supuesto, siempre que vaya llegando al límite de su uso se aplican una serie de reglas, como por ejemplo, borrar los archivos menos demandados. 
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.configure({					
+					maxCacheFileSize: 5*1024*1024, // 5MB - Tamaño máximo de un archivo para que entre en la caché
+					cacheMaxSamples: 100, //  Dato relacionado con la heurística de uso de los archivos 
+					cacheMaxSize: 250*1024*1024, // 250MB - Tamaño máximo de la caché
+					cacheMaxItems: 5000, // Número máximo de elementos en la caché
+				});
+
+
+			:marked
+		section.maxUploadSize
+			h2#maxUploadSize Upload File
+			:marked
+				El tamaño máximo de archivo permitido se configura de forma global para el proyecto de la siguiente forma: 
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.config.maxUploadSize = 5*1024*1024; // 5MB - Tamaño máximo de archivo permitido
+			
+			:marked
+				No quiere decir esto, que siempre se tenga que mantener este límite en toda la aplicación, ya que esta propiedad es posible redefinirla para un controlador o controladores concretos. // Ver tutorial completo de POST y Upload Files
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				
+				project.routes.add(new Route({
+						id:"upload-archivos-pesados"
+						method: ["POST","GET"],  // Establecemos para que acepte POST y GET
+						multipart: true,  // Establecemos para que acepte ficheros
+						maxUploadSize: 25*1024*1024  // Redefinimos el límite en 25MB.
+					},function(gw){
+						var myFile = gw.files;
+						gw.send("El archivo ha sido recibido y guardado");
+				}));
+			:marked
+				Estos ficheros son almacenados temporalmente en el directorio `/temp`, el cual es activado por el middleware BodyReader, que es el encargado de leer el cuerpo de la petición en las peticiones post.
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.middleware.get("BodyReader").tempDirectory = "./otroDirectorio";
+				
+			:marked
+
+		section.templating
+			h2#templating Templating
+			:marked
+				Una de las librerías incorporadas a Pillars.js es [templated](https://github.com/pillarsjs/templated). 
+
+				Esta librería permite añadir el **motor de plantillas** que más nos guste a Pillars.js. Es un **Multi template engine manager**.
+
+				Hay aspectos del templating cuyo comportamiento debe ser global para la aplicación, por lo que hay propiedades en `project` relativas a este.
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.configure({
+					renderReload: true,
+					directoryTemplate: "",
+					errorTemplate: ""
+				});
+
+			:marked
+				asd
+		section.debug
+			h2#debug Debug Mode
+			:marked
+				Establecer el Modo Debug nos permite ver información adicional de los errores.
+			:highlight(lang='javascript')
+				var project = require("pillars");
+				project.config.debug = true;
+		
+		section.cors
+			h2#cors CORS
+			:marked
+				asd
+		section.favicon
+			h2#favicon favicon
+			:marked
+				asd

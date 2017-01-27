@@ -3,7 +3,7 @@ include ../.layout.jade
 doctype html
 html(lang=gw.language)
 	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/docs/tutorials/'},{label:'Servidor-Cliente',url:'/pillars/docs/tutorials/i18n.jade'}];
-	+tutorial-layout("Pillars.js Tutorials - i18n - 'make it easy!'",path)
+	+reference-layout("Pillars.js Tutorials - i18n - 'make it easy!'",path)
 
 		#title
 			h1 i18n
@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				Pillars.js cuenta con un sistema de internacionalización versátil, cómodo y escalable. 
 
 				Una de las cosas más importantes es que, para una web en varios idiomas, tendremos un sólo código fuente frontend y backend, SEO Friendly y escalable a otros idiomas. 
@@ -27,7 +27,7 @@ html(lang=gw.language)
 		section.example-01
 			h2#examples Página en múltiples idiomas
 
-			:markdown
+			:marked
 				El siguiente ejemplo trata de un Landing inicialmente en dos idiomas, y que posteriormente agregaremos el tercero. Disponemos de los siguientes archivos en /examples/004 - i18n/: 
 				+ *landing.jade*: Plantilla en JADE del Landing. Recuerda que puedes añadir más engines de renderizado con la librería Renderer.
 				+ Directorio *languages*:
@@ -59,7 +59,7 @@ html(lang=gw.language)
 				});
 
 				
-			:markdown
+			:marked
 				Por otro lado tenemos los nodos de traducción que hemos creado, que como ves en el código son: 
 				+ example-004.title  
 				+ example-004.h1
@@ -86,7 +86,7 @@ html(lang=gw.language)
 				}
 
 
-			:markdown
+			:marked
 				Para añadir un idioma más, tan sólo tendríamos que actualizar el array de idiomas del entorno de la aplicación y crear en la carpeta languages el archivo de.js con las traducciones pertinentes.
 
 			:highlight(lang='javascript')
@@ -97,7 +97,7 @@ html(lang=gw.language)
 		section.example-01
 			h2#examples Variables y funciones en las hojas de traducción
 
-			:markdown
+			:marked
 				 Con el objetivo de flexibilizar al máximo las posibilidades de las hojas de traducción, éstas admiten en sus nodos variables y funciones. 
 
 				 El siguiente route, en el nodo que hace refencia a la cabecera h1, pasa como parámetro la variable `name`. Esta variable será tomada por la hoja de traducción mediante `%(name)s`.
@@ -114,7 +114,7 @@ html(lang=gw.language)
 					); 
 				});
 
-			:markdown
+			:marked
 				En la hoja de traducción tomamos el valor de las variables con `%(nombreVariable)formato` de la siguiente forma: 
 
 			:highlight(lang='javascript')
@@ -124,7 +124,7 @@ html(lang=gw.language)
 					'contents': "Contenidos de la página"
 				}
 
-			:markdown
+			:marked
 				También es posible ejecutar acciones en la hoja de traducción con las variables tomadas. Esto lo hacemos mediante una función anónima del siguiente modo: 
 
 			:highlight(lang='javascript')
