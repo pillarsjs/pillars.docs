@@ -969,6 +969,10 @@ a.source:before {
 }
 .home #contents {
   padding: 0;
+  text-align: center;
+}
+.home #contents #example {
+  text-align: left;
 }
 #totop {
   display: none;
@@ -1074,6 +1078,10 @@ body.home #space #main div#cover h1 {
 body.home #space #main div#cover img#node-logo {
   display: inline-block;
   margin: 0 0 -8px 0;
+  background-color: white;
+  width: 135px;
+  padding: 0 0 5px;
+  margin-left: 7px;
 }
 body.home #space #main div#cover img {
   display: block;

@@ -20,16 +20,16 @@ html(lang=gw.language)
 
 						// Controladores flexibles en configuración:
 						project.routes.add(new Route({
-								method: ["GET","POST"], // Múltiples métodos
-								port: 8080	,			// Puerto específico
+								method: ["GET","POST"], 
+								port: 8080,		
 								path: "/hola",
 								https: false,
-								cors: true,
+								cors: true,	
 								session: true 
 							},function(gw){
 								gw.session.counter = gw.session.counter || 0;
 								gw.session.counter++;
-						  		gw.html("Hola!!, tu IP es: " + gw.ip + " y esta es tu visita nº "+ gw.session.counter);
+								gw.html("Hola!!, tu IP es: " + gw.ip + " y esta es tu visita nº "+ gw.session.counter);
 						});
 		ul#features-menu
 			li 
