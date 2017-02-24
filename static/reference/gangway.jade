@@ -1,0 +1,1207 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'Objeto gangway',url:'/reference/gangway.jade'}];
+	+reference-layout("Pillars.js Reference - Objeto gangway - 'make it easy!'",path)
+
+		#title
+			h1 Objeto Gangway
+				em  Pillars.js Reference
+			a.source(href="https://github.com/pillarsjs/pillars/blob/master/lib/gangway.js") Source
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+				Pillars.js **genera de forma automática** un *objeto gangway* en cada petición. Tiene como propiedades los **datos del request parseados** y **métodos para la respuesta**.
+
+				Pasea los datos del **request** y los setea en sus propiedades para que sean más accesibles y usables directamente. Además sus métodos están vitaminados, por ejemplo `gw.file()`, que envía archivos, tiene implementado **byte-serving**, esto quiere decir que permite **descargas por partes y streaming** :)
+
+				Este objeto está disponible en el *handler* tanto del **objeto route**, como en el **objeto middleware**.
+
+			:highlight(lang='javascript')
+				var myRoute = new Route(function(gw){
+
+					var POST = gw.content.params; 
+
+					var GET = gw.query;
+				
+					var cookie = gw.cookie;
+
+					var userAgent = gw.ua;
+					/*
+					ua:{ 
+						mobile: false,
+						os: 'Windows NT 6.1; WOW64',
+						engine: 'Blink',
+						browser: 'Chrome'
+					}
+					*/
+
+
+					var id = gw.id; 			// id del objeto gangway para la petición.
+					var ip = gw.ip;			// ip del cliente
+					var browserLang = gw.language;	// Primer idioma del navegador del cliente 
+					var cors = gw.cors; 			// Gestion de orígenes cruzados. 
+					var method = gw.method;		// Método de la petición  GET y/o POST					
+					var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+
+					gw.json(gw);
+				});
+
+				
+		//- Properties
+		section.properties
+			h2#properties Propiedades
+
+			//- Property
+			section.property
+				h3#property-events: code
+					small gw
+					| .events
+
+				//- Property description
+				section.description
+					:marked
+						Propiedad de tipo ObjectArray. Contiene eventos.
+
+			//- Property
+			section.property
+				h3#property-responseTime: code
+					small gw
+					| .responseTime
+
+				//- Property description
+				section.description
+					:marked
+						Tiempo que se tarda en resolver la respuesta, justo antes de comenzar el envío de la misma.
+
+
+			//- Property
+			section.property
+				h3#property-timer: code
+					small gw
+					| .timer
+
+				//- Property description
+				section.description
+					:marked
+						**TimeStamp** del instante en el que se creó el objeto gangway.
+
+			//- Property
+			section.property
+				h3#property-id: code
+					small gw
+					| .id
+
+				//- Property description
+				section.description
+					:marked
+						**String**. Id del objeto gangway, se genera automáticamente.
+
+			//- Property
+			section.property
+				h3#property-req: code
+					small gw
+					| .req
+
+				//- Property description
+				section.description
+					:marked
+						Alias del [objeto request original de Node](http://nodejs.org/api/http.html#http_http_incomingmessage).
+
+			//- Property
+			section.property
+				h3#property-res: code
+					small gw
+					| .res
+
+				//- Property description
+				section.description
+					:marked
+						Alias del objeto response original de Node.
+
+			//- Property
+			section.property
+				h3#property-socket: code
+					small gw
+					| .socket
+
+				//- Property description
+				section.description
+					:marked
+						Socket de la solicitud. Es un alias de [request.socket de Node](http://nodejs.org/api/http.html#http_message_socket).
+
+			//- Property
+			section.property
+				h3#property-statusCode: code
+					small gw
+					| .statusCode
+
+				//- Property description
+				section.description
+					:marked
+						Código de estado de la solicitud. Alias de [response.statusCode original de Node.](http://nodejs.org/api/http.html#http_response_statuscode)
+
+			//- Property
+			section.property
+				h3#property-headersSent: code
+					small gw
+					| .headersSent
+
+				//- Property description
+				section.description
+					:marked
+						Informa si se han enviado las cabeceras de la respuesta o no. Alias de [response.headersSent original de Node.](http://nodejs.org/api/http.html#http_response_headerssent)
+
+			//- Property
+			section.property
+				h3#property-headers: code
+					small gw
+					| .headers
+
+				//- Property description
+				section.description
+					:marked
+						Alias de request.headers original de Node.js.
+		
+
+			//- Property
+			section.property
+				h3#property-finished: code
+					small gw
+					| .finished
+
+				//- Property description
+				section.description
+					:marked
+						Alias de response.finished original de Node.js.
+
+			//- Property
+			section.property
+				h3#property-accepts: code
+					small gw
+					| .accepts
+
+				//- Property description
+				section.description
+					:marked
+						Engloba los encabezados del protocolo HTTP *Accept*, *Accept-Language* y *Accept-Encoding*. Estos valores siguen en su forma original el [RFC de Quality Values](http://tools.ietf.org/html/rfc7231#section-5.3.1). Pillars.js ordena y establece de una forma homogénea estos parámetros en las siguientes propiedades: 
+
+						`.accepts` devuelve un objeto con: 
+						+ `.accepts.types`: **Array** que contiene los *Content-types* que espera como respuesta el navegador en la solicitud. [RFC Accept](http://tools.ietf.org/html/rfc7231#section-5.3.2).
+						+ `.accepts.languages`: **Array** que contiene los idiomas que espera el navegador. El idioma que utilizará el servidor en el envío se setea en [`gw.language`](#property-language).[RFC Accept-Language](http://tools.ietf.org/html/rfc7231#section-5.3.5).
+						+ `.accepts.encodings`: **Array** que contiene los encodings que soporta el navegador. El encoding que utilizará el servidor se setea en [`gw.encoding`](#property-encoding). [RFC Accept-Encoding](http://tools.ietf.org/html/rfc7231#section-5.3.4).		
+						> [Ejemplos](../started/cabeceras-http.jade)
+
+			//- Property
+			section.property
+				h3#property-content: code
+					small gw
+					| .content
+
+				//- Property description
+				section.description
+					:marked
+						En esta propiedad se engloban los encabezados y valores relacionados con el cuerpo de la solicitud.
+						+ `.type`: Encabezado *Content-Type* de la solicitud.
+						+ `.length`: Encabezado *Content-length* de la solicitud, indica el tamaño en bytes del cuerpo.
+						+ `.boundary`: Aparece solo en las solicitudes POST del tipo *multipart/form-data*. Es extraido de *Content-type*.
+						+ `.params`: Es la ubicación donde el middleware *BodyReader* guardará los parámetros recibidos en el cuerpo de la solicitud. Estos son copiados también en la propiedad [`gw.params`](#property-params), donde se combinan con los recibidos mediante GET.
+
+			//- Property
+			section.property
+				h3#property-ranges: code
+					small gw
+					| .ranges
+
+				//- Property description
+				section.description
+					:marked
+						Relacionado con la solicitudes [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto es, cuando se solicita una porción de un contenido previamente descargado de forma parcial. Por ejemplo; una imagen cuya descarga ha sido interrumpida, o un video que se está ejecutando con un reproductor multimedia. Para una solicitud sin rangos la propiedad `.ranges` es false, en caso contrario `.ranges` será un objeto con las siguientes propiedades:
+
+						+ `.check`: indica el eTag del contenido del cual se solicita el rango. Algunos navegadores y reproductores de video, por ejemplo, no añaden este dato, siendo en estos casos *false*.
+						+ `.unit`: unidad en la que se solicitan los rangos. Normalmente bytes.
+						+ `.start`: byte de comienzo.
+						+ `.end`: byte de finalización.
+
+						> El objeto gangway maneja ranges de forma automática cuando se van a enviar ficheros mediante gw.file().
+
+			//- Property
+			section.property
+				h3#property-cookie: code
+					small gw
+					| .cookie
+
+				//- Property description
+				section.description
+					:marked
+						Objeto que contiene los valores recibidos mediante cookies.
+
+			//- Property
+			section.property
+				h3#property-auth: code
+					small gw
+					| .auth
+
+				//- Property description
+				section.description
+					:marked
+						Contiene los valores recibidos en la cabecera HTTP Authorization.[RFC](http://tools.ietf.org/html/rfc2616#section-14.8).
+						Devuelve *false*, en caso de no haberse recibido dicha cabecera y un objeto con las propiedades `.user` y `.pass` en el caso de haberse recibido.
+						Para solicitar al cliente dicha validación esta disponible el método [`.authenticate()`](#method-authenticate).
+
+					:highlight(lang='javascript')
+						auth:{
+							user: 'UserName',
+							pass: 'PassUser'
+						}
+			
+			//- Property
+			section.property
+				h3#property-ua: code
+					small gw
+					| .ua
+
+				//- Property description
+				section.description
+					:marked
+						Contiene información relativa al cliente extraido del encabezado HTTP User-Agent ([RFC](http://tools.ietf.org/html/rfc2616#section-14.43)): 
+						+ `.mobile`: **Boolean**. Si es dispositivo móvil o no.
+						+ `.os`: **String** con el Sistema Operativo del cliente.
+						+ `.engine`: **String**. Motor de renderizado. Gecko, Webkit, Trident, Blink o Unknow.
+						+ `.browser`: **String**. Navegador del cliente. Firefox, Seamonkey, Chrome, Chromium, Safari, Opera, MSIE o Unknow.
+
+					:highlight(lang='javascript')
+						ua:{ 
+							mobile: false,
+							os: 'Windows NT 6.1; WOW64',
+							engine: 'Blink',
+							browser: 'Chrome'
+						}
+
+			//- Property
+			section.property
+				h3#property-origin: code
+					small gw
+					| .origin
+
+				//- Property description
+				section.description
+					:marked
+						Encabezado *Origin* relacionado con las solicitudes [CORS](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing).
+
+			//- Property
+			section.property
+				h3#property-ip: code
+					small gw
+					| .ip
+
+				//- Property description
+				section.description
+					:marked
+						Dirección IP del cliente. **String**.
+
+					:highlight(lang='javascript')
+						console.log(gw.ip);
+						//>127.0.0.1
+
+			//- Property
+			section.property
+				h3#property-httpVersion: code
+					small gw
+					| .httpVersion
+
+				//- Property description
+				section.description
+					:marked
+						Versión del protocolo HTTP.
+
+			//- Property
+			section.property
+				h3#property-https: code
+					small gw
+					| .https
+
+				//- Property description
+				section.description
+					:marked
+						Indica si la solicitud ha sido realizada a un servicio https o no. **Boolean**.
+
+			//- Property
+			section.property
+				h3#property-host: code
+					small gw
+					| .host
+
+				//- Property description
+				section.description
+					:marked
+						Host al que se realiza la petición. **String**
+
+					:highlight(lang='javascript')
+							console.log(gw.host);
+							//>localhost
+
+			//- Property
+			section.property
+				h3#property-port: code
+					small gw
+					| .port
+
+				//- Property description
+				section.description
+					:marked
+						Puerto al que se realiza la petición.
+
+					:highlight(lang='javascript')
+							console.log(gw.port);
+							//>3000
+
+			//- Property
+			section.property
+				h3#property-method: code
+					small gw
+					| .method
+
+				//- Property description
+				section.description
+					:marked
+						Método utilizado para la petición. Uno de los siguientes valores [OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT]
+
+					:highlight(lang='javascript')
+							console.log(gw.method);
+							//>GET
+
+			//- Property
+			section.property
+				h3#property-path: code
+					small gw
+					| .path
+
+				//- Property description
+				section.description
+					:marked
+						Path completo al que se realiza la petición. Puede sufrir modificaciones, por ejemplo por el sistema de traducciones o cualquier otra redirección interna, en cualquier caso estará disponible una copia del path original en la propiedad [`.originalPath`](gangway.jade#property-originalPath).
+						
+
+					:highlight(lang='javascript')
+						//http://sub.dom.ext/a/b/c?a=A&b=B
+						"/a/b/c"
+
+
+			//- Property
+			section.property
+				h3#property-originalPath: code
+					small gw
+					| .originalPath
+
+				//- Property description
+				section.description
+					:marked
+						Path original desde el que se realiza la petición. Ver [`gw.path`](gangway.jade#property-path).
+
+					:highlight(lang='javascript')
+							console.log(gw.originalPath);
+							//>/
+
+
+			//- Property
+			section.property
+				h3#property-query: code
+					small gw
+					| .query
+
+				//- Property description
+				section.description
+					:marked
+						Parámetros recibidos en el query string de la solicitud.
+					
+					:highlight(lang='javascript')
+							// Se visita http://sub.dom.ext/a/b/c?a=A&b=B
+							//> gw.query: {a:'A',b:'B'}
+							gw.send("Has enviado mediante Query String el valor: " + gw.query['a']);
+
+
+			//- Property
+			section.property
+				h3#property-referer: code
+					small gw
+					| .referer
+
+				//- Property description
+				section.description
+					:marked
+						Contiene el valor del encabezado HTTP [Referer](http://tools.ietf.org/html/rfc2616#section-14.36) que indica, si es el caso, la URL del sitio web que contenía el enlace que lanzó esta solicitud.
+
+			//- Property
+			section.property
+				h3#property-connection: code
+					small gw
+					| .connection
+
+				//- Property description
+				section.description
+					:marked
+						Contiene el valor del encabezado HTTP [Connection](http://tools.ietf.org/html/rfc2616#section-14.10).
+
+					:highlight(lang='javascript')
+						console.log(gw.connection);
+						//>keep-alive
+
+
+			//- Property
+			section.property
+				h3#property-cache: code
+					small gw
+					| .cache
+
+				//- Property description
+				section.description
+					:marked
+						Esta propiedad engloba los valores relacionados con la negociación de caché con el cliente. Contiene las siguientes propiedades:
+						+ `.control`: contiene el valor del encabezado HTTP [cache-control](http://tools.ietf.org/html/rfc2616#section-14.9).
+						+ `.eTag`: contiene el valor del encabezado HTTP [if-none-match](http://tools.ietf.org/html/rfc2616#section-14.26). Este encabezado está relacionado con el encabezado de la respuesta [eTag](#property-eTag) que es encriptado para el cliente y se obtiene en esta propiedad ya desencriptado.
+						+ `.lastMod`: contiene el valor del encabezado HTTP [if-modified-since](http://tools.ietf.org/html/rfc2616#section-14.25).
+
+						
+					:highlight(lang='javascript')
+						console.log(gw.cache);
+						//>{ 
+						// control: 'max-age=0',
+						// eTag: false, // va con el eTag
+						// lastMod: 'Tue, 30 Dec 2014 18:47:00 GMT' 
+						// },
+
+			//- Property
+			section.property
+				h3#property-files: code
+					small gw
+					| .files
+
+				//- Property description
+				section.description
+					:marked
+						Contiene los ficheros contenidos en el cuerpo de la solicitud en el caso de ser *multipart/form-data*. Pillars.js por defecto utiliza a la *librería formidable* para recibir los ficheros, por lo que en esta propiedad se encuentran las referencias a los archivos en el formato que ofrece esta librería.
+
+
+			//- Property
+			section.property
+				h3#property-pathParams: code
+					small gw
+					| .pathParams
+
+				//- Property description
+				section.description
+					:marked
+						Contiene un objeto con los parámetros y valores que han llegado al servidor a través de la Ruta parametrizada. 
+						En Pillars.js puedes configurar los path de los objetos Route con parámetros abiertos. `/:var`, `/*:var`, `/:var1/:var`.
+
+
+					:highlight(lang='javascript')
+						var route = new Route({path:'/:var1/:var2'},function(gw){
+							gw.json(gw.pathParams);
+						});
+						//Consultando localhost:300/users/john imprime:
+						//>{var1: 'users', var2:'john'}
+
+			//- Property
+			section.property
+				h3#property-params: code
+					small gw
+					| .params
+
+				//- Property description
+				section.description
+					:marked
+						Contiene los parámetros recibidos tanto por query string como en el cuerpo de la solicitud y mediante parametros de ruta. 
+						Es decir, gw.pathParams (/:var, /*:var) + gw.query (?q=1) + gw.content.params(POST).
+
+			//- Property
+			section.property
+				h3#property-data: code
+					small gw
+					| .data
+
+				//- Property description
+				section.description
+					:marked
+						Objeto disponible para añadir propiedades y valores adicionales.
+
+			
+			//- Property
+			section.property
+				h3#property-encoding: code
+					small gw
+					| .encoding
+
+				//- Property description
+				section.description
+					:marked
+						Encoding que va a usar el servidor para la respuesta. Está basado en [gw.accepts.encodings](#property-accepts). Pillars.js es compatible con las codificaciones *identity*, *deflate* y *gzip*.
+
+
+			//- Property
+			section.property
+				h3#property-language: code
+					small gw
+					| .language
+
+				//- Property description
+				section.description
+					:marked
+						Idioma que va a usar el servidor para la respuesta.  Está basado en la URL utilizada para la solicitud, esta propiedad es establecida por el [Middleware LangPath](middleware.jade#langpath).  
+
+
+			//- Property
+			section.property
+				h3#property-responseCookies: code
+					small gw
+					| .responseCookies
+
+				//- Property description
+				section.description
+					:marked
+						Es un Array que contiene las cookies que han sido establecidas por el método de gangway [`.setCookie()`](#method-setCookie). Al enviar la respuesta al cliente se adjuntarán las cookies establecidas en este Array.
+
+
+			//- Property
+			section.property
+				h3#property-cors: code
+					small gw
+					| .cors
+
+				//- Property description
+				section.description
+					:marked
+						Cabeceras relacionas con solicitudes CORS para la respuesta al cliente. Estas propiedades son definidas por el [Middleware CORS](middleware.jade#cors) automáticamente.
+
+					:highlight(lang='javascript')
+						//cors: {
+						//	origin: false,
+						//	credentials: false,
+						//	methods: false,
+						//	headers: false }
+
+			//- Property
+			section.property
+				h3#property-size: code
+					small gw
+					| .size
+
+				//- Property description
+				section.description
+					:marked
+						Tamaño en bytes de la respuesta al cliente. Es usado para generar el encabezado HTTP [Content-Length](http://tools.ietf.org/html/rfc2616#section-14.13) cuando ejecutamos cualquier método de envío a cliente. De forma general se rellena automática con cualquiera de los métodos de respueta de gangway.
+
+
+			//- Property
+			section.property
+				h3#property-lastMod: code
+					small gw
+					| .lastMod
+
+				//- Property description
+				section.description
+					:marked
+						La propiedad `.lastMod` (objeto Date) indica la fecha de última modificación de la respuesta, este valor es usado para generar el encabezado HTTP [Last-modified](http://tools.ietf.org/html/rfc2616#section-14.29).
+						Por defecto será la fecha y hora en la que se efectúa dicha respuesta de no ser establecida esta propiedad antes de comenzar la respuesta al cliente.
+
+
+
+			//- Property
+			section.property
+				h3#property-eTag: code
+					small gw
+					| .eTag
+
+				//- Property description
+				section.description
+					:marked
+						Esta propiedad sirve para establecer el encabezado HTTP [eTag](http://tools.ietf.org/html/rfc2616#section-14.19) de la respuesta. Consiste en un objeto que será encriptado mediante `JSON.encrypt()` para ser enviado al cliente. Por lo que podemos definir múltiples valores detro de la cabecera eTag. Pillars.js utiliza la propiedad `gw.eTag.hash` para establecer el identificador único o hash del contenido enviado. Este hash único se establece con el método `.cacheck()` ya que es el valor utilizado para controlar la versión en caché del cliente del contenido solicitado. 
+
+						
+
+			//- Property
+			section.property
+				h3#property-maxAge: code
+					small gw
+					| .maxAge
+
+				//- Property description
+				section.description
+					:marked
+						Establece los encabezados HTTP [Expires](http://tools.ietf.org/html/rfc2616#section-14.21) y [Cache-control:max-age](http://tools.ietf.org/html/rfc2616#section-14.9). Debe contener el número de segundos que debe mantenerse dicho contenido en la caché del cliente.
+
+			//- Property
+			section.property
+				h3#property-routing: code
+					small gw
+					| .routing
+
+				//- Property description
+				section.description
+					:marked
+						Propiedad no nativa del *objeto gangway*. Es añadida por el *Middleware router.js*. Contiene un referencia a todos los *objetos route* por los que va pasando Pillars.js hasta llegar al que atenderá la petición. En `gw.routing` encontramos: 
+						+ `inheritance`: *parámetros de configuración* declarados en el *objeto route* que atiende la petición y sus antecesores en el caso de ser una estructura arbórea. Finalmente queda un listado de propiedades heredadas. 
+						> [Ver herencia de *parámetros de configuración* de un *objeto route* en una estructura arbórea.](enrutado.jade#herencia)
+						+ `routes`: dada una estructura arbórea, array que contiene todos los *objetos route* que se recorren en el árbol hasta llegar al que atiende finalmente la petición.
+						+ `handlers`: handler o handlers que atienden finalmente la petición.
+
+						Métodos:
+						+ `.check()`: chequeo rápido de las propiedades heredadas. Dados unos parámetros heredados, chequeo de las mismas: 
+					:highlight(lang='javascript')
+						var userParam = gw.routing.check("userParam", project.config.userParam || '56');
+					:marked
+						Si no viene heredada la propiedad *userParam*, establece su valor con *pillars.config.userParam*, en el caso de que sea *undefined* lo establece en *56*.
+
+
+
+			//- Property
+			section.property
+				h3#property-session: code
+					small gw
+					| .session
+
+				//- Property description
+				section.description
+					:marked
+						Propiedad no nativa del *objeto gangway*. Es añadida por el [Middleware sessions.js](https://github.com/pillarsjs/pillars/blob/master/middleware/sessions.js). Contiene los datos de la sesión.
+						
+						
+
+
+	
+
+		//- Methods
+		section.methods
+			h2#methods Métodos
+
+			//- Method
+			section.method
+				h3#method-setTimeout: code
+					small gw
+					| .setTimeout()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.setTimeout(msecs, callback)](http://nodejs.org/api/all.html#all_response_settimeout_msecs_callback) de Node.
+
+			//- Method
+			section.method
+				h3#method-writeContinue: code
+					small gw
+					| .writeContinue()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.writeContinue(statusCode, [reasonPhrase], [headers])](http://nodejs.org/api/all.html#all_response_writecontinue) de Node.
+
+				
+			//- Method
+			section.method
+				h3#method-writeHead: code
+					small gw
+					| .writeHead()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.writeHead(statusCode, [reasonPhrase], [headers])](http://nodejs.org/api/all.html#all_response_writehead_statuscode_reasonphrase_headers) de Node.
+
+			
+			//- Method
+			section.method
+				h3#method-setHeader: code
+					small gw
+					| .setHeader()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.setHeader(name, value)](http://nodejs.org/api/all.html#all_response_setheader_name_value) de Node.
+
+			//- Method
+			section.method
+				h3#method-getHeader: code
+					small gw
+					| .getHeader()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.getHeader(name)](http://nodejs.org/api/all.html#all_response_getheader_name) de Node.
+
+
+			//- Method
+			section.method
+				h3#method-removeHeader: code
+					small gw
+					| .removeHeader()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.removeHeader(name)](http://nodejs.org/api/all.html#all_response_removeheader_name) de Node.
+
+
+			//- Method
+			section.method
+				h3#method-addTrailers: code
+					small gw
+					| .addTrailers()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.addTrailers(headers)](http://nodejs.org/api/all.html#all_response_addtrailers_headers) de Node.
+
+
+			//- Method
+			section.method
+				h3#method-write: code
+					small gw
+					| .write()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.write(chunk, [encoding])](http://nodejs.org/api/all.html#all_response_write_chunk_encoding) de Node.
+
+
+			//- Method
+			section.method
+				h3#method-end: code
+					small gw
+					| .end()
+
+				//- Method description
+				section.description
+					:marked
+						Alias de [response.end([data], [encoding])](http://nodejs.org/api/all.html#all_response_end_data_encoding) de Node.
+
+			//- Method
+			section.method
+				h3#method-setCookie: code
+					small gw
+					| .setCookie()
+
+				//- Method description
+				section.description
+					:marked
+						Guarda una nueva cookie para el envío en la respuesta.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.setCookie(name, value, config);
+					:marked
+						+ name: **String** nombre de la cookie.
+						+ value: **String** valor de la cookie.
+						+ config: **objeto** de configuración de la cookie que puede contener los siguientes parámetros:
+							+ domain: nombre de host sobre el que va a funcionar la cookie.
+							+ path: define el alcance de la cookie. 
+							+ expires: tiempo de duración de la cookie.
+							+ maxAge: máximo número de segundos que deberá conservarse la cookie.
+							+ secure: cookie en modo seguro.
+							+ httpOnly: Establece la propiedad httpOnly de la cookie.
+
+			//- Method
+			section.method
+				h3#method-i18n: code
+					small gw
+					| .i18n()
+
+				//- Method description
+				section.description
+					:marked
+						El método `.i18n` de gangway es un alias de la librería [textualization](https://github.com/pillarsjs/textualization) con el valor del idioma preestablecido al idioma actual del gangway, es decir, se puede utilizar gw.i18n sin necesidad de especificar el idioma en la sentencia.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.i18n(nodo, params [, lang]); 
+					:marked
+						+ nodo: **String**, nodo a traducir.
+						+ params: objeto con propiedades a pasar como parámetros para la traducción.
+						+ lang: idioma a utilizar si no fuese el propio de este objeto gangway.
+
+			//- Method
+			section.method
+				h3#method-file: code
+					small gw
+					| .file()
+
+				//- Method description
+				section.description
+					:marked
+						Envía al cliente un archivo y finaliza la petición.
+						Gestiona el sistema de caché e implementa [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), esto quiere decir que realiza la negociación automática de rango de bytes en la descarga, por lo que permite descargas por partes y streaming.
+
+						Si el archivo a enviar es menor o igual al tamaño declarado en `project.config.maxCacheFileSize` se realiza compresión del archivo y cambia el encoding a deflate o gzip, cacheando este contenido para sucesivas solicitudes.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.file(filename [, clientname , download]);
+
+					:marked
+						+ filename: **String**, fichero a enviar, dentro del sistema de archivos del servidor.
+						+ clientname: Opcional, **String** con el nombre del fichero para el cliente, en caso de que no sea el mismo que el original.
+						+ download: Opcional, **Boolean**. True para forzar el diálogo de descarga. Por defecto es *false*.
+
+						> Nota: Este método también tiene gestión de caché automática, por lo que si el cliente ya tiene el archivo no volverá a ser enviado y se responderá con un código 304.
+
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.file("document.pdf");
+
+			//- Method
+			section.method
+				h3#method-cacheck: code
+					small gw
+					| .cacheck()
+
+				//- Method description
+				section.description
+					:marked
+						Permite gestionar la caché con el cliente, debemos pasar un valor único identificativo (hash) del contenido de la respuesta. Este método responderá con *false* si el cliente no tiene cacheado el contenido y true junto con un *304* automáticamente si el cliente ya dispone del contenido. La forma ideal de utilizar este método es como condición en una sentencia if, de la forma if(!cacheck(hash)){}, como vemos en el ejemplo.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.cacheck( hash );
+					:marked
+						+ hash: **Mixed** con valor único identificativo.
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var hash = new Date("2015-01-01");
+
+						if (!gw.cacheck(hash)){
+							gw.json({ok:true}); 
+						}
+
+					:marked
+						> El valor pasado a **cacheck** puede ser un código de tiempo o un objeto Date, que nos servirá para identificar el contenido. En este ejemplo se devolverá en una primera solicitud un código 200 con el objeto JSON, y en sucesivas solicitudes se responderá en cualquier caso con un 304. 
+	
+
+			//- Method
+			section.method
+				h3#method-authenticate: code
+					small gw
+					| .authenticate()
+
+				//- Method description
+				section.description
+					:marked
+						Emite un código de estado 401 con el encabezado [WWW-Authenticate](http://tools.ietf.org/html/rfc2616#section-14.47) es una cabecera HTTP que emite un diálogo en cliente solicitando usuario y contraseña.
+
+						> El conjunto .authenticate() y [.auth](#property-auth) son similares a la restricción de acceso que se realiza en el archivo .htaccess en otros servidores HTTP.
+
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.authenticate(msg);
+
+					:marked
+						+ msg: **String**. Mensaje a mostrar al usuario.
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var route = new Route(function(gw){
+
+							if(gw.auth && gw.auth.user=='javi' && gw.auth.pass=='1234'){
+								gw.send('secret!');
+							} else {
+								gw.authenticate("Escribe tu nombre y contraseña");
+							}
+
+						});
+
+
+			//- Method
+			section.method
+				h3#method-redirect: code
+					small gw
+					| .redirect()
+
+				//- Method description
+				section.description
+					:marked
+						Redirección a la URL indicada.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.redirect(urlToRedirect);
+
+					:marked
+						+ urlToRedirect: *String*. URL de la redirección.
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.redirect("www.pillarsjs.com");
+
+			//- Method
+			section.method
+				h3#method-send: code
+					small gw
+					| .send()
+
+				//- Method description
+				section.description
+					:marked
+						Método para enviar una respuesta al cliente. 
+						Si la respuesta es un string se envía como *text/html* y si es un objeto lo envía como objeto parseado tipo *application/json*.
+						Cuando se llama al método `.send()` finaliza la ejecución del route en cuestión.
+
+						> Este método tiene alias más específicos para cada tipo de contenido a enviar como son: gw.json() gw.text() y gw.html() que se detallan más adelante.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.send(data,type);
+
+					:marked
+						+ data: *String* o *Object* con el contenido a enviar.
+						+ type: Opcional. "text/html", "application/json", "text/plain" ... para forzar un tipo concreto en el envío.
+
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.send("Hola Mundo!");
+
+
+			//- Method
+			section.method
+				h3#method-json: code
+					small gw
+					| .json()
+
+				//- Method description
+				section.description
+					:marked
+						Envía al cliente una respuesta en formato *application/json*.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.json(data);
+
+					:marked
+						+ data: *Object* a enviar como JSON.						
+
+				//- Method ejemplo
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var dataPerson = {
+							"id":"246874113",
+							"name": "myname",
+							"surname": "mysurname"
+						}
+
+						gw.json(DataPerson);
+
+
+			//- Method
+			section.method
+				h3#method-text: code
+					small gw
+					| .text()
+
+				//- Method description
+				section.description
+					:marked
+						Envía al cliente la respuesta parseada como *'text/plain'*.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.text(data);
+
+					:marked
+						+ data: *String* con el texto a enviar.
+
+				//- Method syntax
+				section.syntax
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.text("Hola Mundo!!");
+
+
+			//- Method
+			section.method
+				h3#method-html: code
+					small gw
+					| .html()
+
+				//- Method description
+				section.description
+					:marked
+						Envía al cliente la respuesta parseada como *'text/html'*.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.html(data);
+
+					:marked
+						+ data: *String* con el contenido html a enviar.	
+
+				//- Method syntax
+				section.syntax
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.html("<h1>Title</h1>");
+
+
+			//- Method
+			section.method
+				h3#method-render: code
+					small gw
+					| .render()
+
+				//- Method description
+				section.description
+					:marked
+						Este método permite enviar al cliente un template renderizado. Hace uso de la [librería Templated](https://github.com/pillarsjs/templated).
+
+						> Templated da soporte a prácticamente cualquier motor de renderizado, por lo que podrás utilizar el lenguage de plantillas HTML de tu preferencia. En el siguiente código se muestra cómo añadir soporte a jade en nuestro proyecto:
+
+					:highlight(lang='javascript')
+						var templated = require('templated');
+						var jade = require('jade');
+
+						templated.addEngine('jade',function(source,path){
+							return jade.compile(source,{
+								filename:path,
+								pretty:true,
+								debug:false,
+								compileDebug:true
+							});
+						});
+
+
+					:marked
+						Para renderizar una plantilla es necesario especificar la ubicación de la misma y un objeto con los parámetros a utilizar en dicha plantilla conocido como 'locals'. El metodo .render() añade de forma automática a 'locals' las propiedades:
+						+ gw: Referencia al Gangaway actual.
+						+ i18n: Referencia al metodo `gw.i18n()`
+						+ pillars: Referencia al proyecto o entorno.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.render( template [, locals] ) 
+
+					:marked
+						+ template: **String**, ruta del template.
+						+ locals: **Object**, conjunto de parámetros para el renderizado de la plantilla.
+						
+
+				//- Method syntax
+				section.syntax
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.render("example.jade", {title:"Título de página", h1:"h1 de la página"} );
+
+					:highlight(lang='javascript')
+						// example.jade
+						title=title
+							h1=h1
+							El idioma es \#{gw.language}
+
+
+
+			//- Method
+			section.method
+				h3#method-error: code
+					small gw
+					| .error()
+
+				//- Method description
+				section.description
+					:marked
+						Compone una página genérica de error HTTP con el código de estado especificado, opcionalmente se le puede pasar el objeto Error de JS para su trazado.
+
+						> Pillars.js utiliza un template por defecto para componer la página de error. Se puede modificar este template mediante la propiedad `project.config.errorTemplate`.
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						.error(errorCode [, error]) 
+
+					:marked
+						+ errorCode: Código de error HTTP, [puedes consultar este listado](http://es.wikipedia.org/wiki/Anexo:C%C3%B3digos_de_estado_HTTP#4xx_Errores_del_cliente).
+						+ error: **Error**. Objeto Error de JS para su trazado.
+
+				//- Method syntax
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						gw.error(500);
+
+		//- Description
+		section.contenido-de-la-peticion
+			h2#contenido-de-la-peticion POST, GET y rutas parametrizadas
+			:marked
+				+ **Query String (GET)**. Se conoce como Query String a la parte de la URL que contiene los datos que se deben pasar a aplicaciones. Comúnmente, en PHP, lo que se conocía como el *GET*. 
+					Por lo tanto, si se recibe una petición con datos en el query string, se encontrará seteado en [`gw.query`](../reference/gangway.jade#property-query).
+			:highlight(lang='javascript')
+				// Se visita http://sub.dom.ext/a/b/c?a=A&b=B
+				//> gw.query: {a:'A',b:'B'}
+				gw.send("Has enviado mediante Query String 'a' co el valor: " + gw.query['a'] + 
+					" y 'b' con el valor: " + gw.query['b'] );
+			:marked
+				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](../reference/gangway.jade#property-content) de una forma accesible. En el caso de subida de ficheros, hemos de tener en cuenta que el *objeto route* debe estar configurado para aceptar [multipart/form-data](enrutado.jade#property-multipart). En el caso de no estar definido `method`, aceptará todos.
+			:highlight(lang='javascript')
+				var myRoute = new Route(
+					{
+						path: '/uploads',
+						multipart: true
+					},
+					function(gw){
+						//...
+					});
+			:marked
+					Los ficheros de la petición serán seteados en [`gw.files`](../reference/gangway.jade#property-files) y almacenados en el directorio `/temp`. Si deseamos cambiar este directorio temporal, podemos hacerlo mediante la propiedad `.tempDirectory` del [plugin bodyReader.js](../reference/funcionamiento-plugins.jade#plugin-bodyreader).
+
+			.msg.msg-icon.bg-info No olvides cambiar los archivos de ubicación, ya que en /temp sólo se almacenan temporalmente hasta que el manejador del controlador finaliza.
+				
+					
+			:marked
+				
+				+ **Rutas parametrizadas**. El uso de rutas parametrizadas tiene que estar declarado en el *objeto route*. Una vez declarado, podremos extraer de una URL partes de la misma. Para realizar esta *extración* usamos la propiedad [`gw.pathParams`](../reference/gangway.jade#property-pathParams).
+
+			:highlight(lang='javascript')
+					var route = new Route({path:'/:var1/:var2'},function(gw){
+						gw.json(gw.pathParams);
+					});
+					//Consultando localhost:300/users/john imprime:
+					//>{var1: 'users', var2:'john'}
+			:marked
+				Para simplificar la metodología de trabajo con la información que llega en la petición. Tanto el query string (GET), como el contenido de la petición (POST) y las rutas parametrizadas, se encuentran también seteados en [`gw.params`](../reference/gangway.jade#property-params). Esto es una copia, simplemente más accesible de todos los datos obtenidos en la solicitud.
+	

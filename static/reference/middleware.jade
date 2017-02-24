@@ -1,0 +1,390 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'Middleware',url:'/reference/middleware.jade'}];
+	+reference-layout("Reference Pillars.js - 'make it easy!'",path)
+
+		#title
+			h1 Middleware
+				em  Comenzando con Pillars.js			
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+				El middleware permite ampliar las funcionalidades del framework. 
+
+			:marked
+				Para crear middleware en la aplicación, hay que **añadir al proyecto** en `project.middleware`, **objetos middleware**.
+			:codesyntax
+				project.middleware.add(
+					new Middleware( configuration, handler );
+				);
+			:marked
+				Se pueden instanciar y añadir tantos objetos middleware como sea necesario.
+
+
+				Pillars.js ofrece un middleware **vitaminado** y con mucho más **control**. Las características principales son:
+								
+				- Un middleware instalado se puede ejecutar de forma **global** *en toda la aplicación*, o sólo en **determinados controladores**.
+				- Un middleware se puede activar y desactivar "en caliente".
+				- Todos los middleware instaladados en el sistema se ejecutan de forma **secuencial**, por lo que tienen un orden. Este orden se puede modificar.
+				- Cuando creamos un middleware le asignamos un identificador, para posteriormente poder trabajar con el. 
+				- El framework Pillars.js tiene diez middleware built-in. Puedes consultarlos en el último apartado.
+				- Todos los middleware, tanto los built-in como los instalados, están localizados en la denominada **cadena de middleware**, es decir, en **project.middleware**.
+
+		//- Syntax
+		section.syntax
+			h2#syntax Constructor Middleware
+			:codesyntax
+				myMiddleware = new Middleware( configuration, handler );
+
+			:marked
+				+ *configuration*: opcional. Objeto de configuración. En la creación del middleware se pueden configurar los siguientes parámetros. 
+					+ id: **String** identificador. Si no se especifica se autogenera.
+					+ active: **Boolean**, indica si está activo o no. Por defecto es true.
+
+				+ *handler*: Manejador que ejecutará. El manejador siempre recibe como parámetro el [objeto gangway](gangway.jade) y **next**. Mediante `next();` se indica que ejecute el siguiente middleware.
+
+						
+			:highlight(lang='javascript')
+				// Creación de un objeto middleware con id 'idMiddleware'
+
+				var myMiddleware = new Middleware({
+						id: "idMiddleware"
+					},function(gw, next){
+						console.log("Hello from the other side, I'm a middleware");
+						next();
+				});
+
+				project.middleware.add(myMiddleware); // Se añade el objeto al proyecto
+		:marked
+			Por otro lado, te recomendamos la notación más corta y sin necesidad de declarar variables intermedias: 
+		:highlight(lang='javascript')
+				project.middleware.add( // Añadimos al proyecto
+					new Middleware({    // Creamos el objeto
+							id: "idMiddleware"
+						},function(gw, next){
+							console.log("Hello from the other side, I'm a middleware");
+							next();
+				}));
+
+		section.manipular-middleware
+			h2#flujo-manipular-middleware Manipular Middleware
+			:marked
+				Recuerda que la propiedad del proyecto `project.middleware` es de tipo *Object Array* por lo que dispones de métodos para capturar estos objetos, añadir, eliminar, etc.
+				Para capturar un middleware usa el método `.get()` de la siguiente forma: 
+
+			:highlight(lang='javascript')
+				project.middleware.get('BodyReader').tempDirectory = "/temporal";
+			:marked
+				En este caso hemos capturado el middleware built-in [BodyReader](#bodyreader) y hemos modificado la propiedad *tempDirectory*. De esta forma cambiamos la ruta temporal donde se guardarán los archivos en la aplicación (*petición POST con subida de archivos*).
+			:highlight(lang='javascript')
+				project.middleware.get('BodyReader').active = false;
+				//Desactivamos el middleware BodyReader.
+					
+		section.aplicarmiddleware
+			h2#aplicarmiddleware Middleware y controladores
+			:marked
+				Como ya hemos comentado, el middleware "instalado" puede ejecutarse en **toda la aplicación**, es decir, aplicarse en **todos los controladores**, o por el contrario aplicarse sólo en **determinados controladores**. En este sentido debemos crear en la configuración del controlador una propiedad, la cual estará disponible en el middleware y por lo tanto podremos consultarla.
+
+				Para ilustrar el funcionamiento del middleware, puedes copiar el código siguiente y ejecutarlo: 
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+
+				project.services.get("http").start();
+
+				// Instancia del controlador con propiedad creada, ésta estará disponible en el middleware
+				project.routes.add(new Route({
+						id: 'schrodinger-route',
+						path:'/schrodinger',
+						catExist: true // Esta es la propiedad
+					},
+					function(gw){
+						gw.send("¿Hay Gato o no hay gato? - Mira la consola para averiguarlo");
+				}));
+
+
+				// Instancia de otro controlador. Este cambiará el valor de catExist del otro controlador.
+				project.routes.add(new Route({
+						path:'/cambia'
+					},
+					function(gw){
+						var targetRoute = project.routes.get("schrodinger-route");  
+						targetRoute.catExist = !targetRoute.catExist;
+						gw.send("Ahora el valor de catExist es: "+targetRoute.catExist);
+				}));
+
+				// Instancia de otro controlador.Sólo envía un texto, pero veremos que para el, nunca hay gato.
+				project.routes.add(new Route({
+						path:'/paso'
+					},
+					function(gw){
+						gw.send("Yo paso del schrodinger ese.");
+				}));
+
+
+				// Instancia de objeto middleware 
+				project.middleware.add(new Middleware({
+						id: "schrodinger-midd"
+					},function(gw, next){
+						if (gw.routing.inheritance.catExist){
+							console.log("Hay Gato!!");
+						}else{
+							console.log("¡¡No hay gato!!");
+						}
+						next();
+				}));
+			:marked
+				Observa los mensajes en consola mientras visitas las rutas `/cambia`, `/paso` y `/schrodinger`. 
+				Verás que en todas las rutas el middleware entra en acción. Ahora bien, dependiendo de si el controlador tiene definida la propiedad `catExist` y a la vez está establecida en `true`, ejecutará una cosa u otra. Todo esto es posible gracias a una sencilla sentencia condicional y que dicha propiedad está contenida en **gangway**.
+
+
+		section.orden
+			h2#Orden Orden de ejecución
+			:marked
+				Todo el middleware "instalado" en el proyecto se ejecuta de forma secuencial, siguiendo un orden. Este orden está definido en la *cadena de middleware*, que es **project.middleware**.
+
+				Tenemos la posibilidad de re-ordenar esta lista para que se ejecuten en el orden deseado.
+
+			.msg.msg-icon.bg-info Si rompes algo tocando middleware built-in, ... ¡¡reinstala y listo xD!!)
+			:marked
+				Veamos un ejemplo de ordenación:
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				project.services.get('http').configure({port:3003}).start();
+
+				// Creamos dos middleware con id "id1" e "id2". 
+				// Posteriormente le cambiaremos el orden
+				project.middleware.add(new Middleware({
+						id: "id1"
+					},function(gw, next){
+						console.log("Hola soy el middleware 1");
+						next();
+				}));
+
+				project.middleware.add(new Middleware({
+						id: "id2"
+					},function(gw, next){
+						console.log("Hola soy el middleware 2");
+						next();
+				}));
+
+				// Creamos otro middleware con id "trepa"
+				// Este middleware, ¿sabes que irá haciendo? :P
+				project.middleware.add(new Middleware({
+						id: "trepa"
+					},function(gw, next){
+						console.log("Hola soy el trepa");
+						next();
+				}));
+
+				// Creamos un controlador. Cada vez que visites el path /info
+				// Subirá al middleware "trepa" una posición.
+				// Además de esto, mostrará un json con todo el middleware
+				project.routes.add(new Route({
+						id:"info-middleware",
+						path:"/info"
+					},function(gw){
+						var posTrepa = project.middleware.search("trepa"); // Buscamos la posición de "trepa"
+						project.middleware.move(posTrepa, posTrepa - 1); // Lo movemos a la posición siguiente
+
+						var posId1 =  project.middleware.search("id1"); // Tomamos las posiciones de "id1" e "id2"
+						var posId2 =  project.middleware.search("id2");
+
+						// Si id1 tiene una posición menor en la lista a id2, 
+						// movemos a id1 a la posición posterior de id2. 
+						posId1<posId2?project.middleware.moveAfter("id1","id2"):project.middleware.moveAfter("id2","id1");
+
+						gw.json(project.middleware);
+				}));
+
+				
+
+			:marked
+				Cada vez que visites `/info` se mostrará un **json** con el contenido de `project.middleware`. Verás como el middleware va cambiando de posición.
+
+		section.built-in
+			h2#built-in Middleware built-in
+
+			:marked
+				Como ya hemos comentado, Pillars.js tiene 10 middleware built-in. En esta sección vamos a ver qué función tiene cada uno de estos.
+
+			section.middleware
+				h3#langpath 1. Gestión de la ruta para múltiples idiomas
+
+				:marked
+					Middleware: [langPath.js](https://github.com/pillarsjs/pillars/blob/master/middleware/langPath.js)
+
+					Id: *LangPath*.
+
+					Internacionalización del path.
+					Lee el *path* de la solicitud y detecta si existe algún identificador de idioma de los declarados en `i18n.languages`, tener en cuenta que en este caso estaríamos utilizando la librería textualization: `var i18n = require('textualization')`.
+
+					Este middleware actúa sobre gangway y se ejecuta el primero de la *Cadena de Middleware*, por lo que actúa antes que el *middleware router.js*.
+
+					Una vez hecho esto, setea en [gw.language](gangway.jade#property-language) el idioma detectado en la ruta de la solicitud y lo elimina de `gw.path`.
+
+
+			section.middleware
+				h3#encoding 2. Codificaciones no válidas
+				
+				:marked
+					 Middleware: [encoding.js](https://github.com/pillarsjs/pillars/blob/master/middleware/encoding.js). 
+
+					 Id: *Encoding*.
+
+					 Devuelve un error 406 en caso de que la solicitud requiera una codificación no soportada.
+
+			section.middleware
+				h3#favicon 3. favicon
+				
+				:marked
+					 Middleware: [favicon.js](https://github.com/pillarsjs/pillars/blob/master/middleware/favicon.js).
+
+					 Id: *favicon*.
+
+					 Establece el favicon de Pillars.js. En caso de querer cambiarlo setear la propiedad [`project.config.favicon`](project.jade#property-config) con la URI de dicho icono.
+
+			section.middleware
+				h3#router 4. Middleware de enrutado
+				
+				:marked
+					 Middleware: [router.js](https://github.com/pillarsjs/pillars/blob/master/middleware/router.js).
+
+					 Id: *Router*.
+
+					 Comprueba qué *objeto route* de los añadidos a `project.routes` coincide con la petición. Para esto se comprueba la solicitud con las propiedades declaradas en la **configuración del objeto route**, las propiedades que se comprueban son: *path*, *host*, *port*, *method* y *https*.
+
+					 Si los *parámetros de configuración* de alguno de los *objetos route* añadidos directamente a `project.routes` coindice con la petición, el *middleware router* sigue comparando con los hijos si tuviese.
+
+					 Este *middleware* guarda una referencia a todos los *objetos route* por los que va pasando en la propiedad **gw.routing**, propiedad no nativa del objeto gangway y que añade este middleware.
+
+					 A medida que pasa por la estructura arbórea de *objetos route*, guarda (manteniendo la herencia) la configuración de cada route. 
+
+
+			section.middleware
+				h3#maxUploadSize 5. Máximo tamaño permitido de la petición HTTP
+				
+				:marked
+					Middleware [maxUploadSize.js](https://github.com/pillarsjs/pillars/blob/master/middleware/maxUploadSize.js) 
+
+					Id: *MaxUploadSize*.
+
+					Para cualquier petición (*request*) se comprueba que el tamaño del cuerpo de la petición no supere el tamaño declarado en [`project.config.maxUploadSize`](project.jade#property-config). 
+
+					Permite definir para un *objeto route* el tamaño máximo de la petición para éste, obviando por lo tanto el declarado en `project.config.maxUploadSize`. 
+
+					Si el route tiene en su configuración la propiedad `.maxUploadSize` seteada a un valor, será este valor el tamaño máximo permitido de la petición para ese route.
+
+					El error devuelto en el caso de superar el tamaño es un 413.
+
+				:highlight(lang='javascript')
+					var route = new Route({maxUploadSize:10*1024*1024}, function(gw){...}); 
+
+			section.middleware
+				h3#cors 6. Compatibilidad con CORS
+				
+				:marked
+					Middleware: [CORS.js](https://github.com/pillarsjs/pillars/blob/master/middleware/CORS.js).
+
+					Id: *CORS*.
+
+					[Cross-origin resource sharing](http://en.wikipedia.org/wiki/Cross-origin_resource_sharing). Compartición de recursos entre distintos dominios. 
+
+					Permite definir si un controlador (*objeto route*) permitirá CORS o no, seteando la propiedad [`.cors`](clase-route.jade#constructor) en su configuración.
+
+				:highlight(lang='javascript')
+					// Todos los dominios va a poder realizar peticiones a este route.
+					var route = new Route({cors:false}, function(gw){...}); 
+
+					// Ningún dominio va a poder realizar peticiones a este route.
+					var route = new Route({cors:true}, function(gw){...}); 
+
+					// Solo el dominio www.pillarsjs.com va a poder 
+					// realizar peticiones a este route concreto.
+					var route = new Route({cors:['www.pillarsjs.com']}, function(gw){...}); 
+
+				:marked
+
+
+			section.middleware
+				h3#options 7. Compatibilidad con el método OPTIONS
+				
+				:marked
+					Middleware: [OPTIONS.js](https://github.com/pillarsjs/pillars/blob/master/middleware/OPTIONS.js)
+
+					Id: *OPTIONS*.
+
+					Establece compatibilidad con el método OPTIONS del protocolo HTTP respondiendo al mismo de forma automática.
+
+
+			section.middleware
+				h3#sessions 8. Sistema de sesiones
+				
+				:marked
+					Middleware: [sessions.js](https://github.com/pillarsjs/pillars/blob/master/middleware/sessions.js)
+
+					Id: *Sessions*.
+
+					Sesiones con persistencia en memoria. Estableciendo en la configuración del *route* la propiedad `session:true` se activan las sesiones en dicho *route* y en toda su descendencia ya que esta propiedad se hereda de nodos padres a nodos hijos en la estructura de árbol de dichos objetos.
+
+					Una vez que se inicia la sesión se envía una cookie encriptada al cliente.
+
+					Este middleware también setea en [`gw.session`](gangway.jade#property-session) los datos de la sesión. `gw.session` no es una propiedad nativa de gangway, es añadida por este middleware.
+
+
+			section.middleware
+				h3#directory 9. Directorio estático
+				
+				:marked
+					Middleware: [directory.js](https://github.com/pillarsjs/pillars/blob/master/middleware/directory.js)
+
+					Id: *Directory*.
+
+					Permite servir un directorio estático del servidor.
+
+					Posee un template para listar los directorios. Este template se puede cambiar modificando la propiedad [`project.config.directoryTemplate`](project.jade#property-config).
+
+					Si el directorio tiene un archivo con nombre *index* de una extensión conocida por el motor de renderizado o HTML,HTM, se muestra/renderiza el *index*.
+
+					Para **añadir a la aplicación un directorio estático** añadimos un *objeto route* sin manejador (*handler*) y con una configuración específica para activar este middleware:
+
+				:highlight(lang='javascript')
+					// ---------- Pillars static directory -----------------
+
+					var paths = require('path');
+					var pillarsStatic = new Route({
+						id:'pillarsStatic',
+						path:'/pillars/*:path',
+						directory:{
+							path:paths.resolve(__dirname,'./static'),
+							listing:true
+						}
+					});
+					project.routes.add(pillarsStatic);
+
+				:marked
+					La **configuración del objeto route** debe ser la siguiente para activar el middleware Directory: 
+					+ **path**. El path espera el parámetro path. *path:'/staticDirecotyName/*:path'*
+					+ **directory**. La propiedad directory que se añade a route consta de dos parámetros: path y listing, para especificar el directorio estático del servidor, y para permitir que se liste el directorio respectivamente.
+					
+
+
+			section.middleware
+				h3#bodyreader 10. Lector del cuerpo de la petición HTTP
+				
+				:marked
+					Middleware: [bodyReader.js](https://github.com/pillarsjs/pillars/blob/master/middleware/bodyReader.js)
+
+					Lee el cuerpo de la petición y lo setea en [`gw.content.params`](gangway.jade#property-content). 
+
+					Para que el controlador del *objeto route* acepte **ficheros**, se debe establecer en su configuración la propiedad `multipart: true`. Los ficheros de la petición son seteados en [`gw.files`](gangway.jade#property-files). 
+
+					La subida de ficheros se realiza en el directorio `/temp`. Para modificar este directorio se puede realizar a través de la propiedad `.tempDirectory` del middleware.
+
+					Los ficheros del upload estarán en el directorio temporal **mientras** que se está ejecutando el *objeto route*. Una vez finaliza la ejecución de gangway y se envía la respuesta al cliente, se borran los ficheros temporales de la solicitud. Por lo tanto, se deben mover dichos ficheros desde el controlador para poder conservarlos.

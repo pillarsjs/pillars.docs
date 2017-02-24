@@ -1,0 +1,230 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'project',url:'/reference/project.jade'}];
+	+reference-layout("Pillars.js Reference - project - 'make it easy!'",path)
+
+		#title
+			h1 project
+				em  Pillars.js Reference
+			a.source(href="https://github.com/pillarsjs/pillars/blob/master/index.js") Source
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+				La librería *'pillars'* devuelve un proyecto con una **configuración mínima inicial** y sobre el que se construye el resto de la aplicación. Por lo que el proyecto es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web.
+
+				`var project = require('pillars');`
+
+				> Cualquier require de 'pillars' devolverá siempre la misma instancia. Todas las librerías Pillars.js se cargan en modo [singleton.](http://es.wikipedia.org/wiki/Singleton)
+				 	
+
+		//- Properties
+		section.properties
+			h2#properties Propiedades
+			
+			//- Property
+			section.property
+				h3#property-config: code 
+					small project
+					| .config
+
+				//- Property description
+				section.description
+					:marked
+						La propiedad `.config` contiene las **variables de entorno** del proyecto:
+						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el middleware cors, define si otros sitios web van a poder utilizar recursos del dominio por defecto. 
+							+ *false* indica que no acepta solicitudes cors de ningún origen. 
+							+ *true* indica que acepta solicitudes cors de cualquier origen.
+							+ Si se especifica un *Array de strings*, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
+						+ `.maxUploadSize`: **Integer**, especifica el tamaño máximo de archivo permitido en la solicitud por defecto. Tiene el valor  5\*1024\*1024 (5MB) predefinido. 
+						+ `.maxCacheFileSize`: **Integer**, por defecto es 5\*1024\*1024 (5MB). Tamaño máximo de un archivo para que entre en la caché, si el archivo supera este tamaño el sistema no lo mete en memoria ni lo comprime. 
+						+ `.cacheMaxSamples`: **Integer**, por defecto es 100. Dato relacionado con la heurística del reciclado de la caché del servidor, indica el máximo número de usos que se tienen en cuenta para el cálculo.
+						+ `.cacheMaxSize`: **Integer**, por defecto es 250\*1024\*1024. Tamaño máximo de la caché en MB.
+						+ `.cacheMaxItems`: **Integer**, por defecto es 5000. Número máximo de elementos en la caché.
+						+ `.fileMaxAge`: **Integer**, por defecto es 7\*24\*60\*60. Es el valor por defecto que se le da a los archivos que se devuelven con `gw.file()` para establecer el tiempo en segundos durante el cual se mantendrá en cliente. Este se establece en varios encabezados como son *cache-control* y *expires*.
+						+ `.renderReload`: **Boolean**, por defecto es **false**. Lo utiliza el método `gw.render()` para comprobar o no, si el archivo de template ha sufrido cambios desde la última solicitud. Mientras sea *false* sólo se compilará el template en la primera solicitud.
+						+ `.favicon`: **String**, ruta del fichero favicon.ico del sitio. 
+						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
+						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`middleware directory.js`](middleware.jade#directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
+						+ `.errorTemplate`: **String**. Especifica el template utilizado para las páginas de error. Este es el template utilizado por el método [`gw.error()`](gangway.jade#method-error).
+
+
+					:marked
+						> También podemos setear las **variables de entorno** a través del método `project.configure()`, en ese caso podremos configurar varias a la vez.
+
+						Configuración a través de seteo de propiedades: 
+
+					:highlight(lang='javascript')
+						project.config.cors = true;
+						project.config.cacheMaxSize = 25*1024*1024;
+
+					:marked
+						Configuración a través del método `project.configure()`:
+
+					:highlight(lang='javascript')
+						project.configure({
+							cors: true,
+							cacheMaxSize: 25*1024*1024
+						});
+		
+
+			//- Property
+			section.property
+				h3#property-services: code 
+					small project
+					| .services
+
+				//- Property description
+				section.description
+					:marked
+						Actualmente solo contiene el servicio http built-in. 
+						El futuro para *project.services* es que se añadan todos los servicios a utilizar en el proyecto, para de esta forma tener control completo sobre todos estos.
+
+						Para obtener el servicio built-in lo realizamos a través del método *.get()* y el identificador (*id*) del servicio.
+
+					:highlight(lang='javascript')
+						project.services.get('http').start();
+					
+					:marked
+						Para insertar un nuevo servicio http o https, lo podemos realizar a través del método *.add()* o *.insert()*.
+
+					:highlight(lang='javascript')
+						var project = require('pillars');
+
+						project.services.insert((new HttpService({
+						  id:'http2',
+						  port: 3003
+						})).start());
+
+						
+						var fs = require('fs');
+						project.services.insert((new HttpService({
+						  id:'https',
+						  key: fs.readFileSync('./localhost.key'),
+						  cert: fs.readFileSync('./localhost.crt'),
+						  port: 3001
+						})).start());
+
+						//...
+
+						project.services.get('http2');
+						project.services.get('https');
+
+						//...			
+
+					:marked
+
+			//- Property
+			section.property
+				h3#property-routes: code 
+					small project
+					| .routes
+
+				//- Property description
+				section.description
+					:marked
+						Contiene el **árbol de controladores**. Cada controlador es creado con una instancia de la [Clase Route](clase-route.jade).
+
+
+						Este árbol de controladores es modificable en **tiempo real**, es decir, en vivo podremos añadir, eliminar o modificar controladores.
+
+
+						Es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray), por lo que cuenta con los siguientes métodos para trabajar con la propiedad:
+
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto route* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto route* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto route*. Alias de [`.remove()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto route*. Alias de [`.move()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
+
+
+					:marked
+			//- Property
+			section.property
+				h3#property-middleware: code 
+					small project
+					| .middleware
+
+				//- Property description
+				section.description
+					:marked
+						`project.middleware` es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray). Es un array que contiene [objetos Middleware](middleware.jade). Solemos llamar a esta propiedad la **Cadena de Middleware**. 
+
+						Contiene todos los middleware instalados en la aplicación.
+
+						Para trabajar con los objetos del array disponemos de los siguientes métodos: 
+
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto middleware* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto middleware* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto middleware*. Alias de [`.remove()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto middleware*. Alias de [`.move()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
+
+
+					:marked
+			//- Property
+			section.property
+				h3#property-version: code 
+					small project
+					| .version
+
+				//- Property description
+				section.description
+					:marked
+						`.version` es de solo lectura. Devuelve la versión del framework instalada.
+
+			//- Property
+			section.property
+				h3#property-path: code 
+					small project
+					| .path
+
+				//- Property description
+				section.description
+					:marked
+						La propiedad `.path` es de solo lectura y devuelve el path absoluto de la librería pillars.	
+
+
+		//- Methods
+		section.methods
+			h2#methods Métodos
+
+			//- Method
+			section.method
+				h3#method-configure: code
+					small project
+					| .configure()
+
+				//- Method description
+				section.description
+					:marked
+						El método `.configure()` permite setear de una sola vez varias propiedades de `project`. El método .`configure()` sólo reescribe las propiedades que se le pasen.
+
+				
+			//- Method
+			section.method
+				h3#method-resolve: code
+					small project
+					| .resolve()
+
+				//- Method description
+				section.description
+					:marked
+						Devuelve una ruta absoluta sobre un directorio relativo respecto al directorio de ejecución de la librería `pillars`. 
+
+				//- Method syntax
+				section.syntax
+					h4 Sintaxis
+					:codesyntax
+						project.resolve( directory );
+
+					:marked
+						+ *directory*: **String** del directorio relativo.
+
+				section.example
+					h4 Ejemplo
+					:highlight(lang='javascript')
+						var pathStatic = project.resolve('./static');
