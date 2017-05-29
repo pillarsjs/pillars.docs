@@ -75,6 +75,9 @@ html(lang=gw.language)
 			
 			div.pink#rutas
 				div.feature
+					h2#enrutado Enrutado
+						span Entorno dinámico
+
 					ul.list
 						li Acceso en vivo a todos los controladores del sistema
 						li Todos los controladores de tu aplicación en <strong>project.routes</strong>
@@ -83,8 +86,7 @@ html(lang=gw.language)
 						li Mejor organización de funcionalidades en <strong>árboles de controladores</strong>
 						li Nombrado de controladores; ofrece organización y control sobre el entorno
 						li Comunicación middleware y controladores
-					h2#enrutado Enrutado
-						span Entorno dinámico
+					
 
 					:highlight(lang='javascript')
 							// Añade el objeto route a project.routes
@@ -166,16 +168,16 @@ html(lang=gw.language)
 
 			//div.pink#services
 				div.feature
+					h2#gestion-servicios Gestión de Servicios
+							span Servicios centralizados
+
 					ul.list
 						li Centralización de servicios en la propiedad <strong>project.services</strong>
 						li Posibilidad de añadir, modificar o eliminar servicios.
 						li Servicio http build-in
 						li Añade, modifica o elimina servicios en caliente.
 
-					h2#gestion-servicios Gestión de Servicios
-						span Servicios centralizados
-
-
+					
 					:highlight(lang='javascript')
 							var project = require('pillars');
 
@@ -232,6 +234,9 @@ html(lang=gw.language)
 
 			div.white#i18n
 				div.feature
+					h2#i18n i18n
+						span Internacionalización eficiente
+
 					ul.list
 						li Librería textualization
 						li Integración completa de i18n
@@ -240,10 +245,6 @@ html(lang=gw.language)
 						li Gestión de idioma de la solicitud automática
 						li Rutas multi-idioma :-)
 
-					h2#i18n i18n
-						span Internacionalización eficiente
-
-			
 
 				//
 					div.tutos
@@ -274,12 +275,14 @@ html(lang=gw.language)
 
 			div.white#cron
 				div.feature
+					h2#cron CRON
+						span Librería Scheduled
+
 					ul.list
 						li Programación de tareas mediante CRON gracias a la librería Scheduled
 						li Acceso a todas las tareas programadas en el proyecto
 						li Acceso en vivo a las tareas programas: modificación, eliminación, ...
-					h2#cron CRON
-						span Librería Scheduled
+					
 				//
 					:highlight(lang='javascript')
 						var hola
@@ -302,11 +305,12 @@ html(lang=gw.language)
 		//
 			div.pink#dependencies
 				div.feature
-					
-					ul.list
-						li Código robusto. Todas las dependencias han sido creadas, y son mantenidas, por el mismo equipo
 					h2#dependencias Robustez
 						span Dependencias propias
+
+					ul.list
+						li Código robusto. Todas las dependencias han sido creadas, y son mantenidas, por el mismo equipo
+					
 				
 		//
 			div.pink#jailer
@@ -329,12 +333,14 @@ html(lang=gw.language)
 								a Permisos
 
 			div.white#procedure
-				div.feature					
+				div.feature
+					h2#procedure Asincronía
+						span Librería Procedure
+									
 					ul.list
 						li Programación de tareas mediante CRON gracias a la librería Scheduled
 						li Acceso a todas las tareas programadas en el proyecto
-					h2#procedure Asincronía
-						span Librería Procedure
+					
 
 					:highlight(lang='javascript')
 						var x = 0;

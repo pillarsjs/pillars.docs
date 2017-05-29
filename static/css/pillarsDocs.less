@@ -437,10 +437,10 @@ body.home {
 				.feature{
 					max-width: 1200px;
 					margin: 0 auto;
-					padding: 80px 0;
-					h2{
-						margin:20px 0 20px 0;
-						display: inline-block;
+					padding: 80px 0;					
+					display: block;
+					h2{						
+						margin:20px 0 20px 0;						
 						width: 49%;
 						text-align: center;
 						font-size: 5em;
@@ -454,8 +454,7 @@ body.home {
 							display: block;
 						}
 					}
-					ul.list{
-						display: inline-block;
+					ul.list{						
 						width: 49%;
 						margin: 0 0 0 20px;
 						list-style-type: none;
@@ -469,18 +468,26 @@ body.home {
 					}
 					pre.highlight{
 						margin-top: 60px;
+						//position: absolute;
+						//bottom: 0px;
+						width: 100%;
+						padding-top: 30px;
+						code{
+							text-align: left;
+						}
 					}
 
 				}
 				
 				.white{
 					background-color: white;
+					position: relative;
 					h2{
 						color: @color-primary;
+						float: right; 
 					}
 					ul.list{
-						
-
+						float: left;
 						li{
 							color: #555;
 							border-top:1px solid rgba(0,0,0,0.1);
@@ -501,11 +508,14 @@ body.home {
 					}
 				}
 				.pink{
+					position: relative;
 					background-color: @color-primary;
 					h2{
 						color: white;
+						float: left;
 					}
 					ul.list{
+						float:right;
 						li{
 							color: white;
 							border-top:1px solid rgba(255,255,255,0.3);
@@ -526,19 +536,28 @@ body.home {
 					}
 				}
 				#http{
+					height: 440px;
 					.feature ul.list{
 						padding-top: 20px;
 					}
 				}
+				#i18n{
+					height: 360px;
+				}
 				#rutas{
+					//height: 600px;
 					.feature ul.list{
 						padding-top: 43px;
 					}
 				}
 				#gw{
+					//height: 1000px;
 					.feature ul.list{
 						padding-top: 50px;
 					}
+				}
+				#middleware{
+					//height: 575px;					
 				}
 				#services{
 					.feature ul.list{
@@ -551,11 +570,13 @@ body.home {
 					}
 				}
 				#templated{
+					height: 450px;
 					.feature .list{
 						margin-top: 100px;
 					}
 				}
 				#cron{
+					height: 340px;
 					.feature .list{
 						margin-top: 60px;
 					}
@@ -572,6 +593,27 @@ body.home {
 	#rightbar {
 		display: none;
 	}
+	body.home #space #main #features .feature{
+ 		padding-left: 80px;
+ 		padding-right: 80px;
+ 		ul.list{
+ 			width: 98%;
+	 		float: none;
+	 		display: inline-block;
+	 		margin: 0 !important;
+	 		padding-top: 0 !important;
+ 		}
+ 		h2{
+ 			width: 98%;
+ 			display: inline-block;
+ 			float: none;
+ 		}
+ 	}
+ 	body.home #space #main #features{
+ 		#i18n, #templated, #cron, #http{
+ 			height: inherit;
+ 		}
+ 	}
 }
 
 @media (max-width: 800px) {
@@ -672,3 +714,23 @@ body.home {
 		}
 	}
 }
+
+
+@media (max-width: 690px) {
+	body.home #space #main #features .feature{
+ 		padding: 60px 10px;
+ 		ul.list{
+ 			margin: 0px;
+ 		}
+ 	}
+ 	body.home #space #main #features-menu{
+ 		display: none;
+ 	}
+}
+
+@media (max-width: 530px) {
+	body.home #space #main #features .feature h2{
+		font-size: 3em;
+	}
+}
+
