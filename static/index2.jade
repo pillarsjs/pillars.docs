@@ -13,15 +13,10 @@ html(lang=gw.language)
 
 						project.services.get('http').start(); 
 
-						// Convención antes que configuración
-						project.routes.add(new Route(function(gw){
-							gw.send("Hola mundo!");
-						}));
-
-						// Controladores flexibles en configuración:
+						// Modelo de servidor orientado a objetos:					
 						project.routes.add(new Route({
 								method: ["GET","POST"], 
-								port: 8080,		
+								port: 8080,
 								path: "/hola",
 								https: false,
 								cors: true,	
@@ -97,6 +92,12 @@ html(lang=gw.language)
 								},function(gw){
 									gw.send("Hello from the other side");
 							}));
+
+							// Toma un controlador y lo desactiva 
+							project.routes.get("home").active = false;
+
+							// Elimina un controlador
+							project.routes.remove("home");
 				//
 					div.tutos
 						p TUTORIALES

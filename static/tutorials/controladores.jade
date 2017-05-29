@@ -1,0 +1,104 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Controladores',url:'/tutorials/controladores.jade'}];
+	+reference-layout("Pillars.js Tutorials - Controladores - 'make it easy!'",path)
+
+		#title
+			h1 Controladores
+				em  Tutoriales Pillars.js
+
+		section.cache
+			h2#Introduccion Introducción
+			:marked
+				Se añaden **controladores de ruta** al proyecto para, dada una ruta, añadir una funcionalidad. 
+				Un controlador se crea instanciando la clase Route. En este capítulo vamos a dar una visual, para profundizar consulta la [referencia]("../reference/enrutado.jade").
+				La instancia del controlador creado se añade a `project.routes`.
+				
+				Para crear un nueva ruta, se instancia un objeto de la clase Route y se añade al proyecto. La instancia se crea con dos parámetros, *configuración* y *manejador*.
+			:highlight(lang='javascript')
+				var myRoute = new Route(configuración, manejador);
+				project.routes.add(myRoute);
+
+			:marked
+				- Configuración. Objeto de configuración del objeto route. A continuación vemos un ejemplo en el que seteamos todas las propiedades. No es necesario setearlas todas para declarar un controlador, si no seteamos alguna ésta tomará un valor por convención. 
+
+			:highlight(lang='javascript')
+				project.routes.add(new Route({
+					// Configuración del controlador. Aquí se configura en qué casos actuará
+					id:"home", /* El identificador del controlador. Si más tarde 
+					queremos modificarlo, necesitamos saber cómo se llama.*/
+					active: true, /* si no está activo, no atenderá ninguna solicitud */
+
+					/* ---- Parámetros que deben coincidir con la solicitud para que
+					el controlador atienda la solicitud*/
+					path:"/suma", /* La ruta o path en la que queremos que se ejecute */
+					method: "GET", /* El método (string) o métodos (array) que acepta, 
+					puede aceptar varios a la vez */
+					port:3000, /* El puerto en el que estará disponible. Si no se especifica, 
+					por defecto aceptará cualquiera */
+					host: undefined, /* hostname en el que responderá, undefined responde a todos. 
+					Puedes arrancar un ejemplo configurando host en localhost y verás
+					que si visitas 127.0.01 no responde.*/
+					https: false, /* si responde sólo http, sólo https o ambos*/
+
+					/* ---- Parámetros de configuración adicional, 
+					no tienen porque coincidir con la solicitud para que ésta sea atendida*/
+					multipart: false, /* si acepta envíos multipart o no, necesario activarlo para
+					recibir archivos*/
+					maxUploadSize: 0, /* tamaño máximo del archivo en caso de aceptarlos*/
+					cors: true, /* si acepta solicitudes cors o no. Se pueden especificar dominios 
+					de los que acepta estas solicitudes */
+					session: false /* si activamos las sesiones o no*/
+					},
+
+					/* Manejador. Esta es 'la porción de código' que se ejecuta, 
+					siempre y cuando la solicitud, coincida con los parámetros de
+					configuración que están arriba */
+					function(gw){ /*El manejador siempre recibe gw*/
+						gw.send("Hola Mundo");
+					}
+					));
+			:marked
+				- Manejador o handler. El manejador, será aquella función que se ejecute cuando la petición coincida con la configuración del objeto route.
+
+
+		section.metodos
+			h2#metodos Métodos
+			:marked
+				Los métodos en `project.routes` para añadir, tomar o eliminar controladores son: 
+			:highlight(lang='javascript')
+				project.routes.add(myRoute);
+				project.routes.remove(id);
+				project.routes.get(id); 
+
+		section.activar
+			h2#activar Activar/Desactivar controladores
+			:marked
+				Una propiedad de los controladores es `.active`. Por defecto es true, para desactivar un controlador, seteamos la propiedad a false.
+			:highlight(lang='javascript')
+				project.routes.get("home").active=false;
+
+		section.rutas
+			h2#rutas Rutas parametrizadas
+			:marked
+
+			:marked
+					li Además, un objeto route se puede añadir al proyecto, creando una estructura arbórea, de forma que podemos tener objetos route padre, del que 'cuelgan' muchos otros objetos de este tipo. Permite una mejor organización de funcionalidades en **árboles de rutas**.
+					li Rutas parametrizadas. En la configuración de un objeto route, la propiedad path: 
+			:highlight(lang='javascript')
+				path: ':var1:var2:var3'
+				path: '*:restoPath'
+
+			:marked
+				ul
+					li El manejador del objeto route recibe el objeto gw; el objeto gangway, que se genera en cada solicitud, contiene el request y response parseado y vitaminado.
+			:highlight(lang='javascript')
+				gw.ip
+				gw.host
+
+			:marked
+				ul
+					li Al crear una estructura arbórea de controladores, entra en juego la herencia en los parámetros de configuración de los controladores.
+				
