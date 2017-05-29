@@ -6,30 +6,210 @@ html(lang=gw.language)
 	+starting-layout("Pillars.js Getting started - Introducción - 'make it easy!'",path)
 
 		#title
-			h1 Introducción
-				em  Comenzando con Pillars.js
+			h1 Funcionamiento
+				em  de una aplicación web en Node.js.
 			
 
 		//- Summary
 		section.summary
 			:marked
-				Pillars.js proporciona un entorno de trabajo con herramientas para el desarrollo de aplicaciones web en Node.js. Su **objetivo** es ofrecer un entorno de trabajo homogéneo y asequible.
+				Node.js implementa el servicio HTTP, es decir, donde antes teníamos a Apache o nginx, ahora tenemos nuestra propia aplicación en Node.js que ofrece el servicio HTTP *(que podríamos tener en un sólo fichero app.js)*. Es posible compatibilizar un servidor Apache con una aplicación Node, pero verás que tener el servidor HTTP ofrece ventajas.
+
+				Para ilustrar la principal diferencia, comparado con un lenguaje como PHP en un servidor Apache, vamos a utilizar el [ejercicio de "Hola Mundo"](comenzando.jade). Supongamos que tenemos el ejercicio en el directorio `.../test`, donde tenemos el archivo **app.js**, que es la aplicación. Si la arrancamos, y visitamos http://localhost:8080, veremos un "Hola Mundo". Ahora bien, si creamos un subdirectorio `/test/subdir`, vemos que si visitamos `http://localhost:8080/subdir` emite un error HTTP 404, recurso no encontrado.
+
+				El comprender el MVC que utilizamos y el flujo del mismo, es esencial. 
+
+				De este ejemplo vamos a tratar dos conceptos; uno el **enrutado**, y otro el **Servidor HTTP**.
+
+				**Enrutado**
+
+				Las URL que debe atender la aplicación web, deberán estar definidas en el archivo **app.js**. Y en el caso del "Hola Mundo", solo atiende peticiones a "/" porque es lo que está programado.
+
+				Es decir, mediante programación definimos las URL's que atiende la aplicación web, alejándonos del concepto de un servicio montado en un directorio y que a partir de ahí resuelven las URL's, como es el caso que nos antecede de PHP+Apache.
+
+				El enrutado consiste en las reglas que se seguiran para implementar las URL's que atenderá la aplicación.
+
+				Esta metodología difiere de unos frameworks a otros, y en el caso de Pillars.js, se implementa el enrutado de una forma dinámica.
+
+				El enrutado se crea con **controladores**, cada controlador es una porción de código que especifica qué ruta o rutas atiende dicho controlador, junto con las acciones que se ejecutan en la ruta específica. 
+
+				En Pillars.js creamos el enrutado mediante **Objetos route** que se añaden al proyecto en la propiedad **project.routes**.
 
 			:highlight(lang='javascript')
-					var project = require('pillars');
+				var project = require("pillars");
 
-					project.services.get('http').start();
+				project.services.get("http").start();
 
-					project.routes.add(new Route(function(gw){
-					  gw.html("Hello World!!");
-					});
+				// Instancia de un controlador
+				var myRoute = new Route({
+						path:"/"	// Atenderá en http://mihost/
+					},function(gw){ // Código que se ejecutará
+						gw.send("Este es el home");
+				});
+				// Instancia de otro controlador
+				var myRoute1 = new Route({
+						path:"/listado"	// Atenderá en http://mihost/listado
+					},function(gw){
+						gw.send("Aquí mandaríamos un listado");
+				});
+				// Instancia de otro controlador
+				var myRoute2 = new Route({
+						path:"/contacto"	// Atenderá en http://mihost/contacto
+					},function(gw){
+						gw.send("Aquí mostaríamos un formulario de contacto");
+				});
+				// Se añaden todos los controladores al proyecto
+				project.routes	
+					.add(myRoute)
+					.add(myRoute1)
+					.add(myRoute2);
+
+			:marked
+				De esta forma, la aplicación atenderá en "/", "/listado", "/contacto", sin haber creado ninguna estructura de directorios.
+
+				**Servicio HTTP**
+
+				En el caso del ejemplo inicial, *que visitamos `http://localhost:8080/subdir`, y al no existir esa URL en la aplicación, el servidor HTTP responde un error [HTTP 404](https://es.wikipedia.org/wiki/HTTP_404)*, **está emitiendo una respuesta**, que en este caso, es un error.
+
+				El servicio HTTP tiene una funcionalidad que se puede resumir como, atender las solicitudes HTTP y emitir respuestas HTTP a estas solicitudes.
+
+				- **Solicitud HTTP**, es la petición que un usuario o una máquina realiza al Servicio HTTP. 
+				- **Respuesta HTTP**, es la respuesta que el Servicio HTTP emite dada una Solicitud HTTP. //Obviamente la lógica intermedia de qué acciones se realiza con esa solicitud la resuelve tu aplicación.
+
+				**¿Significa esto que te tienes que conocer el protocolo HTTP?** No, pero es importante que se comprenda el modelo para que puedas explotarlo si es necesario.
+
+				Cuando visitamos `http://localhost:8080`, estamos realizando una solicitud HTTP. Estas **solicitudes** deben tener una estructura particular. Normalemente es transparente ya que la realiza el navegador web, pero veámos su contenido:
+			
+			:highlight(lang='javascript')
+					/*
+					Request URL:http://localhost:3000/
+					Request Method:GET
+					Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+					Accept-Encoding:gzip, deflate, sdch
+					Accept-Language:en,es;q=0.8,gl;q=0.6,it;q=0.4
+					Connection:keep-alive
+					Cookie:_ga=GA1.1.2075513491.1484389882
+					Host:localhost:3000
+					If-Modified-Since:Wed, 25 Jan 2017 19:09:59 GMT
+					Upgrade-Insecure-Requests:1
+					User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36
+					*/
 
 
 			:marked
+				Como vemos estamos enviando mucha información. Método de la petición, información sobre idioma, cookie, etc.
+
+				En este caso, cuando se realiza una solicitud HTTP a nuestro Servidor HTTP, **Pillars.js toma el control**, **crea un objeto llamado Gangway**, y setea los datos de la solicitud. (aclarar parseado) parseados en las propiedades de gangway, por lo que tenemos un objeto gangway en cada petición con los datos de la misma.
+
+				Veamos un ejemplo, en el que mostramos los datos language, encodig, method, e ip.
+			:highlight(lang='javascript')
+				var project = require("pillars");
+
+				project.services.get("http").start();
+
+				// Controlador
+				project.routes.add(new Route({
+						path:"/"	
+					},function(gw){
+						gw.send("Tu encoding es: "+gw.encoding+""+gw.lang+"gw.method"+gw.method);
+				}));
+
+			:marked
+				Falta hablar de la respuesta.
+				Como puedes observar, tenemos el control en nuestra programación sobre todos los datos de la solicitud HTTP mediante el objeto gangway, el cual también implementa métodos para la respuesta, como es `.send()`. 
+
+				//Ejemplo con controlador que espere un ratito y envíe un hola mundo.
+				// Ejemplo con otro controlador que envíe un archivo json
+
+
+				Desde el controlador se envía la respueta HTTP.
+
+				**¿Es siempre esto así?** No, para sitios sencillos puedes utilizar utilidades como la de directorio estático, que permite tener un directorio donde soltar las plantillas, de Jade, por ejemplo, y sólo preocuparte de la parte front. Estas plantillas tendrán acceso al contenido de la solicitud, es decir, a gangway. De forma muy similar a como podemos encontrar en PHP.
+
+
+				----
+				Ahora bien, llegados a este punto tenemos claro que: 
+				1. Un usuario o máquina realiza una petición HTTP
+				2. Esta petición HTTP llega a Pillars.js 
+				3. Pillars.js genera un objeto gangway, es decir, se crea un objeto gangway por cada petición. Parsea los datos de esta petición y los setea en propiedades de gangway.
+				4. Y pasa el control al controlador pertinente.
+				5. El controlador se ejecuta, y envía una respuesta mediante los métodos: gw.send(), gw.html(), o o etc.
+
+
+				Pero.. ¿¿y si queremos que existan ciertas acciones que se apliquen a todos los controladores, es decir, en toda la aplicación, o en varios de ellos??. Ahora mismo, si quisiéramos realizar algo así, lo tendríamos que hacer, una vez que Pillars.js genera el objeto gangway, y antes de que pasara el control al controlador pertinente. Entre los puntos 3 y 4.
+
+				Es en este "espacio", donde se engancha lo que llamamos Middleware.
+
+				Es decir, el middleware es la lógica intermedia que se ejecuta antes que el controlador. De esta forma tenemos "algo" aplicándose a todos los controladores, o a algunos de ellos. Veamos un ejemplo; vamos a crear un middleware que va a cambiar un dato de la solicitud HTTP, esta va a setear la ip del cliente a: 200.200.200.200. 
+
+
+			:highlight(lang='javascript')
+				var project = require("pillars");
+
+				project.services.get("http").start();
+
+				// Controlador
+				project.routes.add(new Route({
+						path:"/"	
+					},function(gw){
+						gw.send("Tu IP es: "+gw.ip);
+				}));
+
+				//Controlador que deshabilita/habitita el Middleware
+				project.routes.add(new Route({
+						path:"/switch"	
+					},function(gw){
+						var midd = project.middleware.get("cambiaIP");
+						midd.active = !midd.active;
+						gw.send("Cambiado!, ahora el middleware está: " + midd.active);
+				}));
+
+				// Middleware - Lógica que se aplica a todas las peticiones HTTP,
+				// Antes de que se ejecute el controlador
+				project.middleware.add(new Middleware({
+						id:"cambiaIP"
+					},function(gw,next){
+						gw.ip="200.200.200.200";
+						next();
+				}));
+			:marked
+				Hemos creado un controlador adicional para poder activar y desactivar el middleware con identificador "cambiaIP". Observa también que el middleware creado lo añadimos al proyecto en `project.middleware`.
+
+				Podemos agregar tanto middleware como queramos. La ejecución de éstos siempre es secuencial, por lo que en principio se ejecutarán en el orden que lo hayamos insertado en `project.middleware`. No obstante, ten en cuenta que Pillars.js proporciona métodos para cambiar este orden y manipularlos.
+
+				Recapitulando, ahora tenemos que el flujo de la aplicación es la siguiente:
+
+		//- Description
+		section.flujo
+			h2#flujo Flujo
+			:marked
+				- Un usuario o máquina realiza una petición HTTP
+				- Esta petición HTTP llega a Pillars.js 
+				- Pillars.js genera un objeto gangway, es decir, se crea un objeto gangway por cada petición.
+				- Parsea los datos de esta petición y los setea en propiedades de gangway.
+				- Comienza a ejecutar la secuencia de middleware
+					- Parsea el Request
+					- Averigua si tiene que aplicar internacionalización de paths
+					- Revisa el soporte a codificaciones
+					- Establece el favicon
+					- Averigua que controlador tomará el control al finalizar los middleware (enrutador)
+					- Revisa el tamaño máximo permitido de la solicitud
+					- Añade compatibilidad CORs 
+					- Añade compatibilidad con el método OPTIONS 
+					- Da soporte al sistema de sesiones
+					- Da soporte a directorio estático
+					- En el caso de petición POST, lee el cuerpo de la petición y te lo deja accesible en diferentes propiedades de gangway.
+				- Después de la finalización del último middleware,(explicar que la cadena podría ser parada en algún punto) pasa el control al controlador permitente
+				- El controlador realiza las acciones que se hayan programado, finalizando comúnmente o por ejemplo con un gw.html... envía una respuesta mediante los métodos de respuesta, que son gw.send(), gw.html(), etc.
+
+				Hemos añadido como sublista dentro de "Comienza a ejecutar la secuencia de middleware", todo el middleware que Pillars.js incorpora.
+
+				Todo este middleware tiene unas funciones específicas, y si observas el quinto "Averigua qué controlador tomará el control al finalizar los middleware". Es decir, un propio middleware de Pillars.js es el que analiza y dedide qué controlador debe entrar en acción. Obvimanete para hacer esto realiza una serir de comprobaciones entre la solicitud HTTP y la configuración del controlador.
+
+				La gran ventaja de esta arquitectura, es que podemos modificar los datos de la petición antes de saber qué controlador atenderá la petición.
+
+			
 				
-				En Pillars.js hay cinco conceptos básicos:
-				+ **El entorno** o **proyecto**, es el **punto central de anclaje**, donde se añaden **controladores de ruta** (*objetos Route*), **plugins** y **servicios**. Obtenemos el proyecto para comenzar a trabajar incluyendo la librería: `var project = require('pillars');`.
-				+ **Servicios**, conjunto de servicios disponibles y ampliables en el entorno tales como http, https, MongoDB o MySQL por ejemplo. Un proyecto Pillars.js permite varios servicios del mismo tipo corriendo al mismo tiempo, por ejemplo varios servicios http. Inicialmente cuenta con un *servicio http* built-in: `project.services.get('http')`.
-				+ **Enrutado y Clase Route**. El responsable del enrutado es el [Plugin router.js](funcionamiento-plugins.jade#plugin-router), un plugin built-in y perteneciente a la Cadena de Plugins nativa. Mediante la [Clase Route](clase-route.jade) se crean manejadores/controladores junto con su configuración, que serán añadidos al proyecto en la propiedad `project.routes`. Los *objetos route* ofrecen la versatilidad de anidamiento, y son conectables y desconectables "en caliente". [Ver enrutado](enrutado.jade).
-				+ **Gangway**. En cada solicitud se genera un *objeto Gangway* que es pasado por parámetro al controlador/Route. Este objeto contiene toda la información necesaria sobre la solicitud (request) parseada y lista para su uso, junto con multitud de métodos para la respuesta (response). Por ejemplo podremos ver propiedades como [`gw.ip`](gangway.jade#property-ip) o [`gw.accepts.languages`](gangway.jade#property-accepts) y métodos como [`gw.file()`](gangway.jade#method-file) que permite enviar archivos al cliente compatible con el protocolo [byte-serving](http://en.wikipedia.org/wiki/Byte_serving), entre muchos otros.
-				+ **Plugins**. La base sobre la que se cimenta Pillars.js son los *plugins*, que a su vez conforman la **Cadena de Plugins**. Los Plugins permiten ampliar la funcionalidad del framework. Recomendamendamos leer el [funcionamiento de los plugins en Pillars.js.](funcionamiento-plugins.jade)
+		
+
+//

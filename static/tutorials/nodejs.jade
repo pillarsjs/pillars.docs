@@ -1,0 +1,73 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'nodejs',url:'/tutorials/nodejs.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - Node.js - 'make it easy!'",path)
+		#title
+			h1 Node.js
+				em  Aprendiendo Node.js con Pillars.js
+	
+		section.quees
+			h2#node ¿Qué es Node.js?
+			:marked
+				Node.js es JavaScript que se ejecuta sobre el intérprete de JavaSdcript creado por Google V8. 
+
+				JavaScript, o mejor dicho, ECMAScript o ECMA-262, es un estándar internacional, a diferencia de muchos lenguajes.
+
+				Cuando se habla de JavaScript hay cierto recelo, y es que, a pesar de lo mucho que se ha utilizado para el frontend, sigue siendo un desconocido. 
+
+				Lo primero que voy comentar son algunas peculiaridades del lenguaje, como son: 
+				
+				- **Tipado débil**, siempre declaramos las variables sin tipo, mediante (let o const), y cuando seteamos el valor, es cuando ya podemos conocer de qué tipo es. Además, una variable puede cambiar su tipo en ejecución *(en otros lenguajes esta acción causaría error)*.
+
+			:highlight(lang='javascript')
+				let myVar; 
+				console.log(typeof(myVar));
+				//undefined
+				myVar = 43; 
+				console.log(typeof(myVar));
+				//number
+				myVar = [2,5,7,8,4]; 
+				console.log(typeof(myVar));
+				//object
+				myVar = {id:34,name:"myName"}; 
+				console.log(typeof(myVar));
+				//object
+				myVar = function(){console.log("Hello")}; 
+				console.log(typeof(myVar));
+				//function
+
+			:marked
+				- **Todo en JS son objetos**, si, hasta las funciones son objetos, por lo que casi todas las variables tendrán propiedades y métodos. En el siguiente ejemplo, vemos como un array tiene la propiedad length, que devuelve la longitud del Array.
+			:highlight(lang='javascript')
+				let myVar = [3,5,6,7,9]; 
+				console.log(myVar.length);
+				//5
+			:marked
+				- **Tiene una serie de Objetos fundamentales**. Si no estás familizarizado con los tipos de objetos en JS, te recomiendo que le eches una visual al [MDN.](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia)
+				- **Es Asíncrono**
+
+
+				- **y está basado en Prototipo**
+				
+
+		section.porque
+			h2#porque ¿Por qué Node.js?
+			:marked
+				Voy a dar los motivos por los que nososotros nos decantamos por Pillars.js: 
+
+				- Ofrece un gran rendimiento y alta escalabilidad. 
+				- Programas en JavaScript, *sí, es una ventaja*
+				- Es orientado a objetos *(prototipos)*
+				- Es asíncrono
+				
+
+		section.instalacion
+			h2#instalacion Instalación
+
+		section.primera
+			h2#primera Primera aplicación
+
+			Lipsum 
+			.msg.msg-icon.bg-alert Estamos completando la referencia. ¡Disculpa las molestias!. Síguenos en las redes sociales para estar al tanto de las actualizaciones de la documentación. 
