@@ -14,9 +14,11 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:marked
-				El proyecto es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web.
+				La librería *'pillars'* devuelve un proyecto con una **configuración mínima inicial** y sobre el que se construye el resto de la aplicación. Por lo que el proyecto es el **punto central y de anclaje** para el resto de los elementos que componen la aplicación web.
 
 				`var project = require('pillars');`
+
+				> Cualquier require de 'pillars' devolverá siempre la misma instancia. Todas las librerías Pillars.js se cargan en modo [singleton.](http://es.wikipedia.org/wiki/Singleton)
 				 	
 
 		//- Properties
@@ -33,7 +35,7 @@ html(lang=gw.language)
 				section.description
 					:marked
 						La propiedad `.config` contiene las **variables de entorno** del proyecto:
-						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el plugin cors, define si otros sitios web van a poder utilizar recursos del dominio por defecto. 
+						+ `.cors`: **Boolean** por defecto es **false**. Es utilizado en el middleware cors, define si otros sitios web van a poder utilizar recursos del dominio por defecto. 
 							+ *false* indica que no acepta solicitudes cors de ningún origen. 
 							+ *true* indica que acepta solicitudes cors de cualquier origen.
 							+ Si se especifica un *Array de strings*, podemos definir de qué dominios concretos acepta nuestro servidor solicitudes cors. 
@@ -46,7 +48,7 @@ html(lang=gw.language)
 						+ `.renderReload`: **Boolean**, por defecto es **false**. Lo utiliza el método `gw.render()` para comprobar o no, si el archivo de template ha sufrido cambios desde la última solicitud. Mientras sea *false* sólo se compilará el template en la primera solicitud.
 						+ `.favicon`: **String**, ruta del fichero favicon.ico del sitio. 
 						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
-						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`Plugin directory.js`](../started/plugins-avanzado.jade#plugin-directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
+						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`middleware directory.js`](middleware.jade#directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
 						+ `.errorTemplate`: **String**. Especifica el template utilizado para las páginas de error. Este es el template utilizado por el método [`gw.error()`](gangway.jade#method-error).
 
 
@@ -129,8 +131,6 @@ html(lang=gw.language)
 
 						Este árbol de controladores es modificable en **tiempo real**, es decir, en vivo podremos añadir, eliminar o modificar controladores.
 
-						> Más información acerca de los controladores en [enrutado en Pillars.js](../started/enrutado.jade).
-
 
 						Es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray), por lo que cuenta con los siguientes métodos para trabajar con la propiedad:
 
@@ -144,25 +144,23 @@ html(lang=gw.language)
 					:marked
 			//- Property
 			section.property
-				h3#property-plugins: code 
+				h3#property-middleware: code 
 					small project
-					| .plugins
+					| .middleware
 
 				//- Property description
 				section.description
 					:marked
-						`project.plugins` es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray). Es un array que contiene [objetos Plugin](clase-plugin.jade). Solemos llamar a esta propiedad la **Cadena de Plugins**. 
+						`project.middleware` es de tipo [ObjectArray](https://github.com/pillarsjs/ObjectArray). Es un array que contiene [objetos Middleware](middleware.jade). Solemos llamar a esta propiedad la **Cadena de Middleware**. 
 
-						> Ver [funcionamiento de plugins](funcionamiento-plugins.jade).
-
-						Contiene todos los plugins instalados en la aplicación.
+						Contiene todos los middleware instalados en la aplicación.
 
 						Para trabajar con los objetos del array disponemos de los siguientes métodos: 
 
-						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto plugin* previamente creado.
-						+ `.get(index [, pid])`: método [`.get()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto plugin* dado un identificador o la posición del elemento. 
-						+ `.remove(index [, pid])`: elimina un *objeto plugin*. Alias de [`.remove()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
-						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto plugin*. Alias de [`.move()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
+						+ `.add(element [, index, pid])`: alias del método [`.insert()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeinsert-element--index-pid) de ObjectArray. Añade un *objeto middleware* previamente creado.
+						+ `.get(index [, pid])`: método [`.get()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypeget-index--pid) de ObjectArray. Obtiene un *objeto middleware* dado un identificador o la posición del elemento. 
+						+ `.remove(index [, pid])`: elimina un *objeto middleware*. Alias de [`.remove()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototyperemove-index--pid) de ObjectArray.
+						+ `.move(index, indexTo [, pid])`: mueve de posición el *objeto middleware*. Alias de [`.move()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemove-index--indexto--pid) de ObjectArray.
 						+ `.moveAfter(index, indexTo [, pid])`: mueve a la posición posterior de la indicada. Alias de [`.moveAfter()`](https://github.com/pillarsjs/ObjectArray#objectarrayprototypemoveafter-index-indexto--pid) de ObjectArray.
 
 

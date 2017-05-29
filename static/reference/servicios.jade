@@ -1,0 +1,91 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Reference',url:'/reference/'},{label:'servicios',url:'/reference/servicios.jade'}];
+	+reference-layout("Pillars.js Reference - Servicios - 'make it easy!'",path)
+
+		#title
+			h1 Servicios
+				em  Pillars.js Reference
+			
+		section.summary
+			h2#summary Sumario
+			:marked
+				Los servicios del proyecto se encuentran en `project.services` de tipo Object Array. Digamos que en el array hay un objeto por cada servicio de la aplicación. Estos servicios son  los que va a implementar/servir la aplicación; como el servicio http, mongoDB, etc.
+
+				Los servicios de Pillars.js son wrappers para drivers existentes, de forma que se homogeinizan las funcionalidades comunes, en métodos con la misma nomenclaruta:
+				- **.start()**. Inicia el servicio.
+				- **.stop()**. Parar el servicio.
+				- **.configure()**. Configurar el servicio.
+
+				Estos wrappers se implementan en clases, de modo que posteriormente se instancian y agregan a **project.services**.
+
+				Al estar todos los servicios contenidos en la propiedad `project.services` y ésta ser de tipo array de objetos, podemos recorrer el array, parando todos los servicios o, iniciándolos en un determinado orden elegido *y modificable*. *(porque ya a esta altura de la documentación no hará falta que explique los métodos de Object Array, no??)*
+
+
+
+		section.http
+			h2#http Http/s Service
+			:marked
+				El servicio HTTP está implementando y **optimizado** en Pillars.js. Además el framework tiene instanciado por defecto un servicio http, cuyo id es 'http', por lo que veámos sus métodos:
+			:highlight(lang='javascript')
+				// Configurar
+				project.services.get("http").configure({
+					port: 3000, // Puerto, por defecto 8080
+					timeout: 8000 // tiempo que se toma el servidor antes de enviar el error timeout
+				});
+
+				// Arrancar
+				project.services.get("http").start(/*callback*/);
+
+				// Parar
+				project.services.get("http").stop(/*callback*/);
+
+			:marked
+				Para crear un nuevo servicio http en nuestra aplicación, debemos instanciar el objeto **HttpService** y añadirlo a `project.services`:
+
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				// Servicio http
+				project.services.add((new HttpService({
+				  id:'http2',
+				  port: 3003
+				})).start()); // Se pueden encadenar métodos
+
+				// Servicio https
+				var fs = require('fs');
+				project.services.add((new HttpService({
+				  id:'https',
+				  key: fs.readFileSync('./localhost.key'),
+				  cert: fs.readFileSync('./localhost.crt'),
+				  port: 3001
+				})).start());
+
+				//...
+
+				project.services.get('http2');
+				project.services.get('https');
+
+				//...
+			
+
+		section.mysql
+			h2#mysql MySQLService
+			:marked
+				Lo estamos implementando :)
+
+		section.mongodb
+			h2#mongodb MongoDBService
+			:marked
+				Lo estamos implementando :)
+
+
+
+
+
+
+
+
