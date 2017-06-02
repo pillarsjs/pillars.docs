@@ -389,11 +389,7 @@ body.home {
 				}
 				img#node-logo{
 					display: inline-block;
-					margin: 0 0 -8px 0;
-					background-color: white;
-					width: 135px;
-					padding: 0 0 5px;
-					margin-left: 7px;
+					margin:0 0 -9px 15px;			
 				}
 				img {
 					display: block;
@@ -586,6 +582,74 @@ body.home {
 			}
 		}
 	}
+}
+
+
+body.team #main{
+	max-width: inherit;
+	#contents{
+		padding: 0;
+	}
+}
+
+#team{
+	text-align: center;	
+	p, a{
+		text-align: center;
+		margin:0;
+	}	
+	.title, .persons{
+		display: inline-block;
+		width: 50%;
+		margin: 0;
+		padding: 0;
+	}
+	.title{
+		background-color: @color-primary;
+		vertical-align: top;
+		h2{
+			background-color: @color-primary;
+			padding: 10px;
+			color: white;
+			text-transform: uppercase;
+			font-size: 4em;
+		}
+	}
+	.persons{
+		background-color: white;
+	}
+	ul{
+		list-style-type: none;
+		margin: 50px 0 0 0;
+		li{
+			display: inline-block;
+			text-align: center;
+			border:1px solid @color-primary;
+			margin:10px;
+			padding: 0 0 15px 0;
+			img{
+				
+			}
+			p.name{
+				font-size: 2em;				
+				background-color: @color-primary;
+    			color: white;
+    			margin: -7px 0 10px 0
+			}
+			p.level{
+				font-size: 1em;
+			}
+			a{
+				font-size: 1em;
+				display: block;
+			}
+		}
+	}
+	.founders{
+		background-color: @color-primary;
+		border: 3px solid @color-primary;
+	}
+	.colaborators{}
 }
 
 
