@@ -37,9 +37,18 @@ html(lang=gw.language)
 				
 
 			:highlight(lang='javascript')
+				let project = require("pillars");
+
+				project.services.get("http").start();
+
+				project.routes.add(new Route(function(gw){					
+					gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+				}));
+
 				// Se visita http://localhost/?q=1
-				//> query: { q: '1' }
-				gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+				//> Has enviado mediante Query String el valor: 1
+				// gw.query contiene un objeto:  { q: '1' }
+				
 
 
 		//- Examples
@@ -47,10 +56,25 @@ html(lang=gw.language)
 			h2#example-02 Contenido de la solicitud
 
 			:marked
-				Cuando se envía al servidor un formulario por el método POST, los datos llegan en gw.content.params. 
+				Para que un controlador pueda recibir un formulario mediante el método POST, éste debe estar configurado en su `method`, aunque recuerda que en principio el valor de `method` es *undefined*, por lo que acepta cualquier método de petición. Además si va a aceptar ficheros, `multipart` debe estar seteada a **true**.
+
+				Cuando se envía al servidor un formulario por el método POST, los datos los podemos tomar de [gw.content.params](../reference/gangway.jade#property-content). 
 
 			:highlight(lang='javascript')
-				gw.content.params
+				let project = require("pillars");
+
+				project.services.get("http").start();
+
+				project.routes.add({
+					method: "POST",
+					multipart: true
+				},new Route(function(gw){
+					gw.content.params
+					gw.files
+					¿Dónde están físicamente?
+					gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+				}));
+
 
 		//- Examples
 		section.example-03
