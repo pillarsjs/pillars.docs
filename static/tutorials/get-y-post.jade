@@ -3,7 +3,7 @@ include ../.layout.jade
 doctype html
 html(lang=gw.language)
 	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/docs/tutorials/'},{label:'Cliente-Servidor',url:'/pillars/docs/tutorials/client-server.jade'}];
-	+tutorials-layout("Pillars.js Tutorials - Métodos de petición HTTP - 'make it easy!'",path)
+	+tutorials-layout("Pillars.js Tutorials - Petición HTTP - 'make it easy!'",path)
 
 		#title
 			h1 Métodos de petición
@@ -13,7 +13,7 @@ html(lang=gw.language)
 		//- Summary
 		section.summary
 			h2#summary Sumario
-			:markdown
+			:marked
 				El protocolo HTTP define 8 métodos de petición: HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS Y CONNECT, todos están soportados por Pillars.js. En este tutorial vamos a ver dos formas de enviar datos del cliente al servidor: 
 
 				+ Query String. *(El conocido GET)*
@@ -30,10 +30,10 @@ html(lang=gw.language)
 			h2#example-01 Query String
 
 			
-			:markdown
+			:marked
 				Query string es todo aquello que, desde el cliente, se ejecute después de la url con el formato: *interrogación*, *variable* *igual a valor*. Ejemplo: *?q=1*.
 				
-				Estos datos se recogen en el servidor mediante la [propiedad gw.query](../reference/gangway.jade#property-query).
+				Estos datos los encontramos en gangway, en la [propiedad gw.query](../reference/gangway.jade#property-query).
 				
 
 			:highlight(lang='javascript')
@@ -46,7 +46,7 @@ html(lang=gw.language)
 		section.example-02
 			h2#example-02 Contenido de la solicitud
 
-			:markdown
+			:marked
 				Cuando se envía al servidor un formulario por el método POST, los datos llegan en gw.content.params. 
 
 			:highlight(lang='javascript')
@@ -56,7 +56,7 @@ html(lang=gw.language)
 		section.example-03
 			h2#example-03 Rutas parametrizadas
 
-			:markdown
+			:marked
 				Cuando declaramos un objeto route, uno de los parámetros de la configuración es el path. Éste admite varias formas de configuración, que son las siguientes: 
 				
 				**1)** Ruta del Path a secas. *path:'pathestatico'*. Esta es la forma habitual en la que hemos declarado los path en los ejemplos.
@@ -78,7 +78,7 @@ html(lang=gw.language)
 				// http://localhost/users/juan , devuelve var1: users, var2:juan,
 
 				
-			:markdown
+			:marked
 				**3)** Variables sin definir en número. *path: '/*:var'*
 				
 			:highlight(lang='javascript')
@@ -89,7 +89,7 @@ html(lang=gw.language)
 				// http://localhost/users/juan , devuelve 'users/juan'
 				// http://localhost/users/juan/fotos , devuelve 'users/juan/fotos'
 
-			:markdown
+			:marked
 				Para finalizar, un ejemplo de combinación de las tres rutas parametrizadas en un mismo path: 
 
 			:highlight(lang='javascript')
