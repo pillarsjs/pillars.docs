@@ -14,9 +14,9 @@ html(lang=gw.language)
 		section.summary
 			h2#summary Sumario
 			:marked
-				El envío de datos a cliente se realiza siempre dentro del manejador de un objeto route, y siempre es la última llamada dentro de este.
+				El envío de datos a cliente se realiza siempre dentro del manejador de un objeto route, y siempre es la última llamada dentro de éste.
 
-				Los métodos que realizan envío a cliente, y por tanto componen los encabezados HTTP pertinentes, son los siguientes métodos del objeto gangway: 
+				Los métodos que realizan envío a cliente, y por tanto componen los encabezados HTTP pertinentes, son los métodos del objeto gangway: 
 
 				+ [gw.send()](../reference/gangway.jade#method-send). Si la respuesta es un string se envía como *text/html* y si es un objeto lo envía como objeto parseado tipo *application/json*.
 				+ [gw.html()](../reference/gangway.jade#method-html). Envía al cliente la respuesta parseada como *text/html*.
@@ -25,7 +25,7 @@ html(lang=gw.language)
 				+ [gw.render()](../reference/gangway.jade#method-render). Este método permite enviar al cliente un template renderizado. Hace uso de la librería Templated.
 				+ [gw.file()](../reference/gangway.jade#method-file). Compatible con byte-serving, por lo que si se envía un archivo de video, se retransmite en streaming.
 
-				Todos estos métodos finalizan el objeto gangway. Una vez se ejecute este método, no se ejecutará ningún código más que hubiese después de la llamada. 
+				Todos estos métodos finalizan el objeto gangway. Una vez se ejecute este método, no se ejecutará ningún código más que hubiese después. 
 			
 
 		//- Examples
@@ -80,7 +80,7 @@ html(lang=gw.language)
 
 					El que un archivo entre en la caché significa que la siguiente petición que se realice del mismo, no tendrá lectura de disco, ya que estará disponible en la caché. Se realizan comprobaciones para asegurar que el archivo no fue modificado, si lo hubiera sido, se volvería a leer.
 
-					Tener en cuenta que `gw.file()` admite tres parámetros, por lo que [revisar la referencia](../reference/gangway.jade#method-file).
+					Tener en cuenta que `gw.file()` admite tres parámetros, por lo que recomendamos [revisar la referencia](../reference/gangway.jade#method-file).
 
 				:highlight(lang='javascript')
 					let project = require("pillars");
