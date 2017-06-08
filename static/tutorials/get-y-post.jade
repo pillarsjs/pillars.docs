@@ -59,8 +59,7 @@ html(lang=gw.language)
 				Para que un controlador pueda recibir un formulario mediante el método POST, éste debe estar configurado en su `method`, aunque recuerda que en principio el valor de `method` es *undefined*, por lo que acepta cualquier método de petición. Además si va a aceptar ficheros, `multipart` debe estar seteada a **true**.
 
 				Cuando se envía al servidor un formulario por el método POST, los datos los podemos tomar de [gw.content.params](../reference/gangway.jade#property-content). 
-
-				**Ejemplo de envío de formulario POST sin fichero adjunto**
+	
 
 			:highlight(lang='javascript')
 				let project = require("pillars");
@@ -78,4 +77,5 @@ html(lang=gw.language)
 				}));
 
 			:marked
-				**Ejemplo de envío de formulario POST con fichero adjunto**
+	//			**Ejemplo de envío de formulario POST con fichero adjunto**
+	//			**Ejemplo de envío de formulario POST sin fichero adjunto** 
