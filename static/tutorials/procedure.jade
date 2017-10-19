@@ -1,0 +1,280 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'nodejs',url:'/tutorials/procedure.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - Procedure - 'make it easy!'",path)
+		#title
+			h1 Procedure Lib
+				em  Aprendiendo Node.js con Pillars.js
+	
+		section.quees
+			h2#procedure Descripción
+			:marked
+				La librería Procedure permite el **control de la asincronía** en Node.js.
+
+				Dado un número *N* de procesos o tareas a ejecutar de forma asíncrona, los añadimos a la instancia de la librería mediante `.add()`. 
+
+				Mediante los métodos `.queue()` y `.race()` se agrupan estas tareas para ser ejecutadas en **secuencia** o **paralelo** respectivamente. Es posible realizar diferentes agrupaciones.
+
+				Mediante el método `.launch()`, se lanza todo aquello que hubiéramos añadido.
+
+			:highlight(lang='javascript')
+				// Se instancia la librería Procedure.
+				var myProcedure = new Procedure();
+
+				// Añadimos las tareas a ejecutar mediante el método .add.
+				myProcedure.add(task1);
+				myProcedure.add(task2);
+				myProcedure.add(task3);
+
+				myProcedure.queue(); // Agrupar todas las tareas añadidas HASTA el momento para su ejecución secuencial.
+
+				myProcedure.add(task4);
+				myProcedure.add(task5);				
+
+				myProcedure.race(); // Agrupar todas las tareas añadidas, task4 y task5, a ejecutar en paralelo.
+
+				myProcedure.launch(function(errors,results){ 					
+					if (errors){
+						console.log("Finalizado con ERRORES", errors);
+					}else{
+						console.log("Finalizado correctamente: ", results);
+					}
+				});
+
+			:marked
+				Cuando hablamos de ejecutar de forma secuencial; Dado el *task2*, no se comenzará a ejecutar hasta que finalice el *task1*, y el *task 3*, no se lanzará hasta que *task 2* finalice. 
+
+				En la ejecución en paralelo, quiere decir que tanto *task4* como *task5* se lanzarán ambos a la vez.
+
+				Tanto los resultados como errores los tendremos en el método `.launch()`. 
+
+		section.tasks
+			h2#task Los tasks
+			:marked
+				Los **tasks** son funciones que reciben por parámetro **done**. Al finalizar la ejecución, debe ejecutar `done()` para finalizar la ejecución. 
+				Para emitir un resultado `done.result()`.
+
+			:highlight(lang='javascript')
+				// Código a ejecutar de forma asíncrona
+				let task1 = function(done){					
+					setTimeout(()=>{
+						console.log("Task 1")
+						done(); // Finaliza la ejecución sin devolver resultado.
+					},2000);
+				};
+
+			:highlight(lang='javascript')
+				let task2 = function(done){					
+					setTimeout(()=>{
+						console.log("Task 2")
+						done.result(42); // Finaliza la ejecución emitiendo como resultado 42.
+					},2000);
+				};			
+			:marked
+	
+		
+		section.queue
+			h2#queue .queue()
+			:marked
+				Agrupa tasks para su ejecución secuencial.
+
+				Se pueden pasar valores de un task al siguiente, mediante `done.result()`. Si un task emite resultado, el siguiente debe estar preparado para recoger este valor. 
+			:highlight(lang='javascript')
+				var myProcedure = new Procedure();
+
+				myProcedure.add(function(done){console.log("Task A");done.result(1);});
+				myProcedure.add(function(b,done){console.log("Task B: ", b);done.result(2);});
+				myProcedure.add(function(c,done){console.log("Task C: ", c);done.result(3);});
+
+				myProcedure.queue(); 
+
+				myProcedure.launch(function(errors,results){
+					if (errors){
+						console.log("Finalizado con ERRORES", errors);
+					}else{
+						console.log("Finalizado correctamente", results);
+					}
+				});
+
+				/*Resultado: 
+				Task A
+				Task B:  1
+				Task C:  2
+				Finalizado correctamente 3
+				*/
+
+			:marked
+				`.queue()` devolverá como resultado un sólo valor, que será el resultado del último task ejecutado. En el caso del ejemplo de arriba, devolverá 3. 
+
+				En el caso de realizar varios empaquetados `.queue()`, se debe tener en cuenta que el primer tasks de la siguiente agrupación `.queue()` recibirá el resultado de la anterior.
+
+			:highlight(lang='javascript')
+				var myProcedure = new Procedure();
+
+				myProcedure.add(function(done){console.log("Task A");done.result(1);});
+				myProcedure.add(function(b,done){console.log("Task B: ", b);done.result(2);});
+				myProcedure.add(function(c,done){console.log("Task C: ", c);done.result(3);});
+
+				myProcedure.queue(); 
+
+				// Recoge el resultado del anterior .queue() en el parámetro v
+				myProcedure.add(function(v, done){console.log("Task D: ", v);done.result(4);}); 
+				myProcedure.add(function(v, done){console.log("Task E: ", v);done();}); // Finaliza sin devolver resultado
+				myProcedure.add(function(done){console.log("Task F");done.result(6);}); 
+
+				myProcedure.queue();
+
+				myProcedure.launch(function(errors,results){
+					if (errors){
+						console.log("Finalizado con ERRORES", errors);
+					}else{
+						console.log("Finalizado correctamente", results);
+					}
+				});
+
+				/*Resultado: 				
+					Task A
+					Task B:  1
+					Task C:  2
+					Task D:  3
+					Task E:  4
+					Task F
+					Finalizado correctamente 6
+				*/
+
+			:marked
+				Otro caso es el siguiente ejemplo, en el que posteriormente se agrupan una serie de tasks en `.race()`. En este caso, ningún tasks de los agrupados en `.race()` tomará ningún valor del resultado del `.queue()`, ya que el ser una ejecución en paralelo, tampoco se conoce qué task se ejecutará en primer lugar.
+
+			:highlight(lang='javascript')
+				var myProcedure = new Procedure();
+
+				myProcedure.add(function(done){console.log("Task A");done.result(1);});
+				myProcedure.add(function(b,done){console.log("Task B: ", b);done.result(2);});
+				myProcedure.add(function(c,done){console.log("Task C: ", c);done.result(3);});
+
+				myProcedure.queue(); 
+
+				myProcedure.add("Task-Z",function(done){console.log("Task Z");done.result(24,25,26,27);});
+				myProcedure.add("Task-Y",function(done){console.log("Task Y");done.result(24);});
+				myProcedure.add("Task-X",function(done){console.log("Task X");done();}); // Termina sin emitir resultado
+
+				myProcedure.race();
+
+				myProcedure.launch(function(errors,results){
+					if (errors){
+						console.log("Finalizado con ERRORES", errors);
+					}else{
+						console.log("Finalizado correctamente", results);
+					}
+				});
+
+				/*Resultado: 
+				Task A
+				Task B:  1
+				Task C:  2
+				Task Z
+				Task Y
+				Task X
+				Finalizado correctamente Object {Task-Z: [24,25,26,27], Task-Y: [24], Task-X: []}
+				*/
+
+		section.race
+			h2#race .race()
+			:marked
+				Agrupa tasks para su ejecución en paralelo, por lo que no se conoce qué task será el primero en ejecutarse, ni el último. 
+
+				`.race()` devuelve como resultado un Array con el resultado de cada uno de los tasks.
+
+				Al no conocer el orden de ejecución, es posible agregarle un identificador o nombre, al agregar el task mediante `.add()`.
+			
+			:highlight(lang='javascript')
+				let myProcedure = new Procedure();
+
+				let task = function(done){
+					let n =  Math.round(Math.random()*10);
+					console.log("I'm a task: ",n); 
+					done.result(n);
+				};
+
+				myProcedure.add("Task-1",task);
+				myProcedure.add("Task-2",task);
+
+				myProcedure.race();
+
+				myProcedure.launch(function(errors,results){
+					if (errors){
+						console.log("Finalizado con ERRORES", errors);
+					}else{
+						console.log("Finalizado correctamente", results);
+					}
+				});
+
+				/*Resultado: 
+				I'm a task: 0
+				I'm a task: 8
+				Finalizado correctamente 
+				{
+					"Task-1": [0],
+					"Task-2": [8]
+				}
+				*/
+
+			:marked
+				Si se optara por no especifiar nombres de los procesos, se nombrarían como Job-1, Job-2,...,Job-n
+
+		section.valoresexternos
+			h2#valoresexternos Valores externos
+			:marked
+				En el caso de que la llamada a algún task se deba realizar con ciertos parámetros conocidos, es posible añadirlos como tercer parámetro a `Procedure.add(name, task, values)`
+			:highlight(lang='javascript')
+				myProcedure.add("task1",task1, 80);
+			:marked
+				Cuando se realice la ejecución de task1, se le pasará por parámetro el valor 80. 
+
+				Un ejemplo más extendido:
+
+			:highlight(lang='javascript')
+				// external es el valor que se añade como tercer parámetro a .add()
+				let task1 = function(external,done){
+					setTimeout(()=>{
+						console.log("Task 1 external: ", external);     
+						done.result(external+1);
+					},200);
+				}
+
+				let task2 = function(t1,external,done){
+					setTimeout(()=>{
+						console.log("Task 2 arrives from task1: ", t1);
+						console.log("Task 2 external: ", external);
+						done.result(external+t1);
+					},500);
+				}
+
+				let task3 = function(t2,external,done){
+					setTimeout(()=>{
+						console.log("Task 3 arrives from task2: ", t2);
+						console.log("Task 3: ", external)      
+						done.result(external+t2);
+					},100);
+				}
+
+				var myProcedure = new Procedure();
+
+				myProcedure.add("task1",task1, 80);
+				myProcedure.add("task2",task2, 45);
+				myProcedure.add("task3",task3, 30);
+
+				myProcedure.queue(); 
+
+				myProcedure.launch(function(errors,result){
+					if (errors){
+						console.log("Finalizado con ERRORES", errors);      
+					}else{
+						console.log("Resultado de la ejecución de todos los procesos:", result);       
+					}
+				});	
+
+
+

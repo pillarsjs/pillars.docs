@@ -4,7 +4,7 @@ html(lang=gw.language)
 	+layout("Pillars.js Reference - 'make it easy'",undefined,'home')
 		div#cover
 			h1 Framework de Desarrollo Web para
-			img#node-logo(src="/img/node-js-white.png",alt="Node.js logo")
+			img#node-logo(src="/img/node-logo.png",alt="Node.js logo")
 
 			img(src="/img/cover.png",alt="Pillars.js logo")
 		div#example
@@ -13,10 +13,15 @@ html(lang=gw.language)
 
 						project.services.get('http').start(); 
 
-						// Modelo de servidor orientado a objetos:					
+						// Convención antes que configuración
+						project.routes.add(new Route(function(gw){
+							gw.send("Hola mundo!");
+						}));
+
+						// Controladores flexibles en configuración:
 						project.routes.add(new Route({
 								method: ["GET","POST"], 
-								port: 8080,
+								port: 8080,		
 								path: "/hola",
 								https: false,
 								cors: true,	
@@ -55,7 +60,7 @@ html(lang=gw.language)
 						li Control automático de errores en manejadores
 						li CORS administrable por ruta
 						li Compresión de respuesta automática
-						li Negociación automática de caché
+						li Negociación automática de caché en el cliente
 						li Gestión de Cookies y encriptado
 						li etag encriptado con sorpote para múltiples valores
 
@@ -64,16 +69,12 @@ html(lang=gw.language)
 							p TUTORIALES
 							ul
 								li 
-									a Configuración de la aplicación
+									a Configuración del Entorno
 									a Configuración del servicio HTTP
-									a Configuración CORS
 
 			
 			div.pink#rutas
 				div.feature
-					h2#enrutado Enrutado
-						span Entorno dinámico
-
 					ul.list
 						li Acceso en vivo a todos los controladores del sistema
 						li Todos los controladores de tu aplicación en <strong>project.routes</strong>
@@ -82,7 +83,8 @@ html(lang=gw.language)
 						li Mejor organización de funcionalidades en <strong>árboles de controladores</strong>
 						li Nombrado de controladores; ofrece organización y control sobre el entorno
 						li Comunicación middleware y controladores
-					
+					h2#enrutado Enrutado
+						span Entorno dinámico
 
 					:highlight(lang='javascript')
 							// Añade el objeto route a project.routes
@@ -93,20 +95,16 @@ html(lang=gw.language)
 								},function(gw){
 									gw.send("Hello from the other side");
 							}));
-
-							// Toma un controlador y lo desactiva 
-							project.routes.get("home").active = false;
-
-							// Elimina un controlador
-							project.routes.remove("home");
 				//
 					div.tutos
 						p TUTORIALES
 						ul
 							li
 								a Configuración de ruta
-								a Activar/Desactivar rutas en caliente								
-								a Rutas Parametrizadas								
+								a Activar/Desactivar rutas en caliente
+								a Estructura arbórea
+								a Rutas Parametrizadas
+								a Herencia
 
 				
 			div.white#gw
@@ -158,7 +156,7 @@ html(lang=gw.language)
 						p TUTORIALES
 						ul						
 							li 
-								a GET y POST								
+								a Propiedades de la solicitud
 								a Métodos para la respuesta
 								a Cookies
 								a Video Streaming
@@ -168,16 +166,16 @@ html(lang=gw.language)
 
 			//div.pink#services
 				div.feature
-					h2#gestion-servicios Gestión de Servicios
-							span Servicios centralizados
-
 					ul.list
 						li Centralización de servicios en la propiedad <strong>project.services</strong>
 						li Posibilidad de añadir, modificar o eliminar servicios.
 						li Servicio http build-in
 						li Añade, modifica o elimina servicios en caliente.
 
-					
+					h2#gestion-servicios Gestión de Servicios
+						span Servicios centralizados
+
+
 					:highlight(lang='javascript')
 							var project = require('pillars');
 
@@ -193,7 +191,7 @@ html(lang=gw.language)
 						ul
 							li
 								a Manejo de los servicios
-								a MongoDB
+								a MongoDB como servicio
 								a Servicio https
 								
 
@@ -229,13 +227,11 @@ html(lang=gw.language)
 						ul
 							li
 								a Manejo de los plugins
-								a Ejecución de plugins en objetos route determinados								
+								a Ejecución de plugins en objetos route determinados
+								a Cadena de Plugins
 
 			div.white#i18n
 				div.feature
-					h2#i18n i18n
-						span Internacionalización eficiente
-
 					ul.list
 						li Librería textualization
 						li Integración completa de i18n
@@ -244,6 +240,10 @@ html(lang=gw.language)
 						li Gestión de idioma de la solicitud automática
 						li Rutas multi-idioma :-)
 
+					h2#i18n i18n
+						span Internacionalización eficiente
+
+			
 
 				//
 					div.tutos
@@ -274,14 +274,12 @@ html(lang=gw.language)
 
 			div.white#cron
 				div.feature
-					h2#cron CRON
-						span Librería Scheduled
-
 					ul.list
 						li Programación de tareas mediante CRON gracias a la librería Scheduled
 						li Acceso a todas las tareas programadas en el proyecto
 						li Acceso en vivo a las tareas programas: modificación, eliminación, ...
-					
+					h2#cron CRON
+						span Librería Scheduled
 				//
 					:highlight(lang='javascript')
 						var hola
@@ -289,8 +287,10 @@ html(lang=gw.language)
 					div.tutos
 						p TUTORIALES
 						ul
-							li								
-								a Tareas programadas								
+							li
+								a Hola Mundo en 5 idiomas
+								a y no se que más
+								a Numerles
 
 			//div.pink#logs
 				div.feature
@@ -302,12 +302,11 @@ html(lang=gw.language)
 		//
 			div.pink#dependencies
 				div.feature
-					h2#dependencias Robustez
-						span Dependencias propias
-
+					
 					ul.list
 						li Código robusto. Todas las dependencias han sido creadas, y son mantenidas, por el mismo equipo
-					
+					h2#dependencias Robustez
+						span Dependencias propias
 				
 		//
 			div.pink#jailer
@@ -330,14 +329,12 @@ html(lang=gw.language)
 								a Permisos
 
 			div.white#procedure
-				div.feature
-					h2#procedure Asincronía
-						span Librería Procedure
-									
+				div.feature					
 					ul.list
 						li Programación de tareas mediante CRON gracias a la librería Scheduled
 						li Acceso a todas las tareas programadas en el proyecto
-					
+					h2#procedure Asincronía
+						span Librería Procedure
 
 					:highlight(lang='javascript')
 						var x = 0;
@@ -371,3 +368,5 @@ html(lang=gw.language)
 								a Cola de procesos
 								a Pasar parámetros de procesos a procesos
 								a Mix de carreras y colas
+	
+	

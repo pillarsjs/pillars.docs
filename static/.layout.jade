@@ -11,15 +11,15 @@ mixin base(title,path,bodyclass)
 	body(class=bodyclass)
 		#space
 			header#header
-				a#logo Pillars.js - make it easy!
+				a#logo(href="http://www.pillarsjs.com") Pillars.js - make it easy!
 				nav#mainmenu
 					h2 Main menu
 					ul
 						li: a(href="/") Home
 						li: a(href="/started/comenzando.jade") Comenzando
-						//li: a(href="/tutorials/configuracion-entorno.jade") Tutoriales
+						li: a(href="/tutorials/nodejs.jade") Tutoriales
 						li: a(href="/reference/project.jade") Referencia
-						//li: a(href="/libs/") Librerías
+						li: a(href="/team/team.jade") Equipo
 						//li: a(href="/getin/") Colabora
 						
 						//li: a(href="mailto:hello@pillarsjs.com") Contacto
@@ -102,7 +102,6 @@ mixin base(title,path,bodyclass)
 	
 	script
 		include ./js/jquery.min.js
-	
 
 	script.
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -111,6 +110,7 @@ mixin base(title,path,bodyclass)
 		})(window,document,'script','/js/analytics.js','ga');
 		ga('create', 'UA-64107815-1', 'auto');
 		ga('send', 'pageview');
+
 		(function(){
 			var mainmenu = $('#mainmenu');
 			var swrp = $('<div class="select"></div>');
@@ -260,27 +260,20 @@ mixin tutorials-layout(title,path,bodyclass)
 			nav#scopelinks
 				h2 Tutoriales
 				ul
-					li: a(href="/tutorials/configuracion-entorno.jade") Configuración del entorno
-					li: a(href="/tutorials/configuracion-http.jade") Configuración HTTP
-					li: a(href="/tutorials/configuracion-ruta.jade") Configuración de ruta
-					li: a(href="/tutorials/rutas-en-caliente.jade") Activar/Desactivar rutas en caliente
-					li: a(href="/tutorials/rutas-arboreas.jade") Rutas arbóreas					
-					li: a(href="/tutorials/propiedades-solicitud.jade") Propiedades de la Solicitud
+					li: a(href="/tutorials/nodejs.jade") Node.js
+					li: a(href="/tutorials/pillarsjs.jade") Pillars.js
+					li: a(href="/tutorials/configuracion.jade") Configuración aplicación
+					li: a(href="/tutorials/https.jade") HTTP/s
+					li: a(href="/tutorials/controladores.jade") Controladores
+					li: a(href="/tutorials/rutas.jade") Rutas/Path
 					li: a(href="/tutorials/metodos-respuesta.jade") Métodos para la respuesta
-					li: a(href="/tutorials/cookies.jade") Cookies
-					li: a(href="/tutorials/streaming.jade") Video Streaming
-					li: a(href="/tutorials/get.jade") GET
-					li: a(href="/tutorials/post.jade") POST
-					li: a(href="/tutorials/rutas-parametrizadas.jade") Rutas parametrizadas
-					li: a(href="/tutorials/uso-servicios.jade") Uso de los servicios
-					li: a(href="/tutorials/servicio-mongodb.jade") MongoDB como servicio
-					li: a(href="/tutorials/servicio-https.jade") Servicio https
-					li: a(href="/tutorials/uso-plugins.jade") Uso de Plugins
-					li: a(href="/tutorials/plugins-y-routes.jade") Plugins y routes
-					li: a(href="/tutorials/cadena-plugins.jade") Cadena de Plugins
-					li: a(href="/tutorials/i18n.jade") Hola Mundo en 5 idiomas
-					li: a(href="/tutorials/cron.jade") Programación de tareas
-					li: a(href="/tutorials/logs.jade") Logs
+					li: a(href="/tutorials/get-y-post.jade") GET y POST					
+					li: a(href="/tutorials/procedure.jade") Procedure Lib					
+					//li: a(href="/tutorials/servicio-mongodb.jade") MongoDB como servicio					
+					//li: a(href="/tutorials/i18n.jade") Internacionalización
+					//li: a(href="/tutorials/render.jade") Motores Renderizado
+					//li: a(href="/tutorials/cron.jade") Programación de tareas
+					//li: a(href="/tutorials/logs.jade") Logs
 
 
 

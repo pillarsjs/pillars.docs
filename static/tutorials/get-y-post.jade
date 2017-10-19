@@ -1,0 +1,81 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/docs/tutorials/'},{label:'Cliente-Servidor',url:'/pillars/docs/tutorials/client-server.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - Petición HTTP - 'make it easy!'",path)
+
+		#title
+			h1 Métodos de petición
+				em  Pillars.js Tutorials
+		
+
+		//- Summary
+		section.summary
+			h2#summary Sumario
+			:marked
+				El protocolo HTTP define 8 métodos de petición: HEAD, GET, POST, PUT, DELETE, TRACE, OPTIONS Y CONNECT, todos están soportados por Pillars.js. En este tutorial vamos a ver dos formas de enviar datos del cliente al servidor: 
+
+				+ Query String. *(El conocido GET)*
+				+ Contenido de la solicitud. *(El conocido POST)*
+				
+				> Más información [8 métodos de petición del Protocolo HTTP](http://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_petici.C3.B3n).
+
+				Además, el framework permite el uso de rutas parametrizadas, que veremos en el último apartado. 
+
+
+
+		//- Examples
+		section.example-01
+			h2#example-01 Query String
+
+			
+			:marked
+				Query string es todo aquello que, desde el cliente, se ejecute después de la url con el formato: *interrogación*, *variable* *igual a valor*. Ejemplo: *?q=1*.
+				
+				Estos datos los encontramos en gangway, en la [propiedad gw.query](../reference/gangway.jade#property-query).
+				
+
+			:highlight(lang='javascript')
+				let project = require("pillars");
+
+				project.services.get("http").start();
+
+				project.routes.add(new Route(function(gw){					
+					gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+				}));
+
+				// Se visita http://localhost/?q=1
+				//> Has enviado mediante Query String el valor: 1
+				// gw.query contiene un objeto:  { q: '1' }
+				
+
+
+		//- Examples
+		section.example-02
+			h2#example-02 Contenido de la solicitud
+
+			:marked
+				Para que un controlador pueda recibir un formulario mediante el método POST, éste debe estar configurado en su `method`, aunque recuerda que en principio el valor de `method` es *undefined*, por lo que acepta cualquier método de petición. Además si va a aceptar ficheros, `multipart` debe estar seteada a **true**.
+
+				Cuando se envía al servidor un formulario por el método POST, los datos los podemos tomar de [gw.content.params](../reference/gangway.jade#property-content). 
+	
+
+			:highlight(lang='javascript')
+				let project = require("pillars");
+
+				project.services.get("http").start();
+
+				project.routes.add({
+					method: "POST",
+					multipart: true
+				},new Route(function(gw){
+					gw.content.params
+					gw.files
+					¿Dónde están físicamente?
+					gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+				}));
+
+			:marked
+	//			**Ejemplo de envío de formulario POST con fichero adjunto**
+	//			**Ejemplo de envío de formulario POST sin fichero adjunto** 

@@ -50,6 +50,7 @@ html(lang=gw.language)
 						+ `.debug`: establece el entorno en modo debug lo que hará que se muestre información adicional de los errores. Tipo **Boolean**, por defecto es **false**.
 						+ `.directoryTemplate`: **String**. Especifica el template para listar directorios. Es usado por el [`middleware directory.js`](middleware.jade#directory). Podemos modificar el template seteando la ruta de éste en dicha propiedad.
 						+ `.errorTemplate`: **String**. Especifica el template utilizado para las páginas de error. Este es el template utilizado por el método [`gw.error()`](gangway.jade#method-error).
+						+ `.logFile`: **Boolean**, por defecto es **false**, por lo que no se activa el directorio de logs. Para activarlo, establecer logFile a **true**.
 
 
 					:marked

@@ -3,14 +3,78 @@ include ../.layout.jade
 doctype html
 html(lang=gw.language)
 	- var path = [{label:'Pillars.js Tutorials',url:'/pillars/docs/tutorials/'},{label:'HTTPS',url:'/pillars/docs/tutorials/https.jade'}];
-	+reference-layout("Pillars.js Tutorials -HTTPS - 'make it easy!'",path)
-
+	+tutorials-layout("Pillars.js Tutorials - Http/s - 'make it easy!'",path)
 		#title
-			h1 Servidor HTTPS
+			h1 HTTP/s
 				em  Pillars.js Tutorials
 		
 			:marked
-				En este tutorial vamos a configurar un servidor HTTPS en el puerto 3001. 
+				Pillars.js ofrece un servicio http built-in. Esto significa que, en la propiedad del proyecto `project.services`, que contiene todos los servicios añadidos al proyecto, tenemos un servicio con identificador **http** ya insertado. 
+
+				Este servicio, arranca por defecto en el puerto 8080, no obstante podemos cambiar su configuración. Para acceder a este servicio y poder actuar sobre el, primero lo tomamos mediante el método `.get(identificador)`, y posteriormente se puede: 
+				- Configurar mediante el método `.configure(objeto configuración)`
+				- Arrancar mediante el método `.start()`
+				- Para mediante el método `.stop()`
+
+			:highlight(lang='javascript')
+				let project = require("pillars");
+
+				project.services.get("http").configure({
+					port:3000,
+					timeout:8000
+				}).start();
+			:marked
+				Para saber más acerca de los servicios, puedes consultar la [referencia]("../reference/servicios.jade"). 
+
+				Por otra parte, es posible crear más servicios http, y https. 
+
+		section.http
+			h2#http Creación de un servicio http
+			:marked
+				Para crear un servicio  http o https, instanciamos la Clase HttpService, y la añadimos a `project.services`. 
+				Para un servicio http, tan sólo es necesario especficar en la configuración: 
+				- id, Identificador. 
+				- port, Puerto en el que se montará el servicio creado. 
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				// Servicio http
+				project.services.add((new HttpService({
+				  id:'http2',
+				  port: 3003
+				})).start()); // Se pueden encadenar métodos
+				
+				//...
+
+				project.services.get('http2').stop();
+				
+				//...
+
+		section.https
+			h2#https Creación de un servicio https
+			:marked
+				Para crear un servicio https es necesario crear un certificado SSL, existen varias herramientas para crearlo, como OpenSSL. 
+				Una vez creado, tan sólo tienes que especificar en la configuración, las propiedades `key` y `cert` con los archivos creados.
+
+			:highlight(lang='javascript')
+				var project = require('pillars');
+
+				// Servicio https
+				var fs = require('fs');
+				project.services.add((new HttpService({
+				  id:'https',
+				  key: fs.readFileSync('./localhost.key'),
+				  cert: fs.readFileSync('./localhost.crt'),
+				  port: 3001
+				})).start());
+
+				//...
+				
+				project.services.get('https').stop();
+
+				//...
+
 
 				
 		
