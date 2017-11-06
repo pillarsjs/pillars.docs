@@ -416,7 +416,7 @@ body.home {
 						display: inline-block;
 						color: @color-primary;
 						font-size: 0.8em;
-						padding: 35px 5px;
+						padding: 25px 30px;
 					}
 					&:hover{
 						a{
@@ -452,11 +452,12 @@ body.home {
 					}
 					ul.list{						
 						width: 49%;
-						margin: 0 0 0 20px;
+						padding: 40px 20px 30px;
 						list-style-type: none;
+						display: inline-block;
 						li{
 							font-size: 0.95em;
-							padding: 6px 0;
+							padding: 12px 10px;
 							margin: 0;
 							font-style: italic;
 							line-height: 1em;
@@ -483,7 +484,6 @@ body.home {
 						float: right; 
 					}
 					ul.list{
-						float: left;
 						li{
 							color: #555;
 							border-top:1px solid rgba(0,0,0,0.1);
@@ -511,7 +511,6 @@ body.home {
 						float: left;
 					}
 					ul.list{
-						float:right;
 						li{
 							color: white;
 							border-top:1px solid rgba(255,255,255,0.3);
@@ -531,54 +530,6 @@ body.home {
 						}
 					}
 				}
-				#http{
-					height: 440px;
-					.feature ul.list{
-						padding-top: 20px;
-					}
-				}
-				#i18n{
-					height: 360px;
-				}
-				#rutas{
-					//height: 600px;
-					.feature ul.list{
-						padding-top: 43px;
-					}
-				}
-				#gw{
-					//height: 1000px;
-					.feature ul.list{
-						padding-top: 50px;
-					}
-				}
-				#middleware{
-					//height: 575px;					
-				}
-				#services{
-					.feature ul.list{
-						padding-top: 93px;
-					}
-				}
-				#plugins{
-					.feature ul.list{
-						padding-top: 43px;
-					}
-				}
-				#templated{
-					height: 450px;
-					.feature .list{
-						margin-top: 100px;
-					}
-				}
-				#cron{
-					height: 340px;
-					.feature .list{
-						margin-top: 60px;
-					}
-				}
-
-				
 			}
 		}
 	}
@@ -671,11 +622,6 @@ body.team #main{
  			width: 98%;
  			display: inline-block;
  			float: none;
- 		}
- 	}
- 	body.home #space #main #features{
- 		#i18n, #templated, #cron, #http{
- 			height: inherit;
  		}
  	}
 }
