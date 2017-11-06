@@ -2,5 +2,372 @@ include ./.layout.jade
 doctype html
 html(lang=gw.language)
 	+layout("Pillars.js Reference - 'make it easy'",undefined,'home')
-		h1 Welcome to Pillars.js, web development framework for Node.js
-		img(src="/img/cover.png",alt="Pillars.js logo")
+		div#cover
+			h1 Framework de Desarrollo Web para
+			img#node-logo(src="/img/node-js-white.png",alt="Node.js logo")
+
+			img(src="/img/cover.png",alt="Pillars.js logo")
+		div#example
+			:highlight(lang='javascript')
+						var project = require('pillars'); 
+
+						project.services.get('http').start(); 
+
+						// Modelo de servidor orientado a objetos:					
+						project.routes.add(new Route({
+								method: ["GET","POST"], 
+								port: 8080,
+								path: "/hola",
+								https: false,
+								cors: true,	
+								session: true 
+							},function(gw){
+								gw.session.counter = gw.session.counter || 0;
+								gw.session.counter++;
+								gw.html("Hola!!, tu IP es: " + gw.ip + " y esta es tu visita nº "+ gw.session.counter);
+						});
+		ul#features-menu
+			li 
+				a(href="#negociacion-http") Negociación HTTP
+			li 
+				a(href="#enrutado") Enrutado
+			li 
+				a(href="#req-res") Request&Response
+			li 
+				a(href="#middleware") Middleware
+			li 
+				a(href="#i18n") i18n
+			li 
+				a(href="#motor-plantillas") Motor de Plantillas
+			li 
+				a(href="#cron") CRON
+
+
+		div#features
+			div.white#http
+				div.feature
+					h2#negociacion-http Negociación HTTP
+						span Estabilidad y funcionalidad
+
+					ul.list
+						li Envío de archivos con compresión, gestión de caché y byte-range. Compatible con streaming y recuperación de descargas
+						li Parser de solicitudes para form-urlencoded, multipart y json		
+						li Control automático de errores en manejadores
+						li CORS administrable por ruta
+						li Compresión de respuesta automática
+						li Negociación automática de caché
+						li Gestión de Cookies y encriptado
+						li etag encriptado con sorpote para múltiples valores
+
+				//
+					div.tutos 
+							p TUTORIALES
+							ul
+								li 
+									a Configuración de la aplicación
+									a Configuración del servicio HTTP
+									a Configuración CORS
+
+			
+			div.pink#rutas
+				div.feature
+					h2#enrutado Enrutado
+						span Entorno dinámico
+
+					ul.list
+						li Acceso en vivo a todos los controladores del sistema
+						li Todos los controladores de tu aplicación en <strong>project.routes</strong>
+						li Convención antes que configuración
+						li Añade, modifica o elimina controladores en caliente
+						li Mejor organización de funcionalidades en <strong>árboles de controladores</strong>
+						li Nombrado de controladores; ofrece organización y control sobre el entorno
+						li Comunicación middleware y controladores
+					
+
+					:highlight(lang='javascript')
+							// Añade el objeto route a project.routes
+							project.routes.add(new Route({
+									id:"home",
+									path:"/web",
+									method:["POST"|"GET"]
+								},function(gw){
+									gw.send("Hello from the other side");
+							}));
+
+							// Toma un controlador y lo desactiva 
+							project.routes.get("home").active = false;
+
+							// Elimina un controlador
+							project.routes.remove("home");
+				//
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Configuración de ruta
+								a Activar/Desactivar rutas en caliente								
+								a Rutas Parametrizadas								
+
+				
+			div.white#gw
+				div.feature
+					h2#req-res Gangway
+						span Request y Response
+				
+					ul.list
+						li Gangway is the way. Olvida el request y response nativos. Gangway encapsula ambos, ofreciendo propiedades y métodos vitaminados.
+						li Con tan solo un gw.file(), haces streaming!
+
+					:highlight(lang='javascript')
+							var myRoute = new Route(
+								{
+									id:"users"
+									path:"/users"
+								},
+								function(gw){
+									var ip = gw.ip;			// Dirección IP de la solicitud
+									var POST = gw.content.params;	// POST de la solicitud
+									var GET = gw.query;			// GET de la solicitud
+										/*
+										GET:{
+														id: '37',
+														value: 'lipsum'
+										}
+										*/
+									var cookie = gw.cookie;		// Cookie de la solicitud
+									var method = gw.method;		// Método de la petición 
+									var browserLang = gw.language;	// Primer idioma del navegador cliente
+									var userAgent = gw.ua;
+										/*
+										ua:{ 
+														mobile: false,
+														os: 'Windows NT 6.1; WOW64',
+														engine: 'Blink',
+														browser: 'Chrome'
+										}
+										*/
+									var cors = gw.cors;		// Gestión de orígenes cruzados
+									var encoding = gw.encoding;	// encoding que se utiliza para el envío al cliente
+
+									gw.send("Hello from the other side");
+
+								}
+							);
+				//
+					div.tutos
+						p TUTORIALES
+						ul						
+							li 
+								a GET y POST								
+								a Métodos para la respuesta
+								a Cookies
+								a Video Streaming
+
+					
+					
+
+			//div.pink#services
+				div.feature
+					h2#gestion-servicios Gestión de Servicios
+							span Servicios centralizados
+
+					ul.list
+						li Centralización de servicios en la propiedad <strong>project.services</strong>
+						li Posibilidad de añadir, modificar o eliminar servicios.
+						li Servicio http build-in
+						li Añade, modifica o elimina servicios en caliente.
+
+					
+					:highlight(lang='javascript')
+							var project = require('pillars');
+
+							// Modificación de la configuración del plugin built-in http
+							project.services.get('http').configure({
+								timeout: 8000;
+								port: 3001;
+							}).start();	
+
+				//
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Manejo de los servicios
+								a MongoDB
+								a Servicio https
+								
+
+			div.pink#middleware
+				div.feature
+					h2#middleware Middleware
+						span Middleware vitaminado
+
+					ul.list
+						li El <strong>Middleware</strong> permite extender las posibilidades de los controladores y modificar el funcionamiento del sistema
+						li Nombrado de middleware: ofrece organización y control sobre el entorno
+						li Todos los middleware del proyecto se encuentran en <strong>project.middleware</strong>
+						li Los middleware se pueden añadir, modificar o eliminar en caliente. 
+						li PillarsJS tiene una serie de Middleware built-in, esenciales para su funcionamiento.
+						li Es posible crear un middleware y decidir en qué lugar a de ejecutarse, en caliente.
+						
+					:highlight(lang='javascript')
+							var project = require('pillars');
+
+							project.middleware.add(new Middleware({
+									id:"idMiddleware",
+									active: true
+								},function(gw,next){
+									// Do something
+									next();
+								});
+
+
+				
+				//
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Manejo de los plugins
+								a Ejecución de plugins en objetos route determinados								
+
+			div.white#i18n
+				div.feature
+					h2#i18n i18n
+						span Internacionalización eficiente
+
+					ul.list
+						li Librería textualization
+						li Integración completa de i18n
+						li Implementa múltiples idiomas sin modificar el código de la app.
+						li Hojas de traducción en JS/JSON
+						li Gestión de idioma de la solicitud automática
+						li Rutas multi-idioma :-)
+
+
+				//
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Hola Mundo en 5 idiomas
+
+
+			div.pink#templated
+				div.feature
+					h2#motor-plantillas Template engine
+						span Usa tu motor favorito
+					
+					ul.list
+						li Soporte a diferentes motores de plantillas
+						li Renderizado automático y optimizado.
+				//
+					:highlight(lang='javascript')
+						
+				//
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Hola Mundo en 5 idiomas
+
+
+			div.white#cron
+				div.feature
+					h2#cron CRON
+						span Librería Scheduled
+
+					ul.list
+						li Programación de tareas mediante CRON gracias a la librería Scheduled
+						li Acceso a todas las tareas programadas en el proyecto
+						li Acceso en vivo a las tareas programas: modificación, eliminación, ...
+					
+				//
+					:highlight(lang='javascript')
+						var hola
+				//
+					div.tutos
+						p TUTORIALES
+						ul
+							li								
+								a Tareas programadas								
+
+			//div.pink#logs
+				div.feature
+					h2#logs Logs
+						span Librería crier
+					ul.list
+						li Sistema de creación de logs para la monitorización de aplicación, librerías, etc.
+
+		//
+			div.pink#dependencies
+				div.feature
+					h2#dependencias Robustez
+						span Dependencias propias
+
+					ul.list
+						li Código robusto. Todas las dependencias han sido creadas, y son mantenidas, por el mismo equipo
+					
+				
+		//
+			div.pink#jailer
+				div.feature
+					h2#jailer Permisos de acceso
+						span Librería jailer				
+					ul.list
+						li Crea diferente perfiles de acceso a rutas
+						li Gestiona los diferentes tipos de permisos: lectura, escritura o ...
+					
+
+					:highlight(lang='javascript')
+						var hola
+
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Perfiles de acceso
+								a Permisos
+
+			div.white#procedure
+				div.feature
+					h2#procedure Asincronía
+						span Librería Procedure
+									
+					ul.list
+						li Programación de tareas mediante CRON gracias a la librería Scheduled
+						li Acceso a todas las tareas programadas en el proyecto
+					
+
+					:highlight(lang='javascript')
+						var x = 0;
+						
+						function suma(){
+							x++;
+						}
+
+						var procedure = new Procedure();
+
+						procedure
+							.add('Proceso-Hijo-1',suma)
+							.add('Proceso-Hijo-2',suma)
+							.add('Proceso-Hijo-3',suma)
+
+							.queue()
+
+							.launch(function(errors){
+								if (errors){
+									console.log("END[ERROR]",arguments);
+								}else{
+									console.log("END[OK]",arguments);
+								}
+							});
+
+					div.tutos
+						p TUTORIALES
+						ul
+							li
+								a Carrera de procesos
+								a Cola de procesos
+								a Pasar parámetros de procesos a procesos
+								a Mix de carreras y colas
