@@ -23,7 +23,7 @@ html(lang=gw.language)
 				Todo lo que se va a exponer, se encuentra también documentando en la [referencia](../reference/project.jade#property-config) de una forma más técnica.
 
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 
 				project.config.debug = true ;
 
@@ -45,14 +45,14 @@ html(lang=gw.language)
 			:marked
 				El **tamaño máximo de archivo permitido** se configura de forma **global** para el proyecto de la siguiente forma: 
 			:highlight(lang='javascript')
-				var project = require("pillars");
+				const project = require("pillars");
 				project.config.maxUploadSize = 5*1024*1024; // 5MB - Tamaño máximo de archivo permitido
 			
 			:marked
 				No quiere decir esto, que siempre se tenga que mantener este límite en toda la aplicación, ya que esta propiedad es posible redefinirla para un controlador o controladores concretos. 
 
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				
 				project.routes.add(new Route({
 						id:"upload-archivos-pesados"
@@ -67,7 +67,7 @@ html(lang=gw.language)
 			:marked
 				Estos ficheros son almacenados temporalmente en el directorio `/temp`, *(el cual es activado por el middleware BodyReader, que es el encargado de leer el cuerpo de la petición en las peticiones post.)*
 			:highlight(lang='javascript')
-				var project = require("pillars");
+				const project = require("pillars");
 				project.middleware.get("BodyReader").tempDirectory = "./otroDirectorio";
 				
 			:marked
@@ -82,7 +82,7 @@ html(lang=gw.language)
 				Hay aspectos del templating cuyo comportamiento debe ser global para la aplicación, por lo que hay propiedades en `project` relativas a éste:
 
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				project.configure({
 					renderReload: true, // Compila el template solo la primera vez que es solicitado y lo guarda en caché
 					directoryTemplate: "template.hbs", // Es el template que se utiliza para listar directorios
@@ -96,7 +96,7 @@ html(lang=gw.language)
 			:marked
 				Establecer el Modo Debug nos permite ver información adicional de los errores en consola:
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				project.config.debug = true;
 			:marked
 				Es **false** por defecto.
@@ -106,7 +106,7 @@ html(lang=gw.language)
 			:marked
 				Para configurar CORS, tenemos en el proyecto esta propiedad. Para aceptar solicitudes CORS de cualquier origen, la seteamos a true. Para que deniegue cualquier solicitud cors, a false. Y para definir de qué dominios las aceptará, lo definimos en un Array de strings. Es **false** por defecto.
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				project.config.cors = ["www.smartloop.es"];
 
 
@@ -115,7 +115,7 @@ html(lang=gw.language)
 			:marked
 				Simplemente para establecer el favicon de la aplicación web:
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				project.config.favicon = "img/favico.ico";
 			:marked
 
@@ -125,7 +125,7 @@ html(lang=gw.language)
 				Pillar.js incorpora un sistema de logs. Éstos están por defecto desactivados, puedes activarlos estableciendo la propiedad `.logFile` a **true**. 
 				Al activarlo se crearan archivos de logs, con toda la información de peticiones al servidor, en la carpeta: **logs**
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				project.config.logFile = true;
 
 		section.cache
@@ -146,7 +146,7 @@ html(lang=gw.language)
 				Por supuesto, siempre que vaya llegando al límite de su uso se aplican una serie de reglas, como por ejemplo, borrar los archivos menos demandados. 
 
 			:highlight(lang='javascript')
-				let project = require("pillars");
+				const project = require("pillars");
 				project.configure({					
 					maxCacheFileSize: 5*1024*1024, // 5MB - Tamaño máximo de un archivo para que entre en la caché
 					cacheMaxSamples: 100, //  Dato relacionado con la heurística de uso de los archivos 

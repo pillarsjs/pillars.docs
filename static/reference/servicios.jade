@@ -47,7 +47,7 @@ html(lang=gw.language)
 
 
 			:highlight(lang='javascript')
-				var project = require('pillars');
+				const project = require('pillars');
 
 				// Servicio http
 				project.services.add((new HttpService({
@@ -56,7 +56,7 @@ html(lang=gw.language)
 				})).start()); // Se pueden encadenar métodos
 
 				// Servicio https
-				var fs = require('fs');
+				const fs = require('fs');
 				project.services.add((new HttpService({
 				  id:'https',
 				  key: fs.readFileSync('./localhost.key'),
@@ -75,17 +75,9 @@ html(lang=gw.language)
 		section.mysql
 			h2#mysql MySQLService
 			:marked
-				Lo estamos implementando :)
+				Lo estamos implementando :) ¡¡Colabora!! :)
 
 		section.mongodb
 			h2#mongodb MongoDBService
 			:marked
-				Lo estamos implementando :)
-
-
-
-
-
-
-
-
+				Lo estamos implementando :) ¡¡Colabora!! :)

@@ -63,7 +63,7 @@ html(lang=gw.language)
 			:marked
 
 			:highlight(lang='javascript')
-				let myRoute1 = new Route({
+				const myRoute1 = new Route({
 					path: '/:var1/:var2/:var3'	
 				},function(gw){
 					gw.send(gw.pathParams);
@@ -73,7 +73,7 @@ html(lang=gw.language)
 				// Devuelve: {"var1":"users", "var2":"john", "var3":"wayne"}
 				
 
-				let myRoute2 = new Route({
+				const myRoute2 = new Route({
 					path: '/*:restoPath'
 				},function(gw){
 					gw.send(gw.pathParams);
@@ -82,7 +82,7 @@ html(lang=gw.language)
 				// Consultando http://servidor/users/john/wayne/photos
 				// Devuelve: {"restoPath": "users/john/wayne/photos"}
 
-				let myRoute3 = new Route({
+				const myRoute3 = new Route({
 					path: '/:var1/*:restoPath'
 				},function(gw){
 					gw.send(gw.pathParams);

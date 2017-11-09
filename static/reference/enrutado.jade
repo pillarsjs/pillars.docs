@@ -39,7 +39,7 @@ html(lang=gw.language)
 				+ **configuration**: Opcional. Conjunto de *propiedades* del objeto route.
 				+ **handler**: Opcional. Manejador que se ejecutará siempre y cuando la petición coincida con la *configuración* del objeto route. El *handler* siempre recibe como parámetro el [objeto gangway](gangway.jade).
 			:highlight(lang='javascript')
-				var myRoute = new Route({
+				const myRoute = new Route({
 						id:"identificador",
 						path:"/"
 						//resto de propiedades si las hubiere
@@ -220,13 +220,13 @@ html(lang=gw.language)
 
 					:highlight(lang='javascript')
 						//Creación del middleware
-						var msg = function(gw,next){ 
+						let msg = function(gw,next){ 
 							gw.data.myData="Hola Mundo!!!"; 
 							next(); 
 						};
 
 						//Creación del route con un middleware
-						var myRoute = new Route(
+						const myRoute = new Route(
 							{id:"home"},
 							msg,
 							function(gw){
@@ -281,7 +281,7 @@ html(lang=gw.language)
 								id:"switch",
 								path: "/switch"
 							},function(gw){
-								var routeFocus = project.routes.get("activo-o-no");
+								let routeFocus = project.routes.get("activo-o-no");
 								routeFocus.active = !routeFocus.active;
 								gw.send("Ahora el route 'activo-o-no' está: "+ routeFocus);
 						}));
@@ -317,19 +317,19 @@ html(lang=gw.language)
 			p
 				img(src="/img/reference/enrutado.png")
 			:highlight(lang='javascript')
-				var myRoute = new Route({
+				const myRoute = new Route({
 					id: 'management',
 					path: '/'
 				});
 
-				var myRouteSonOne = new Route({
+				const myRouteSonOne = new Route({
 					id: 'students',
 					path: '/students'
 				},function(gw){
 					//...
 				});
 
-				var myRouteSonTwo = new Route({
+				const myRouteSonTwo = new Route({
 					id: 'teachers',
 					path: '/teachers'
 				},function(gw){
@@ -375,7 +375,7 @@ html(lang=gw.language)
 				Las propiedades obtenidas por herencia estarán disponibles en [`gw.routing.inheritance`](gangway.jade#property-routing).
 
 			:highlight(lang='javascript')
-				var myRoute = new Route({
+				const myRoute = new Route({
 						id: 'idRoute',
 						cors: false,
 						https: false,
@@ -387,7 +387,7 @@ html(lang=gw.language)
 						gw.json(gw.routing.inheritance);
 				});
 
-				var son1 = new Route({
+				const son1 = new Route({
 						id: 'son1',
 						path: '/son1',
 						method: 'GET',
@@ -396,7 +396,7 @@ html(lang=gw.language)
 						gw.json(gw.routing.inheritance);
 				});
 
-				var son2 = new Route({
+				const son2 = new Route({
 						id: 'son2',
 						path: '/son2'
 					},function(gw){

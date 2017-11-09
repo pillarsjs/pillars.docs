@@ -40,7 +40,7 @@ html(lang=gw.language)
 
 					Este método hace uso de la propiedad del proyecto `project.renderReload`, que por defecto es false, por lo que si no cambiamos su configuración (a true), el template sólo se compilará en la primera solicitud, mientras que éste no tenga cambios. Si lo establecemos a true, el template se compilará en cada petición.
 				:highlight(lang='javascript')
-					let project = require("pillars");
+					const project = require("pillars");
 
 					project.services.get("http").start();
 
@@ -56,7 +56,7 @@ html(lang=gw.language)
 					El fichero deberá estar bien formado, y tan sólo debemos realizar la llamada `gw.json(archivo)`
 
 				:highlight(lang='javascript')
-					let project = require("pillars");
+					const project = require("pillars");
 
 					project.services.get("http").start();
 
@@ -83,7 +83,7 @@ html(lang=gw.language)
 					Tener en cuenta que `gw.file()` admite tres parámetros, por lo que recomendamos [revisar la referencia](../reference/gangway.jade#method-file).
 
 				:highlight(lang='javascript')
-					let project = require("pillars");
+					const project = require("pillars");
 
 					project.services.get("http").start();
 
@@ -99,7 +99,7 @@ html(lang=gw.language)
 					byte-serving está implementado, por lo que al enviar un video, se retransmitirá en streaming. 				
 
 				:highlight(lang='javascript')
-					let project = require("pillars");
+					const project = require("pillars");
 
 					project.services.get("http").start();
 
@@ -116,7 +116,7 @@ html(lang=gw.language)
 					+ [gw.cookie](../reference/gangway.jade#property-cookie). Propiedad en la que estarán seteadas las cookies recibidas, o dicho de otro modo, las que el cliente ha enviado.
 
 				:highlight(lang='javascript')
-					let project = require("pillars");
+					const project = require("pillars");
 
 					project.services.get("http").start();
 

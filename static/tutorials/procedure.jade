@@ -46,7 +46,7 @@ html(lang=gw.language)
 			:marked
 				Cuando hablamos de ejecutar de forma secuencial; Dado el *task2*, no se comenzará a ejecutar hasta que finalice el *task1*, y el *task 3*, no se lanzará hasta que *task 2* finalice. 
 
-				En la ejecución en paralelo, quiere decir que tanto *task4* como *task5* se lanzarán ambos a la vez.
+				En la ejecución en paralelo, quiere decir que tanto *task4* como *task5* se lanzarán sin conocer cuál será lanzado primero, ni cuál finalizará antes o depués.
 
 				Tanto los resultados como errores los tendremos en el método `.launch()`. 
 
@@ -57,20 +57,15 @@ html(lang=gw.language)
 				Para emitir un resultado `done.result()`.
 
 			:highlight(lang='javascript')
-				// Código a ejecutar de forma asíncrona
-				let task1 = function(done){					
-					setTimeout(()=>{
-						console.log("Task 1")
-						done(); // Finaliza la ejecución sin devolver resultado.
-					},2000);
+				let task1 = function(done){
+					console.log("Task 1");
+					setTimeout(done(),2000);
 				};
 
 			:highlight(lang='javascript')
-				let task2 = function(done){					
-					setTimeout(()=>{
-						console.log("Task 2")
-						done.result(42); // Finaliza la ejecución emitiendo como resultado 42.
-					},2000);
+				let task2 = function(done){
+					console.log("Task 2");
+					setTimeout(done.result(42),2000);					
 				};			
 			:marked
 	
@@ -238,26 +233,20 @@ html(lang=gw.language)
 			:highlight(lang='javascript')
 				// external es el valor que se añade como tercer parámetro a .add()
 				let task1 = function(external,done){
-					setTimeout(()=>{
-						console.log("Task 1 external: ", external);     
-						done.result(external+1);
-					},200);
+					console.log("Task 1 external: ", external);     
+					setTimeout(done.result(external+1),200);
 				}
 
 				let task2 = function(t1,external,done){
-					setTimeout(()=>{
-						console.log("Task 2 arrives from task1: ", t1);
-						console.log("Task 2 external: ", external);
-						done.result(external+t1);
-					},500);
+					console.log("Task 2 arrives from task1: ", t1);
+					console.log("Task 2 external: ", external);
+					setTimeout(done.result(external+t1),500);
 				}
 
 				let task3 = function(t2,external,done){
-					setTimeout(()=>{
-						console.log("Task 3 arrives from task2: ", t2);
-						console.log("Task 3: ", external)      
-						done.result(external+t2);
-					},100);
+					console.log("Task 3 arrives from task2: ", t2);
+					console.log("Task 3: ", external);   
+					setTimeout(done.result(external+t2),100);
 				}
 
 				var myProcedure = new Procedure();

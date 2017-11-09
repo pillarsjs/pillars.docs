@@ -93,7 +93,7 @@ html(lang=gw.language)
 						Para insertar un nuevo servicio http o https, lo podemos realizar a través del método *.add()* o *.insert()*.
 
 					:highlight(lang='javascript')
-						var project = require('pillars');
+						const project = require('pillars');
 
 						project.services.insert((new HttpService({
 						  id:'http2',
@@ -101,7 +101,7 @@ html(lang=gw.language)
 						})).start());
 
 						
-						var fs = require('fs');
+						const fs = require('fs');
 						project.services.insert((new HttpService({
 						  id:'https',
 						  key: fs.readFileSync('./localhost.key'),
@@ -228,4 +228,4 @@ html(lang=gw.language)
 				section.example
 					h4 Ejemplo
 					:highlight(lang='javascript')
-						var pathStatic = project.resolve('./static');
+						let pathStatic = project.resolve('./static');

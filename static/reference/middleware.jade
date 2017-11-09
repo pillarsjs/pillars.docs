@@ -51,7 +51,7 @@ html(lang=gw.language)
 			:highlight(lang='javascript')
 				// Creación de un objeto middleware con id 'idMiddleware'
 
-				var myMiddleware = new Middleware({
+				const myMiddleware = new Middleware({
 						id: "idMiddleware"
 					},function(gw, next){
 						console.log("Hello from the other side, I'm a middleware");
@@ -92,7 +92,7 @@ html(lang=gw.language)
 				Para ilustrar el funcionamiento del middleware, puedes copiar el código siguiente y ejecutarlo: 
 
 			:highlight(lang='javascript')
-				var project = require("pillars");
+				const project = require("pillars");
 
 				project.services.get("http").start();
 
@@ -112,7 +112,7 @@ html(lang=gw.language)
 						path:'/cambia'
 					},
 					function(gw){
-						var targetRoute = project.routes.get("schrodinger-route");  
+						let targetRoute = project.routes.get("schrodinger-route");  
 						targetRoute.catExist = !targetRoute.catExist;
 						gw.send("Ahora el valor de catExist es: "+targetRoute.catExist);
 				}));
@@ -154,7 +154,7 @@ html(lang=gw.language)
 				Veamos un ejemplo de ordenación:
 
 			:highlight(lang='javascript')
-				var project = require('pillars');
+				const project = require('pillars');
 
 				project.services.get('http').configure({port:3003}).start();
 
@@ -190,11 +190,11 @@ html(lang=gw.language)
 						id:"info-middleware",
 						path:"/info"
 					},function(gw){
-						var posTrepa = project.middleware.search("trepa"); // Buscamos la posición de "trepa"
+						let posTrepa = project.middleware.search("trepa"); // Buscamos la posición de "trepa"
 						project.middleware.move(posTrepa, posTrepa - 1); // Lo movemos a la posición siguiente
 
-						var posId1 =  project.middleware.search("id1"); // Tomamos las posiciones de "id1" e "id2"
-						var posId2 =  project.middleware.search("id2");
+						let posId1 =  project.middleware.search("id1"); // Tomamos las posiciones de "id1" e "id2"
+						let posId2 =  project.middleware.search("id2");
 
 						// Si id1 tiene una posición menor en la lista a id2, 
 						// movemos a id1 a la posición posterior de id2. 
@@ -284,7 +284,7 @@ html(lang=gw.language)
 					El error devuelto en el caso de superar el tamaño es un 413.
 
 				:highlight(lang='javascript')
-					var route = new Route({maxUploadSize:10*1024*1024}, function(gw){...}); 
+					const route = new Route({maxUploadSize:10*1024*1024}, function(gw){...}); 
 
 			section.middleware
 				h3#cors 6. Compatibilidad con CORS
@@ -300,14 +300,14 @@ html(lang=gw.language)
 
 				:highlight(lang='javascript')
 					// Todos los dominios va a poder realizar peticiones a este route.
-					var route = new Route({cors:false}, function(gw){...}); 
+					const route = new Route({cors:false}, function(gw){...}); 
 
 					// Ningún dominio va a poder realizar peticiones a este route.
-					var route = new Route({cors:true}, function(gw){...}); 
+					const route = new Route({cors:true}, function(gw){...}); 
 
 					// Solo el dominio www.pillarsjs.com va a poder 
 					// realizar peticiones a este route concreto.
-					var route = new Route({cors:['www.pillarsjs.com']}, function(gw){...}); 
+					const route = new Route({cors:['www.pillarsjs.com']}, function(gw){...}); 
 
 				:marked
 
@@ -357,8 +357,8 @@ html(lang=gw.language)
 				:highlight(lang='javascript')
 					// ---------- Pillars static directory -----------------
 
-					var paths = require('path');
-					var pillarsStatic = new Route({
+					const paths = require('path');
+					const pillarsStatic = new Route({
 						id:'pillarsStatic',
 						path:'/pillars/*:path',
 						directory:{

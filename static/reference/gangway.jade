@@ -21,15 +21,15 @@ html(lang=gw.language)
 				Este objeto está disponible en el *handler* tanto del **objeto route**, como en el **objeto middleware**.
 
 			:highlight(lang='javascript')
-				var myRoute = new Route(function(gw){
+				const myRoute = new Route(function(gw){
 
-					var POST = gw.content.params; 
+					const POST = gw.content.params; 
 
-					var GET = gw.query;
+					const GET = gw.query;
 				
-					var cookie = gw.cookie;
+					const cookie = gw.cookie;
 
-					var userAgent = gw.ua;
+					const userAgent = gw.ua;
 					/*
 					ua:{ 
 						mobile: false,
@@ -40,12 +40,12 @@ html(lang=gw.language)
 					*/
 
 
-					var id = gw.id; 			// id del objeto gangway para la petición.
-					var ip = gw.ip;			// ip del cliente
-					var browserLang = gw.language;	// Primer idioma del navegador del cliente 
-					var cors = gw.cors; 			// Gestion de orígenes cruzados. 
-					var method = gw.method;		// Método de la petición  GET y/o POST					
-					var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+					const id = gw.id; 			// id del objeto gangway para la petición.
+					const ip = gw.ip;			// ip del cliente
+					const browserLang = gw.language;	// Primer idioma del navegador del cliente 
+					const cors = gw.cors; 			// Gestion de orígenes cruzados. 
+					const method = gw.method;		// Método de la petición  GET y/o POST					
+					const encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
 
 					gw.json(gw);
 				});
@@ -500,7 +500,7 @@ html(lang=gw.language)
 
 
 					:highlight(lang='javascript')
-						var route = new Route({path:'/:var1/:var2'},function(gw){
+						const route = new Route({path:'/:var1/:var2'},function(gw){
 							gw.json(gw.pathParams);
 						});
 						//Consultando localhost:300/users/john imprime:
@@ -652,7 +652,7 @@ html(lang=gw.language)
 						Métodos:
 						+ `.check()`: chequeo rápido de las propiedades heredadas. Dados unos parámetros heredados, chequeo de las mismas: 
 					:highlight(lang='javascript')
-						var userParam = gw.routing.check("userParam", project.config.userParam || '56');
+						let userParam = gw.routing.check("userParam", project.config.userParam || '56');
 					:marked
 						Si no viene heredada la propiedad *userParam*, establece su valor con *pillars.config.userParam*, en el caso de que sea *undefined* lo establece en *56*.
 
@@ -886,7 +886,7 @@ html(lang=gw.language)
 				section.example
 					h4 Ejemplo
 					:highlight(lang='javascript')
-						var hash = new Date("2015-01-01");
+						let hash = new Date("2015-01-01");
 
 						if (!gw.cacheck(hash)){
 							gw.json({ok:true}); 
@@ -922,7 +922,7 @@ html(lang=gw.language)
 				section.example
 					h4 Ejemplo
 					:highlight(lang='javascript')
-						var route = new Route(function(gw){
+						const route = new Route(function(gw){
 
 							if(gw.auth && gw.auth.user=='javi' && gw.auth.pass=='1234'){
 								gw.send('secret!');
@@ -1014,7 +1014,7 @@ html(lang=gw.language)
 				section.example
 					h4 Ejemplo
 					:highlight(lang='javascript')
-						var dataPerson = {
+						const dataPerson = {
 							"id":"246874113",
 							"name": "myname",
 							"surname": "mysurname"
@@ -1091,8 +1091,8 @@ html(lang=gw.language)
 						> Templated da soporte a prácticamente cualquier motor de renderizado, por lo que podrás utilizar el lenguage de plantillas HTML de tu preferencia. En el siguiente código se muestra cómo añadir soporte a jade en nuestro proyecto:
 
 					:highlight(lang='javascript')
-						var templated = require('templated');
-						var jade = require('jade');
+						const templated = require('templated');
+						const jade = require('jade');
 
 						templated.addEngine('jade',function(source,path){
 							return jade.compile(source,{
@@ -1178,7 +1178,7 @@ html(lang=gw.language)
 			:marked
 				+ **Contenido de la petición (POST)**. El contenido obtenido por POST se setea en la propiedad [`gw.content.params`](../reference/gangway.jade#property-content) de una forma accesible. En el caso de subida de ficheros, hemos de tener en cuenta que el *objeto route* debe estar configurado para aceptar [multipart/form-data](enrutado.jade#property-multipart). En el caso de no estar definido `method`, aceptará todos.
 			:highlight(lang='javascript')
-				var myRoute = new Route(
+				const myRoute = new Route(
 					{
 						path: '/uploads',
 						multipart: true
@@ -1197,7 +1197,7 @@ html(lang=gw.language)
 				+ **Rutas parametrizadas**. El uso de rutas parametrizadas tiene que estar declarado en el *objeto route*. Una vez declarado, podremos extraer de una URL partes de la misma. Para realizar esta *extración* usamos la propiedad [`gw.pathParams`](../reference/gangway.jade#property-pathParams).
 
 			:highlight(lang='javascript')
-					var route = new Route({path:'/:var1/:var2'},function(gw){
+					const route = new Route({path:'/:var1/:var2'},function(gw){
 						gw.json(gw.pathParams);
 					});
 					//Consultando localhost:300/users/john imprime:

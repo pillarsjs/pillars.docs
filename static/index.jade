@@ -9,7 +9,7 @@ html(lang=gw.language)
 			img(src="/img/cover.png",alt="Pillars.js logo")
 		div#example
 			:highlight(lang='javascript')
-						var project = require('pillars'); 
+						const project = require('pillars'); 
 
 						project.services.get('http').start(); 
 
@@ -119,25 +119,25 @@ html(lang=gw.language)
 						li Con tan solo un gw.file(), haces streaming!
 
 					:highlight(lang='javascript')
-							var myRoute = new Route(
+							const myRoute = new Route(
 								{
 									id:"users"
 									path:"/users"
 								},
 								function(gw){
-									var ip = gw.ip;			// Dirección IP de la solicitud
-									var POST = gw.content.params;	// POST de la solicitud
-									var GET = gw.query;			// GET de la solicitud
+									const ip = gw.ip;			// Dirección IP de la solicitud
+									const POST = gw.content.params;	// POST de la solicitud
+									const GET = gw.query;			// GET de la solicitud
 										/*
 										GET:{
 														id: '37',
 														value: 'lipsum'
 										}
 										*/
-									var cookie = gw.cookie;		// Cookie de la solicitud
-									var method = gw.method;		// Método de la petición 
-									var browserLang = gw.language;	// Primer idioma del navegador cliente
-									var userAgent = gw.ua;
+									const cookie = gw.cookie;		// Cookie de la solicitud
+									const method = gw.method;		// Método de la petición 
+									const browserLang = gw.language;	// Primer idioma del navegador cliente
+									const userAgent = gw.ua;
 										/*
 										ua:{ 
 														mobile: false,
@@ -146,8 +146,8 @@ html(lang=gw.language)
 														browser: 'Chrome'
 										}
 										*/
-									var cors = gw.cors;		// Gestión de orígenes cruzados
-									var encoding = gw.encoding;	// encoding que se utiliza para el envío al cliente
+									const cors = gw.cors;		// Gestión de orígenes cruzados
+									const encoding = gw.encoding;	// encoding que se utiliza para el envío al cliente
 
 									gw.send("Hello from the other side");
 
@@ -179,7 +179,7 @@ html(lang=gw.language)
 
 					
 					:highlight(lang='javascript')
-							var project = require('pillars');
+							const project = require('pillars');
 
 							// Modificación de la configuración del plugin built-in http
 							project.services.get('http').configure({
@@ -211,7 +211,7 @@ html(lang=gw.language)
 						li Es posible crear un middleware y decidir en qué lugar a de ejecutarse, en caliente.
 						
 					:highlight(lang='javascript')
-							var project = require('pillars');
+							const project = require('pillars');
 
 							project.middleware.add(new Middleware({
 									id:"idMiddleware",

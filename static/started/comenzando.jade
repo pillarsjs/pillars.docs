@@ -37,7 +37,7 @@ html(lang=gw.language)
 			:highlight(lang='javascript')
 				// app.js file
 				//Inclusión de la librería pillars
-				var project = require('pillars');
+				const project = require('pillars');
 
 				//Tomamos e iniciamos del servicio http
 				project.services.get('http').start();
@@ -173,17 +173,17 @@ html(lang=gw.language)
 			:highlight(lang='javascript')
 					project.routes.add(new Route(function(gw){
 
-						var POST = gw.content.params; 
+						const POST = gw.content.params; 
 
-						var files = gw.content.files;
+						const files = gw.content.files;
 
-						var GET = gw.query;
+						const GET = gw.query;
 
-						var allParams = gw.params; // Todos los parámetros combinados (GET, POST, ruta, etc.)
+						const allParams = gw.params; // Todos los parámetros combinados (GET, POST, ruta, etc.)
 
-						var cookie = gw.cookie; 
+						const cookie = gw.cookie; 
 
-						var userAgent = gw.ua;
+						const userAgent = gw.ua;
 						/*
 						ua:{ 
 							mobile: false,
@@ -192,12 +192,12 @@ html(lang=gw.language)
 							browser: 'Chrome'
 						}
 						*/
-						var referer = gw.referer; // URL que enlazó la solicitud, si existe
-						var ip = gw.ip;			// ip de la solicitud
-						var browserLang = gw.language;		// Idioma de la repuesta 
-						var cors = gw.cors; 			// Gestion de orígenes cruzados. 
-						var method = gw.method;		// Método de la solicitud GET, POST, HEAD...
-						var encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+						const referer = gw.referer; // URL que enlazó la solicitud, si existe
+						const ip = gw.ip;			// ip de la solicitud
+						const browserLang = gw.language;		// Idioma de la repuesta 
+						const cors = gw.cors; 			// Gestion de orígenes cruzados. 
+						const method = gw.method;		// Método de la solicitud GET, POST, HEAD...
+						const encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
 
 						gw.json(gw);
 					});
@@ -263,7 +263,7 @@ html(lang=gw.language)
 					cacheMaxSize: 25*1024*1024
 				});
 
-				var serverCors = project.config.cors;
+				const serverCors = project.config.cors;
 
 		section.dinamico
 			h2#dinamico Dinámico
@@ -325,9 +325,9 @@ html(lang=gw.language)
 				Esto a su vez, nos dará mayor control, ya que por ejemplo, podremos desactivar `project.routes.get('idPadre').active = false` una sección completa de la aplicación web.
 
 			:highlight(lang='javascript')
-				var routeFather = new Route ({id:'idFather'},function(gw){/*...*/});
-				var routeSon1 = new Route(function(gw){/*...*/});
-				var routeSon2 = new Route(function(gw){/*...*/});
+				const routeFather = new Route ({id:'idFather'},function(gw){/*...*/});
+				const routeSon1 = new Route(function(gw){/*...*/});
+				const routeSon2 = new Route(function(gw){/*...*/});
 
 				project.routes.add(routerFather);
 				routerFather.routes.add(routeSon1).add(routeSon2);
