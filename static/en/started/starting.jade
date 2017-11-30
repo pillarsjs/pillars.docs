@@ -1,0 +1,401 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Getting started',url:'/en/started/starting.jade'},{label:'Get Started',url:'/en/started/starting.jade'}];
+	+starting-layout("Pillars.js Getting started - Get Started - 'make it easy!'",path)
+
+		#title
+			h1 Starting
+				em  con Pillars.js
+			
+		//- Summary
+		section.installation
+			h2#installation Installation			
+			:marked
+				If you haven´t Node.js installed, install from [here](http://nodejs.org).
+
+				Create a work directory, and inside create two files:
+				+ **package.json**. With data as; authorship, dependencies and collaborators
+				+ **app.js**. Node.js application
+
+				A package.json simple file, describe only dependencies and other datas as:
+			:highlight(lang='javascript')
+				// package.json file
+				{
+					"name": "myApp",
+					"description": "",
+					"version": "0.0.1",					
+					"dependencies": {
+						"pillars": "*"
+					},
+					"main": "./app.js"
+				}
+
+			:marked
+				Now in **app.js file** write a simple code, typical:"Hello World!!". Don´t configure, so **default settings will be stablished**, like port *(port 8080 by default)*: 
+			:highlight(lang='javascript')
+				// app.js file
+				//pillars library
+				const project = require('pillars');
+
+				//get htt built-in service and start
+				project.services.get('http').start();
+
+				//Add a new controller
+				project.routes.add(new Route(
+					//Controller configuration
+					{
+						id: "idController",
+						method: ["GET","POST"],
+						path: '/'
+					},
+					//Controller handler
+					function(gw){
+						gw.html("Hello World!!");
+				}));
+
+			:marked
+				> In a few lines we will see what the code means
+
+				Once the two files have been saved (*and Node.js installed*), is turn to run the projet. For this, in command line, run:`npm install`.
+
+				**Npm** is the default package manager for Node.js. Npm is installed with Node.js. With `npm install` command, get project dependencies specified in *package.json* file, and install it in directory *node_modules*. Thus, once command runned, you´ll have in this directory to Pillars.js.
+
+				Next, run application with command: `node app.js` in command line.
+
+				Watch in console the load of Pillars.js: 
+
+				![Captura carga Pillars.js](../../img/started/carga-pillarsjs.jpg)
+
+				In sample, we don´t have configured anything (convention over configuration) so console is in english. 
+				You can see the example in [http://localhost:8080](http://localhost:8080).
+
+				> Pillars.js integrates translation system, so you can watch console in language you prefer, as long as the translation to the corresponding language is made of course :) [**Collaborate** translating to a language! :)](https://github.com/pillarsjs/pillars/tree/master/languages)
+
+		section.elements
+			h2#elements Elements
+			:marked
+					In this section we are going to overview the elements of Pillars.js. These are: services, routing, gangway and middleware.
+
+					- **services**. All services in the application are in **project.services**.  Services are that services that your application implements; http, https, mongoDB service,..., for example. 
+
+			:highlight(lang='javascript')
+					project.services.get('http').start();
+					/* Get http services with .get('http') method, from project.services.
+					This services has a .start() method, besides of others. To configure port, for example,
+					use .configure() method, in this way: */
+
+
+					project.services.get('http').configure({
+						port: 3001,	// Port in which the services responds
+						timeout: 8000	/* Time the server is taken before sending 
+						error timeout, error HTTP 408 */
+					}).start();
+
+
+			:marked
+					Keep in mind that Pillars.js has by default a HTTP service, with id 'http', so we don´t need to add it.
+
+					> How to create a [http/https service](../reference/services.jade)
+
+			:marked
+					> If you are not familiar with data from HTTP request, open developers tools in browser, and in network options in Google Chrome, when request a URL (with this panel opened), watch when you clic in file request, other panel is opened in right side with information about request. In 'General' and 'Request Headers' can watch what you requests and sends to the server.
+
+					- **Controllers and routing**. A *route controller* is the element that attends to a request, as long as request parameters (request data) match with controller configuration, of course.
+
+					For example, if the request is a GET to '/' path, will attend route controller that is configured in this way. Nevertheless if request is a POST, and controller is configured only to atend GET requests, this controller don´t atend this request.
+
+					A route controller is created with a **Class Route instance** `const myRoute = new Route (...)`, and **add to project** `project.routes.add(myRoute)`. With these two steps you create routing in the application.
+
+					> A route object can be instantiated with **new** word or without it.
+
+					A *route object* is created with a *configuration object* and a *handler*.
+					`const myRoute = new Route(configuration, handler)`					
+
+			:highlight(lang='javascript')
+					project.routes.add(new Route({
+							  // Controller configuration. Here configuration about when this will act.
+				
+							  id:"home", /* Controller id. To modify controller later you 
+							  need to know the id*/
+							  active: true, /* if is activated or not. If is deactivated won´t attend any request */
+
+					  /* ---- Parameters that must match with request data, for controller attend request */
+							  path:"/suma", /* path on which will act */
+							  method: "GET", /* Method or methods that accept, 
+							  for several at a time, specify in an array*/
+							  port:3000, /* port where controller will respond. If no-configured, anyone */
+							  host: undefined, /* hostname where it will respond, undefined for anyone. 
+							  Try an example configuring host to localhost and try to visit
+							  127.0.0.1, this won´t attend*/
+							  https: false, /* if attend http only, https only, or both*/
+
+					  /* ---- Other parameters, 
+							  they don´t have why match with the request for it to be attended*/
+							  multipart: false, /* if multipart is accepted or not, it is needed to receive files*/
+							  maxUploadSize: 0, /* Maximum file size, if accepted*/
+							  cors: true, /* if cors is accepted or not. Can specify domains of which accepts requests */
+							  session: false /* if sessions activated or not */
+						},
+						
+						/* Handler. This is the code to run when request match 
+						with controller configuration specified above */
+						function(gw){ /*handler receives gw*/
+							gw.send("Hello World");
+						}
+					));
+
+					/* Note: We have added route object in the same sentence we create it, with project.routes.add() */
+
+
+			:marked
+					In the previous example, *route object* will attend in path **"/suma"**, and print in browser "Hello World".
+
+					> As you have seen, route controller () Como has visto, el controlador de ruta (objeto route) se instancia pasándole un objeto de configuración (configuración del controlador), que determinará si el manejador del controlador entra en acción o no; y el manejador, que es la porción de código a ejecutar una vez entre 'en acción'.
+					> La configuración del controlador se puede omitir, por lo que todos los parámetros se establecerán a los valores por defecto.
+					
+					- **Gangway**, es la pasarela (*de ahí el nombre*) entre cliente y servidor. **Contendrá todos los datos de la petición** (*ip, host, url, contenido del get o query string, del post si lo hubiese y un largo etc.*), **y métodos para la respueta**, como `gw.json()` para enviar un json, `gw.file()` para enviar un archivo o `gw.render()` que renderiza una plantilla y la envía al cliente.
+
+					Gangway estará presente tanto en el manejador de los objetos route, como en el manejador de los middleware. 
+
+					Un ejemplo de información que contiene gangway:
+
+			:highlight(lang='javascript')
+					project.routes.add(new Route(function(gw){
+
+						const POST = gw.content.params; 
+
+						const files = gw.content.files;
+
+						const GET = gw.query;
+
+						const allParams = gw.params; // Todos los parámetros combinados (GET, POST, ruta, etc.)
+
+						const cookie = gw.cookie; 
+
+						const userAgent = gw.ua;
+						/*
+						ua:{ 
+							mobile: false,
+							os: 'Windows NT 6.1; WOW64',
+							engine: 'Blink',
+							browser: 'Chrome'
+						}
+						*/
+						const referer = gw.referer; // URL que enlazó la solicitud, si existe
+						const ip = gw.ip;			// ip de la solicitud
+						const browserLang = gw.language;		// Idioma de la repuesta 
+						const cors = gw.cors; 			// Gestion de orígenes cruzados. 
+						const method = gw.method;		// Método de la solicitud GET, POST, HEAD...
+						const encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+
+						gw.json(gw);
+					});
+			:marked
+					Gangway tiene bastantes propiedades y métodos, por lo que recomendamos que se utilice la referencia para consultas.
+
+					- El **middleware**, este concepto es más avanzado si no has tocado node.js, pero para que no se quede en el tintero... son *porciones de código* que se ejecutan en toda la aplicación, **o solo en ciertos controladores de ruta con ciertas características.**
+					Por lo tanto, podremos crear middleware que se aplique en toda la aplicación web, es decir, para cualquier solicitud, o que solo se ejecute en ciertos controladores, dependiendo de la configuración de estos. 
+
+					Creación de middleware:
+
+			:highlight(lang='javascript')
+				project.middleware.add(new Middleware({ //Configuración del middleware
+						id: "idMiddleware", /* Identificador del middleware, es necesario para
+						posteriormente capturarlo y modificarlo si es necesario*/
+						active: true /* Indica si está activo, y por lo tanto si se aplica*/
+					},
+					/* El manejador del middleware siempre acepta por parámetro a gw y next. 
+					Al finalizar el manejador siempre debemos realizar la llamada a next() */
+					function(gw, next){ 
+						console.log("Hello from a middleware");
+						next();
+					}
+				));
+
+			:marked
+					Un middleware, también se puede crear con la configuración por defecto, por lo que se puede omitir el objeto de configuración. 
+
+					Y también podemos crear un middleware que sólo se ejecute ante ciertas configuraciones de un controlador: 
+
+			:highlight(lang='javascript')
+				project.middleware.add(new Middleware(function(gw, next){
+					if (gw.routing.inheritance.varToMiddleware){
+						console.log("Middleware running");
+					};
+					next();
+				}));
+
+				project.routes.add(new Route({
+						path:'/middleware',
+						varToMiddleware: true
+					},function(gw){
+						gw.send("Something"); 
+					}
+				));
+
+				// Por cada solicitud a /middleware se emitirá por consola el mensaje "Middleware running"
+			
+			:marked
+					
+
+		section.entorno
+			h2#entorno Configuración del entorno
+			:marked
+				Acabamos de ver que tenemos servicios, controladores de ruta, middleware y gangway, pues bien, todo esto corre en el entorno de la aplicación, que es **project**. El proyecto es configurable en varios aspectos, por un lado está lo relacionado con el servidor físico, ciertas configuraciones nos permitirán optimizar el uso de RAM *(podemos configurar cómo se comporta el cacheo)* y adicionalmente hay otros aspectos relativos a la depuración en modo debug o el favicon; y otros relacionados con el sistema de templating *(definir cuál será el template de errores y algunos otros)*
+
+				> [Consulta el listado completo de variables de entorno](../reference/project.jade#property-config)
+
+			:highlight(lang='javascript')
+				project.configure({
+					debug: true,
+					cors: true,
+					cacheMaxSize: 25*1024*1024
+				});
+
+				const serverCors = project.config.cors;
+
+		section.dinamico
+			h2#dinamico Dinámico
+			:marked
+				Los elementos primordiales de Pillars.js son de tipo [Object Array](https://github.com/pillarsjs/ObjectArray) (OA), dotando así al proyecto de un dinamismo *... mágico*. OA es un **Array de objetos** que ofrece métodos para el manejo de dichos objetos *(insertar, buscar, mover, etc.)*
+
+				Las propiedades del proyecto que son de tipo OA son: 
+				- **project.services**. Donde se encuentran todos los servicios del proyecto
+				- **project.routes**. Donde se encuentran todos los controladores del proyecto
+				- **project.middleware**. Donde se encuentran todo el middleware del proyecto
+
+				Los métodos básicos que podemos ejecutar sobre estas propiedades son: 
+				- Añadir un nuevo objeto `.add(objeto)`
+				- Tomar un objeto dado un id `.get('idObjeto')`. 
+				> La infraestructura ofrece gran versatilidad, ya que los objetos *(route, middleware y service)* son creados con una configuración inicial. Esta configuración se convierte en propiedades de estos objetos, las cuales pueden ser modificadas en **caliente**. Ejemplo: `.get('id').active = false`
+				- Eliminar un objeto `.remove('idObjeto')`.
+
+				> Recuerda: aunque se instancien estos objetos sin una configuración mínima, tendrán de base unos valores por defecto. Por lo que muchas de las propiedades existirán con unos valores seteados, aunque no los hayas seteado tu.
+
+				Gracias a esta arquitectura, nos encontramos con una metodología homogénea *además de dinámica*, al crear y manejar propiedades de diferente índole siguendo la misma nomenclatura.
+			:highlight(lang='javascript')
+				/* *** Declaración de un controlador, un middleware y un servicio HTTP *** */
+				var myRoute = new Route({id:"idRoute"},function(gw){/*...*/});
+				var myMiddleware = new Middleware({id:"idMiddleware"},function(gw,next){/*...*/});
+				var myHTTP = new HttpService({id:'idHttp'});
+
+				/* *** Manejo de project.routes - los controladores *** */
+				project.routes.add(myRoute);  // Añadimos un controlador al proyecto
+				project.routes.get("idRoute").active = false; // Desactivamos el Controlador
+				project.routes.get("idRoute").session = true; // Activamos las sesiones en el controlador
+				// Tb podemos establecer varias propiedades a la vez con el método .configure()
+				project.routes.get("idRoute").configure({ 
+						active: true,
+						session: true
+					});
+				project.routes.remove("idRoute") // Eliminar el controlador del proyecto
+
+				/* *** Manejo de project.middleware *** */
+				project.middleware.add(myMiddleware); // Añadimos Middleware al proyecto
+				project.middleware.get("idMiddleware").active = false; // Desactivamos el Middleware
+				project.middleware.remove("idMiddleware"); // Eliminar el Middleware del proyecto
+
+				/* *** Manejo de project.services *** */
+				project.service.add(myHTTP);
+				project.service.get("idHttp").start(); /* Los servios además cuenta con métodos 
+				característicos de un servicio, como pueden ser .start() y .stop().*/
+
+				// En este instrucción, tomamos el servicio, configuramos y arrancamos
+				project.service.get("idHttp").configure({
+						port: 3000,
+						timeout: 8000
+				}).start();
+
+		section.anidamiento
+			h2#anidamiento Anidamiento
+			:marked
+				No queremos que se quede por ver, aunque sea muy brevemente, otra de las versatilidades de la infraestructura, y es que, **los controladores son anidables**. Por lo tanto, podemos **agrupar los controladores** de la aplicación por funcionalidades *(o lo que te parezca)*.
+
+				Esto a su vez, nos dará mayor control, ya que por ejemplo, podremos desactivar `project.routes.get('idPadre').active = false` una sección completa de la aplicación web.
+
+			:highlight(lang='javascript')
+				const routeFather = new Route ({id:'idFather'},function(gw){/*...*/});
+				const routeSon1 = new Route(function(gw){/*...*/});
+				const routeSon2 = new Route(function(gw){/*...*/});
+
+				project.routes.add(routerFather);
+				routerFather.routes.add(routeSon1).add(routeSon2);
+
+				project.routes.get('idFather').active = false;
+
+
+			.msg.msg-icon.bg-info Hasta aquí hemos visto el core de Pillars.js, es decir, los elementos básicos que forman parte del núcleo. Próximamente tendremos lista la parte de la documentación que trata sobre otras funcionalidades ampliadas, gracias al middleware integrado y al ecosistema de librerías.
+
+
+			.msg.msg-icon.bg-info Por otra parte te agradecemos feedback sobre este documento. Puedes mandarlo a hello@pillarsjs.com Gracias!
+
+
+			//.msg.msg-icon.bg-alert De aquí en adelante no está desarrollado ni revisado. Aquí puedes parar de leer.
+
+	//
+		section.directorio
+			h2#directorio Directorio estático
+			:marked
+				Directoy es un middleware integrado en Pillars.js. Éste nos permite crear un directorio estático de una forma sencilla: 
+
+			:highlight(lang='javascript')
+				project.routes.add(
+					Route({
+						id:'pillarsDocsStatic',
+						path:'/*:path',
+						directory:{
+							path:'./static', // path en el que se montará el directorio estático
+							listing:true  // Si permite listados del directorio
+						}
+					}
+				)); // No tiene manejador ;)
+
+			:marked
+				En este caso, tu aplicación tendrá el directorio `/static` montado como un directorio estático. Tiene unas ventajas y características dignas de mencionar, y es que Pillars.js implementa un sistema de cacheo excepcional. Éste se encarga de cachear los archivos que se solicitan, de forma que una vez que se pida un fichero, éste no se volverá a leer en disco (siempre y cuando no haya sido modificado), sino que estará en la caché, por lo que se ahorran lecturas de disco. Para controlar y poder configurar datos como: número de archivos  máximo en caché, o tamaño de la caché.
+
+				Esta caché también tiene su propio sistema de limpeza de archivos que no se utilizan.
+
+
+		section.templating
+			h2#directorio Templating
+			:marked
+				Mustache, Jade, ... Sea cual sea tu templating favorito, puedes usarlo, además **con ventajas** ;)
+				Uso.
+
+
+				Configuración de los templates genéricos para todo el sitio.
+
+				Métodos relacionados con el templating
+
+				Ventajas de Pillars.js respecto al templating
+
+
+
+				> De momento está integrado Jade, pero puedes integrar el tuyo y estará disponible para la comunidad ;), puedes ver aquí cómo se integra un templating. 
+
+
+		section.sesiones
+			h2#sesiones Sesiones
+			:marked
+				Contamos con sesiones con persistencia en memoria, para activarlas en un controlador de ruta determinado, tan sólo hay que establecer el valor **session** a **true** en su configuración.
+
+				> Ejemplo sesiones
+			
+
+		section.t12n
+			h2#t12n Internacionalización
+			:marked
+				Pillars.js cuenta con una librería de Internacionalización adicional, puedes encontarla aquí. 
+				Esta librería permite contruir un sitio multiidioma mediante hojas JSON.
+				Los path de ruta, también son internacionalizables.
+
+				Pillars.js es totalmente internacionalizable. Es posible cambiar de idioma: la consola, las URL's de nuestra aplicación, y por supuesto los mensajes de usuario, en función de la petición del cliente. Esto lo hacemos gracias a la librería textualization la cual realiza una capa de abstracción, entre la programación de la aplicación y los mensajes de usuario, mediante nodos, permitiendo dejar de lado los mensajes de usuario y traducciones mientras se desarrolla. De esta forma se realizan las labores de redacción de mensajes de usuario de forma independiente a la programación en Node.
+
+
+
+		section.scheduled
+			h2#scheduled Scheduled
+			:marked
+				Programación de tareas CRON

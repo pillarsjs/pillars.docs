@@ -1,0 +1,122 @@
+include ../.layout.jade
+
+doctype html
+html(lang=gw.language)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Controladores',url:'/tutorials/controladores.jade'}];	
+	+tutorials-layout("Pillars.js Tutorials - Controladores - 'make it easy!'",path)
+
+		#title
+			h1 Controladores
+				em  Tutoriales Pillars.js
+
+		section.cache
+			h2#Introduccion Introducción
+			:marked
+				Se añaden **controladores de ruta** al proyecto para, dado un path, añadirle a éste funcionalidad. 
+				
+				Un controlador se crea instanciando la **Clase Route** y añadiéndolo a la propiedad `project.routes` del proyecto web, mediante el método `.add()`
+			
+				`project.routes.add(new Route(configuracion, manejador));`
+
+			:marked
+				En este capítulo vamos a dar una visual, para profundizar consulta la [referencia]("../reference/enrutado.jade").				
+				
+		section.creacion
+			h2#creacion Creación Controlador
+			:marked
+				La instancia se crea con dos parámetros, *configuración* y *manejador*.
+				La *configuración* es un objeto, y el *manejador* es una función anónima.
+			:highlight(lang='javascript')
+				const myRoute = new Route({
+					id :"example",
+					path: "path-example",
+					method:["GET","POST"]
+				}, function(gw){
+					gw.send("Hola desde el path example");
+				});
+				project.routes.add(myRoute);
+
+			:marked
+				La configuración de un objeto route es extensa, ya que permite una amplia configuración *si se requiere*, en el siguiente apartado vemos la configuración de un objeto route.
+
+				En cuanto al *manejador*, recibirá siempre por parámetro **gangway**, que es el objeto Pillars.js que aúna  request, response, y además los parsea y vitamita.
+		
+
+
+		section.configuracion
+			h2#configuracion Configuración
+			:marked
+				La **configuración de un objeto route**, es el primer parámetro que se le pasa cuando lo instanciamos. Es un objeto y es opcional, si no lo definimos tomará la configuración por defecto. 
+
+				En el siguiente ejemplo, vemos todas las propiedades configurables indicando además, qué propiedades deben coincidir con la solicitud para que este controlador atienda la petición:
+
+			:highlight(lang='javascript')
+					project.routes.add(new Route({
+							  // Configuración del controlador. Aquí se configura en qué casos actuará
+				
+							  id:"home", /* El identificador del controlador. Si más tarde 
+							  queremos modificarlo, necesitamos saber cómo se llama.*/
+							  active: true, /* si no está activo, no atenderá ninguna solicitud */
+
+					  /* ---- Parámetros que deben coincidir con la solicitud para que
+							  el controlador atienda la solicitud*/
+							  path:"/suma", /* La ruta o path en la que queremos que se ejecute */
+							  method: "GET", /* El método (string) o métodos (array) que acepta, 
+							  puede aceptar varios a la vez */
+							  port:3000, /* El puerto en el que estará disponible. Si no se especifica, 
+							  por defecto aceptará cualquiera */
+							  host: undefined, /* hostname en el que responderá, undefined responde a todos. 
+							  Puedes arrancar un ejemplo configurando host en localhost y verás
+							  que si visitas 127.0.01 no responde.*/
+							  https: false, /* si responde sólo http, sólo https o ambos*/
+
+					  /* ---- Parámetros de configuración adicional, 
+							  no tienen porque coincidir con la solicitud para que ésta sea atendida*/
+							  multipart: false, /* si acepta envíos multipart o no, necesario activarlo para
+							  recibir archivos*/
+							  maxUploadSize: 0, /* tamaño máximo del archivo en caso de aceptarlos*/
+							  cors: true, /* si acepta solicitudes cors o no. Se pueden especificar dominios 
+							  de los que acepta estas solicitudes */
+							  session: false /* si activamos las sesiones o no*/
+						},
+						
+						/* Manejador. Esta es 'la porción de código' que se ejecuta, 
+						siempre y cuando la solicitud, coincida con los parámetros de
+						configuración que están arriba */
+						function(gw){ /*El manejador siempre recibe gw*/
+							gw.send("Hola Mundo");
+						}
+					));
+
+					/* Nótese que hemos añadido el objeto route en la misma sentencia que lo hemos creado
+					Mediante project.routes.add() */
+
+		section.manejador
+			h2#manejador Manejador
+			:marked
+				El manejador es el segundo parámetro que definimos al instanciar el objeto route. Es una función anónima.
+
+				El manejador se ejecutará cuando la petición coincida con las propiedades pertinentes del controlador.
+
+				El manejador siempre recibe **gangway**.
+
+		section.metodos
+			h2#metodos Métodos de project.routes.
+			:marked
+				Como hemos mencionado antes `project.routes` es una propiedad del proyecto donde están todos los controladores del proyecto, por lo que dispone de métodos para añadir, tomar y eliminar: 				
+			:highlight(lang='javascript')
+				project.routes.add(myRoute);
+				project.routes.remove("example");
+				project.routes.get("example"); 
+
+		section.activar
+			h2#activar Modificar propiedades de un controlador
+			:marked
+				Veamos como ejemplo, modificar la propiedad `.active`.
+				
+				Una propiedad de los controladores es `.active`. Por defecto es true, para desactivar un controlador, seteamos la propiedad a false. Esto hará que el controlador no actúe, es decir, permanecerá "desactivado". 
+			:highlight(lang='javascript')
+				project.routes.get("example").active=false;
+
+	
+				
