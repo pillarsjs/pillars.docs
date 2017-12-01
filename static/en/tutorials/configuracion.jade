@@ -2,19 +2,19 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Configuración de la aplicación',url:'/tutorials/configuracion-aplicacion.jade'}];
-	+tutorials-layout("Pillars.js Tutorials - Configuración de la aplicación - 'make it easy!'",path)
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'App configiguration',url:'/tutorials/configuracion-aplicacion.jade'}];
+	+tutorials-layout("Pillars.js Tutorials - App configiguration - 'make it easy!'",path)
 
 		#title
-			h1 Configuración de la aplicación
-				em  Tutoriales Pillars.js
+			h1 App configiguration
+				em  Pillars.js Tutorials
 			
 		section.descripcion
 
 			:marked
-				Cuando realizamos la inclusión de Pillars.js `var project = require("pillars")`, **es devuelto un objeto**, el cual estamos seteando en `project`.
-				
-				> Cualquier require de 'pillars' devolverá siempre la misma instancia. Todas las librerías Pillars.js se cargan en modo [singleton.](http://es.wikipedia.org/wiki/Singleton)
+				When we make the Pillars.js require `var project = require("pillars")`, **an object is returned**, wich is being setted in `project`.
+
+                > Every 'pillars' require will return the same instance. Every Pillars.js library is loaded in [singleton mode.](http://es.wikipedia.org/wiki/Singleton)
 
 				`project` contiene una **configuración mínima inicial**, *convención sobre configuración*, por lo que en principio no hay que preocuparse por configurar el proyecto. No obstante en esta sección vemos qué propiedades del proyecto podemos configurar, dónde se engloban, y su relación con otros elementos de Pillars.js.
 
