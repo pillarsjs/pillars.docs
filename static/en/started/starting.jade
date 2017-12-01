@@ -15,11 +15,11 @@ html(lang=gw.language)
 			:marked
 				If you haven´t Node.js installed, install from [here](http://nodejs.org).
 
-				Create a work directory, and inside create two files:
+				Create a directory, and inside create two files:
 				+ **package.json**. With data as; authorship, dependencies and collaborators
 				+ **app.js**. Node.js application
 
-				A package.json simple file, describe only dependencies and other datas as:
+				A package.json simple file, describe dependencies and other datas as:
 			:highlight(lang='javascript')
 				// package.json file
 				{
@@ -33,7 +33,7 @@ html(lang=gw.language)
 				}
 
 			:marked
-				Now in **app.js file** write a simple code, typical:"Hello World!!". Don´t configure, so **default settings will be stablished**, like port *(port 8080 by default)*: 
+				Now in **app.js file** copy the code below, is typical:"Hello World!!". In example, **default settings will be stablished**, like port *(port 8080 by default)*: 
 			:highlight(lang='javascript')
 				// app.js file
 				//pillars library
@@ -100,7 +100,7 @@ html(lang=gw.language)
 					> How to create a [http/https service](../reference/services.jade)
 
 			:marked
-					> If you are not familiar with data from HTTP request, open developers tools in browser, and in network options in Google Chrome, when request a URL (with this panel opened), watch when you clic in file request, other panel is opened in right side with information about request. In 'General' and 'Request Headers' can watch what you requests and sends to the server.
+					> If you are not familiar with data from HTTP request, open developers tools in browser, and in network options in Google Chrome, when an URL is requested (with this panel opened), watch when you clic in file request, other panel is opened in right side with information about request. In 'General' and 'Request Headers' can watch what you requests and sent to the server.
 
 					- **Controllers and routing**. A *route controller* is the element that attends to a request, as long as request parameters (request data) match with controller configuration, of course.
 
@@ -152,14 +152,15 @@ html(lang=gw.language)
 			:marked
 					In the previous example, *route object* will attend in path **"/suma"**, and print in browser "Hello World".
 
-					> As you have seen, route controller () Como has visto, el controlador de ruta (objeto route) se instancia pasándole un objeto de configuración (configuración del controlador), que determinará si el manejador del controlador entra en acción o no; y el manejador, que es la porción de código a ejecutar una vez entre 'en acción'.
-					> La configuración del controlador se puede omitir, por lo que todos los parámetros se establecerán a los valores por defecto.
+					> As you have seen, route controller () is instantiated with two parameters; a configuration object (controller configuration), wich will determine whether the handler enters into action or not; and handler, which is the code to execute.
+
+					> Controller configuration can be omitted. In this case, all parameters will have default values.
 					
-					- **Gangway**, es la pasarela (*de ahí el nombre*) entre cliente y servidor. **Contendrá todos los datos de la petición** (*ip, host, url, contenido del get o query string, del post si lo hubiese y un largo etc.*), **y métodos para la respueta**, como `gw.json()` para enviar un json, `gw.file()` para enviar un archivo o `gw.render()` que renderiza una plantilla y la envía al cliente.
+					- **Gangway**, is the gateway between client and server. Gangway **will contain all the data of the request** (*ip, host, url, get o query string, etc.*), **and provide methods to response**, like `gw.json()` to send a json, `gw.file()` to send a file, or `gw.render()` which render a template and send it to client.
 
-					Gangway estará presente tanto en el manejador de los objetos route, como en el manejador de los middleware. 
+					Gangway will be present in route objects handler and in middleware handler.
 
-					Un ejemplo de información que contiene gangway:
+					An example of information that gangway contain:
 
 			:highlight(lang='javascript')
 					project.routes.add(new Route(function(gw){
@@ -170,7 +171,7 @@ html(lang=gw.language)
 
 						const GET = gw.query;
 
-						const allParams = gw.params; // Todos los parámetros combinados (GET, POST, ruta, etc.)
+						const allParams = gw.params; // All params combined (GET, POST, etc.)
 
 						const cookie = gw.cookie; 
 
@@ -183,31 +184,31 @@ html(lang=gw.language)
 							browser: 'Chrome'
 						}
 						*/
-						const referer = gw.referer; // URL que enlazó la solicitud, si existe
-						const ip = gw.ip;			// ip de la solicitud
-						const browserLang = gw.language;		// Idioma de la repuesta 
-						const cors = gw.cors; 			// Gestion de orígenes cruzados. 
-						const method = gw.method;		// Método de la solicitud GET, POST, HEAD...
-						const encoding = gw.encoding; 		// encoding que se utiliza para el envío al cliente.
+						const referer = gw.referer;		// URL that link request, if exists
+						const ip = gw.ip;			// ip request
+						const browserLang = gw.language;	// Language to response 
+						const cors = gw.cors; 		// Cross-origin resource sharing
+						const method = gw.method;		// Request method GET, POST, HEAD...
+						const encoding = gw.encoding; 	// encoding to use for sent to client
 
 						gw.json(gw);
 					});
 			:marked
-					Gangway tiene bastantes propiedades y métodos, por lo que recomendamos que se utilice la referencia para consultas.
+					Gangway has a lot of properties and methods, so we recommend that you use reference to get information about all of them.
 
-					- El **middleware**, este concepto es más avanzado si no has tocado node.js, pero para que no se quede en el tintero... son *porciones de código* que se ejecutan en toda la aplicación, **o solo en ciertos controladores de ruta con ciertas características.**
-					Por lo tanto, podremos crear middleware que se aplique en toda la aplicación web, es decir, para cualquier solicitud, o que solo se ejecute en ciertos controladores, dependiendo de la configuración de estos. 
+					- **middleware**, is the concept more advanced if you not know node.js yet. A middleware is a portion of code that is applied to entire application, I mean, in all controllers. In PillarsJS, you can configure a middleware so that runs on sets of controllers.
 
-					Creación de middleware:
+					Thus, can create a middleware that runs in entire application, in all requests, or only runs in some controllers depending on the configuration of these controllers.
+
+					Creating middleware:
 
 			:highlight(lang='javascript')
-				project.middleware.add(new Middleware({ //Configuración del middleware
-						id: "idMiddleware", /* Identificador del middleware, es necesario para
-						posteriormente capturarlo y modificarlo si es necesario*/
-						active: true /* Indica si está activo, y por lo tanto si se aplica*/
+				project.middleware.add(new Middleware({ //Middleware configuration
+						id: "idMiddleware", /* Middleware id, needed to get it and modify it*/
+						active: true /* if is active, thus if runs or not.*/
 					},
-					/* El manejador del middleware siempre acepta por parámetro a gw y next. 
-					Al finalizar el manejador siempre debemos realizar la llamada a next() */
+					/* Handle take two parameters: gangway and next 
+					At the end of handler, must call to next() */
 					function(gw, next){ 
 						console.log("Hello from a middleware");
 						next();
@@ -215,9 +216,9 @@ html(lang=gw.language)
 				));
 
 			:marked
-					Un middleware, también se puede crear con la configuración por defecto, por lo que se puede omitir el objeto de configuración. 
+					Can create a middleware with default configuration, so configuration object can be omitted. 
 
-					Y también podemos crear un middleware que sólo se ejecute ante ciertas configuraciones de un controlador: 
+					In addition, can create a middleware to runs in certain controllers:  
 
 			:highlight(lang='javascript')
 				project.middleware.add(new Middleware(function(gw, next){
@@ -235,17 +236,18 @@ html(lang=gw.language)
 					}
 				));
 
-				// Por cada solicitud a /middleware se emitirá por consola el mensaje "Middleware running"
+				// for each request to /middleware "Middleware running" will be emitted.
 			
 			:marked
 					
 
-		section.entorno
-			h2#entorno Configuración del entorno
+		section.env
+			h2#env Enviroment setup
 			:marked
-				Acabamos de ver que tenemos servicios, controladores de ruta, middleware y gangway, pues bien, todo esto corre en el entorno de la aplicación, que es **project**. El proyecto es configurable en varios aspectos, por un lado está lo relacionado con el servidor físico, ciertas configuraciones nos permitirán optimizar el uso de RAM *(podemos configurar cómo se comporta el cacheo)* y adicionalmente hay otros aspectos relativos a la depuración en modo debug o el favicon; y otros relacionados con el sistema de templating *(definir cuál será el template de errores y algunos otros)*
+				Newly seen we have services, route controllers, middleware and gangway, well, all this run in application environment: **project**. Can setup project in diferent ways; on the one hand aspects related to the physical server, 
+				some configurations allow to optimize RAM performance *(setup RAM cache allowed)* in addition other aspects related with debug mode, favicon; others related with templated system, like define errors template and more. 
 
-				> [Consulta el listado completo de variables de entorno](../reference/project.jade#property-config)
+				> [Take a look of the entire list of environment variables](../reference/project.jade#property-config)
 
 			:highlight(lang='javascript')
 				project.configure({
@@ -256,64 +258,67 @@ html(lang=gw.language)
 
 				const serverCors = project.config.cors;
 
-		section.dinamico
-			h2#dinamico Dinámico
+		section.dynamic
+			h2#dynamic Dynamic
 			:marked
-				Los elementos primordiales de Pillars.js son de tipo [Object Array](https://github.com/pillarsjs/ObjectArray) (OA), dotando así al proyecto de un dinamismo *... mágico*. OA es un **Array de objetos** que ofrece métodos para el manejo de dichos objetos *(insertar, buscar, mover, etc.)*
+				The type of Pillars.js primary elements are [Object Array](https://github.com/pillarsjs/ObjectArray) (OA), this gives to project a magical dynamism. OA is an **Array of objetcs**, this array has methods to handle those objects *(insert, search, move, etc.)*
 
-				Las propiedades del proyecto que son de tipo OA son: 
-				- **project.services**. Donde se encuentran todos los servicios del proyecto
-				- **project.routes**. Donde se encuentran todos los controladores del proyecto
-				- **project.middleware**. Donde se encuentran todo el middleware del proyecto
+				The properties of the project that are of type OA are:
+				- **project.services**. Where are all the services of the project
+				- **project.routes**. Where are all the route controllers of the project
+				- **project.middleware**. Where are all the middleware of the project
 
-				Los métodos básicos que podemos ejecutar sobre estas propiedades son: 
-				- Añadir un nuevo objeto `.add(objeto)`
-				- Tomar un objeto dado un id `.get('idObjeto')`. 
-				> La infraestructura ofrece gran versatilidad, ya que los objetos *(route, middleware y service)* son creados con una configuración inicial. Esta configuración se convierte en propiedades de estos objetos, las cuales pueden ser modificadas en **caliente**. Ejemplo: `.get('id').active = false`
-				- Eliminar un objeto `.remove('idObjeto')`.
+				The basic methods that we can use over this properties are: 
+				- Add a new object `.add(object)`
+				- Get an object, id object is needed `.get('idObject')`
+				> The infrastructure offers great versatility, *(route, middleware and service)* objects are created with an initial configuration. While application is running, allow get this properties and modify it. Example:  `.get('id').active = false`
 
-				> Recuerda: aunque se instancien estos objetos sin una configuración mínima, tendrán de base unos valores por defecto. Por lo que muchas de las propiedades existirán con unos valores seteados, aunque no los hayas seteado tu.
 
-				Gracias a esta arquitectura, nos encontramos con una metodología homogénea *además de dinámica*, al crear y manejar propiedades de diferente índole siguendo la misma nomenclatura.
+				- Remove an object of application: `.remove('idObjeto')`.
+
+				> Keep in mind: if an object is created without an initial configuration specified, this will have default values. So, a lot of propierties will exists with a default values. 
+
+				Thanks to this architecture, we have a homogeneous methodology to create and handle diferent propierties.
+
 			:highlight(lang='javascript')
-				/* *** Declaración de un controlador, un middleware y un servicio HTTP *** */
+				/* *** Declaration of: a controller, a middleware and a http service.*** */
 				var myRoute = new Route({id:"idRoute"},function(gw){/*...*/});
 				var myMiddleware = new Middleware({id:"idMiddleware"},function(gw,next){/*...*/});
 				var myHTTP = new HttpService({id:'idHttp'});
 
-				/* *** Manejo de project.routes - los controladores *** */
-				project.routes.add(myRoute);  // Añadimos un controlador al proyecto
-				project.routes.get("idRoute").active = false; // Desactivamos el Controlador
-				project.routes.get("idRoute").session = true; // Activamos las sesiones en el controlador
-				// Tb podemos establecer varias propiedades a la vez con el método .configure()
+				/* *** Use of project.routes - Controllers *** */
+				project.routes.add(myRoute);  // Adding a controller to project
+				project.routes.get("idRoute").active = false; // Deativating controller
+				project.routes.get("idRoute").session = true; // Activating sessions in controller
+				// Also can setup several propierties in the same statement with .configure() method
 				project.routes.get("idRoute").configure({ 
 						active: true,
 						session: true
 					});
-				project.routes.remove("idRoute") // Eliminar el controlador del proyecto
+				project.routes.remove("idRoute") // Remove the controller of the project
 
-				/* *** Manejo de project.middleware *** */
-				project.middleware.add(myMiddleware); // Añadimos Middleware al proyecto
-				project.middleware.get("idMiddleware").active = false; // Desactivamos el Middleware
-				project.middleware.remove("idMiddleware"); // Eliminar el Middleware del proyecto
+				/* *** Use of project.middleware *** */
+				project.middleware.add(myMiddleware); // Adding Middleware to project
+				project.middleware.get("idMiddleware").active = false; // Desativating middleware
+				project.middleware.remove("idMiddleware"); // Removing middleware
 
-				/* *** Manejo de project.services *** */
+				/* *** Use of project.services *** */
 				project.service.add(myHTTP);
-				project.service.get("idHttp").start(); /* Los servios además cuenta con métodos 
-				característicos de un servicio, como pueden ser .start() y .stop().*/
+				project.service.get("idHttp").start(); /* Services also have method characteristic of 
+				a services, like .start() and .stop().*/
 
-				// En este instrucción, tomamos el servicio, configuramos y arrancamos
+				// In this statement, we get service , setup and start:
 				project.service.get("idHttp").configure({
 						port: 3000,
 						timeout: 8000
 				}).start();
 
-		section.anidamiento
-			h2#anidamiento Anidamiento
+		section.nesting
+			h2#nesting Nesting
 			:marked
-				No queremos que se quede por ver, aunque sea muy brevemente, otra de las versatilidades de la infraestructura, y es que, **los controladores son anidables**. Por lo tanto, podemos **agrupar los controladores** de la aplicación por funcionalidades *(o lo que te parezca)*.
+				We want to show you, briefly, other infrastructure versatility: **nesting of the route controllers**. In Pillars.js we can **group route controllers** by funcionality *(or something else)*.
 
-				Esto a su vez, nos dará mayor control, ya que por ejemplo, podremos desactivar `project.routes.get('idPadre').active = false` una sección completa de la aplicación web.
+				This possibility, give us major control, for example, we can deativate `project.routes.get('idPadre').active = false` of a complete section of the application.
 
 			:highlight(lang='javascript')
 				const routeFather = new Route ({id:'idFather'},function(gw){/*...*/});
@@ -326,10 +331,7 @@ html(lang=gw.language)
 				project.routes.get('idFather').active = false;
 
 
-			.msg.msg-icon.bg-info Hasta aquí hemos visto el core de Pillars.js, es decir, los elementos básicos que forman parte del núcleo. Próximamente tendremos lista la parte de la documentación que trata sobre otras funcionalidades ampliadas, gracias al middleware integrado y al ecosistema de librerías.
-
-
-			.msg.msg-icon.bg-info Por otra parte te agradecemos feedback sobre este documento. Puedes mandarlo a hello@pillarsjs.com Gracias!
+			
 
 
 			//.msg.msg-icon.bg-alert De aquí en adelante no está desarrollado ni revisado. Aquí puedes parar de leer.
