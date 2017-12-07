@@ -14,7 +14,7 @@ html(lang=gw.language)
 			:marked
 				When we make the Pillars.js require `var project = require("pillars")`, **an object is returned**, wich is being setted in `project`.
 
-                > Every 'pillars' require will return the same instance. Every Pillars.js library is loaded in [singleton mode.](http://es.wikipedia.org/wiki/Singleton)
+                Every 'pillars' require will return the same instance. Every Pillars.js library is loaded in [singleton mode.](http://es.wikipedia.org/wiki/Singleton)
             
                 `project` has an **minimal initial configuration**, *configuration convention*, so you don't need to worry about configuring your project in the beggening. Anyway lets see in this section wich project properties we can configure, where are they and their relationship with other Pillars.js elements.
 				Project can be configured by the `project.configure()` method, giving the necessary configuration object, or configuring it property by property, wich we can access in the `project.config` property
