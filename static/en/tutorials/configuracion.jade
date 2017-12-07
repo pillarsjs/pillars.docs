@@ -14,9 +14,9 @@ html(lang=gw.language)
 			:marked
 				When we make the Pillars.js require `var project = require("pillars")`, **an object is returned**, wich is being setted in `project`.
 
-                Every 'pillars' require will return the same instance. Every Pillars.js library is loaded in [singleton mode.](http://es.wikipedia.org/wiki/Singleton)
-            
-                `project` has an **minimal initial configuration**, *configuration convention*, so you don't need to worry about configuring your project in the beggening. Anyway lets see in this section wich project properties we can configure, where are they and their relationship with other Pillars.js elements.
+				Every 'pillars' require will return the same instance. Every Pillars.js library is loaded in [singleton mode.](http://es.wikipedia.org/wiki/Singleton)
+            	
+				`project` has an **minimal initial configuration**, *configuration convention*, so you don't need to worry about configuring your project in the beggening. Anyway lets see in this section wich project properties we can configure, where are they and their relationship with other Pillars.js elements.
 				Project can be configured by the `project.configure()` method, giving the necessary configuration object, or configuring it property by property, wich we can access in the `project.config` property
 
 				Everything here exposed can be found in the [reference](../reference/project.jade#property-config) using a more technological lenguage
@@ -33,11 +33,11 @@ html(lang=gw.language)
 
 			:marked
 		section.directorios
-			h2#directorios Directorios
+			h2#directorios Directories
 			:marked
-				Al crear una aplicación en Pillars.js, observarás que se crean dos carpetas adicionales a **node_modules**: 
-				+ **logs**, directorio en le que se guardarán todos los ficheros de logs, en caso de que el sistema de logs, esté activo. Se activa, estableciendo a **true** la propiedad del proyecto `.logFile`
-				+ **temp**, directorio donde se ubican los archivos temporales, *como archivos subidos mediante post.*
+				When you craft a Pillars.js aplication two directories are added to the **node_modules** directory
+				+ **logs**, directory where logs are storaged in case you have the log system on, it is activated setting `.logFile` property to **true** 
+				+ **temp**, directory where temporal files are storaged,* for example, files uploaded throw post method*
 
 		section.maxUploadSize
 			h2#maxUploadSize Upload File
