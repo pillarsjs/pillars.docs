@@ -42,50 +42,50 @@ html(lang=gw.language)
 		section.maxUploadSize
 			h2#maxUploadSize Upload File
 			:marked
-				El **tamaño máximo de archivo permitido** se configura de forma **global** para el proyecto de la siguiente forma: 
+				the **maximum file size** is setted **globally** for the project this way:
 			:highlight(lang='javascript')
 				const project = require("pillars");
-				project.config.maxUploadSize = 5*1024*1024; // 5MB - Tamaño máximo de archivo permitido
+				project.config.maxUploadSize = 5*1024*1024; // 5MB - maximum file size
 			
 			:marked
-				No quiere decir esto, que siempre se tenga que mantener este límite en toda la aplicación, ya que esta propiedad es posible redefinirla para un controlador o controladores concretos. 
+				This doesn't mean it has to keep this limit in the whole app, because this global configuration can be redifined in single controller or controllers (local > global)
 
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				
 				project.routes.add(new Route({
 						id:"upload-archivos-pesados"
-						method: ["POST","GET"],  // Establecemos para que acepte POST y GET
-						multipart: true,  // Establecemos para que acepte ficheros
-						maxUploadSize: 25*1024*1024  // Redefinimos el límite en 25MB.
+						method: ["POST","GET"],  // accepting POST and GET
+						multipart: true,  // setting we accept files
+						maxUploadSize: 25*1024*1024  // configuring the limit to 25MB.
 					},function(gw){
 						const myFile = gw.files;
 						//...
-						gw.send("El archivo ha sido recibido y guardado");
+						gw.send("File sent and saved");
 				}));
 			:marked
-				Estos ficheros son almacenados temporalmente en el directorio `/temp`, *(el cual es activado por el middleware BodyReader, que es el encargado de leer el cuerpo de la petición en las peticiones post.)*
+				This files are temporary storaged in `/temp` folder, *(activated by the BodyReader middleware, wich is the one that reads the request body in the POST requests)*
 			:highlight(lang='javascript')
 				const project = require("pillars");
-				project.middleware.get("BodyReader").tempDirectory = "./otroDirectorio";
+				project.middleware.get("BodyReader").tempDirectory = "./anotherFolder";
 				
 			:marked
 
 		section.templating
 			h2#templating Templating
 			:marked
-				Una de las librerías incorporadas a Pillars.js es [templated](https://github.com/pillarsjs/templated). 
+				[templated](https://github.com/pillarsjs/templated) is one of the libraries icorporated to Pillars.js
 
-				Esta librería permite añadir el **motor de plantillas** que más nos guste a Pillars.js. Es un **Multi template engine manager**.
+				This allow us to add the **template engine** we like most to Pillars.js. In other words is an **Multi template engine manager**.
 
-				Hay aspectos del templating cuyo comportamiento debe ser global para la aplicación, por lo que hay propiedades en `project` relativas a éste:
+				Some templating behaivours must be global to the application, so we have properties in `project` pointing to this behaivours.
 
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				project.configure({
-					renderReload: true, // Compila el template solo la primera vez que es solicitado y lo guarda en caché
-					directoryTemplate: "template.hbs", // Es el template que se utiliza para listar directorios
-					errorTemplate: "templateError.hbs" // Template que se utiliza para páginas de error.
+					renderReload: true, // Compiles the template first time needed and storage it on cache.
+					directoryTemplate: "template.hbs", // template for folder listing.
+					errorTemplate: "templateError.hbs" // error pages template.
 				});
 
 			:marked
@@ -93,17 +93,17 @@ html(lang=gw.language)
 		section.debug
 			h2#debug Debug Mode
 			:marked
-				Establecer el Modo Debug nos permite ver información adicional de los errores en consola:
+				Activating Debug Mode we will see additional information in console errors.
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				project.config.debug = true;
 			:marked
-				Es **false** por defecto.
+				**false** by default.
 		
 		section.cors
 			h2#cors CORS
 			:marked
-				Para configurar CORS, tenemos en el proyecto esta propiedad. Para aceptar solicitudes CORS de cualquier origen, la seteamos a true. Para que deniegue cualquier solicitud cors, a false. Y para definir de qué dominios las aceptará, lo definimos en un Array de strings. Es **false** por defecto.
+				This is used to configure CORS. set CORS to "true" to accept any CORS query. Set CORS to "false" to deny any CORS query. Set a strings array to accept only domains contained in the array. CORS is **false** bye default.
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				project.config.cors = ["www.smartloop.es"];
@@ -112,7 +112,7 @@ html(lang=gw.language)
 		section.favicon
 			h2#favicon favicon
 			:marked
-				Simplemente para establecer el favicon de la aplicación web:
+				Set the favicon:
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				project.config.favicon = "img/favico.ico";
@@ -121,8 +121,8 @@ html(lang=gw.language)
 		section.logfile
 			h2#logfile Sistema de logs
 			:marked
-				Pillar.js incorpora un sistema de logs. Éstos están por defecto desactivados, puedes activarlos estableciendo la propiedad `.logFile` a **true**. 
-				Al activarlo se crearan archivos de logs, con toda la información de peticiones al servidor, en la carpeta: **logs**
+				Pillars.js has a log system deactivated by default, you can activate them setting `.logFile` to **true**.
+				Once activated, logs files with all the queries information done to the server, will be storaged in the **logs** folder.
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				project.config.logFile = true;
@@ -130,27 +130,27 @@ html(lang=gw.language)
 		section.cache
 			h2#cache Optimización RAM
 			:marked
-				En Pillars.js podemos configurar cómo se comporta el cacheo, lo que permite, en función de las características de la aplicación, optimizar el uso de RAM.
+				Pillars.js can configure the cache system, this allow optimize RAM usage.
 
-				**¿Cómo funciona el cacheo?** 
+				**How the cache system works?** 
 
-				Se define un tamaño máximo de caché para la aplicación, por defecto son 250MB. En este espacio, se cachean archivos, plantillas, etc. Es decir, todo lo que suponga un envío de fichero en la respuesta HTTP. Por lo que tenemos una caché con archivos que han sido solicitados.
+				A maximum cache size is defined for the application, 250MB by default, In this space, files, templats,etc... are cached, so every file sent because of an HTTP query. So we have a cache with requested files.
 
-				**¿Qué ventajas tiene?**
+				**Wich are the PROS?**
 
-				Evita lecturas en disco, por lo que si el archivo no ha sido modificado, se sigue enviando el archivo ubicado en la caché. 
+				Avoiding hdd or sdd disk reading when the file hasn't been modified, sending this cache file instead.
 
-				**¿Se limpia la cache en algún momento mientras la aplicación está en marcha?**
+				**is the cache cleaned while the app is working?**
 
-				Por supuesto, siempre que vaya llegando al límite de su uso se aplican una serie de reglas, como por ejemplo, borrar los archivos menos demandados. 
+				Of course, when the cache get the maximum a cleaning rules are triggered, for example, clean up the less used files.
 
 			:highlight(lang='javascript')
 				const project = require("pillars");
 				project.configure({					
-					maxCacheFileSize: 5*1024*1024, // 5MB - Tamaño máximo de un archivo para que entre en la caché
-					cacheMaxSamples: 100, //  Dato relacionado con la heurística de uso de los archivos 
-					cacheMaxSize: 250*1024*1024, // 250MB - Tamaño máximo de la caché
-					cacheMaxItems: 5000, // Número máximo de elementos en la caché
+					maxCacheFileSize: 5*1024*1024, // 5MB - Maximum size for single file.
+					cacheMaxSamples: 100, // Heuristic data about files uses 
+					cacheMaxSize: 250*1024*1024, // 250MB - Maximum cache size
+					cacheMaxItems: 5000, // Max number of elements in cache
 				});
 
 
