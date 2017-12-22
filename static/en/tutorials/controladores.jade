@@ -6,49 +6,49 @@ html(lang=gw.language)
 	+tutorials-layout("Pillars.js Tutorials - Controladores - 'make it easy!'",path)
 
 		#title
-			h1 Controladores
-				em  Tutoriales Pillars.js
+			h1 Controllers
+				em  Pillars.js Tutorials
 
 		section.cache
-			h2#Introduccion Introducción
+			h2#Introduccion Introduction
 			:marked
-				Se añaden **controladores de ruta** al proyecto para, dado un path, añadirle a éste funcionalidad. 
-				
-				Un controlador se crea instanciando la **Clase Route** y añadiéndolo a la propiedad `project.routes` del proyecto web, mediante el método `.add()`
-			
-				`project.routes.add(new Route(configuracion, manejador));`
+				** route controllers ** are added to the project for add a functionality to a given path.
+
+				You can create a controller instancing the **Route Class** and adding to it the `project.routes` property using the method `.add()`  
+
+				`project.routes.add(new Route(configuracion, handler));`
 
 			:marked
-				En este capítulo vamos a dar una visual, para profundizar consulta la [referencia]("../reference/enrutado.jade").				
+				In this chapter we are going to have a general vision, to go deeper go to the [reference]("../reference/enrutado.jade").
 				
 		section.creacion
-			h2#creacion Creación Controlador
+			h2#creacion Controller Creation
 			:marked
-				La instancia se crea con dos parámetros, *configuración* y *manejador*.
-				La *configuración* es un objeto, y el *manejador* es una función anónima.
+				The object is instanced with two parameters, *config* and *handler*
+				*Config* is an object, and *handler* is an anonimous function
 			:highlight(lang='javascript')
 				const myRoute = new Route({
 					id :"example",
 					path: "path-example",
 					method:["GET","POST"]
 				}, function(gw){
-					gw.send("Hola desde el path example");
+					gw.send("Hello from path example");
 				});
 				project.routes.add(myRoute);
 
 			:marked
-				La configuración de un objeto route es extensa, ya que permite una amplia configuración *si se requiere*, en el siguiente apartado vemos la configuración de un objeto route.
+				The route object configuration has many options, we will see it in the next chapter.
 
-				En cuanto al *manejador*, recibirá siempre por parámetro **gangway**, que es el objeto Pillars.js que aúna  request, response, y además los parsea y vitamita.
+				The *handler* will receive always the **gangway** parameter, it's a Pillars.js object that merges request and response parse them and skyrocket them.
 		
 
 
 		section.configuracion
-			h2#configuracion Configuración
+			h2#configuracion configuration
 			:marked
-				La **configuración de un objeto route**, es el primer parámetro que se le pasa cuando lo instanciamos. Es un objeto y es opcional, si no lo definimos tomará la configuración por defecto. 
-
-				En el siguiente ejemplo, vemos todas las propiedades configurables indicando además, qué propiedades deben coincidir con la solicitud para que este controlador atienda la petición:
+				The **object route configuration** is the first parameter passed when it is instanced. It's optional and It's an object, if not passed the object will take the default configuration
+				
+				In the next example, we will see all the configurables properties, and we will focus too on wich properties must match with the request in order to the controller manage it.
 
 			:highlight(lang='javascript')
 					project.routes.add(new Route({
