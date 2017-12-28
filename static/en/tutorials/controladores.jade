@@ -2,7 +2,7 @@ include ../.layout.jade
 
 doctype html
 html(lang=gw.language)
-	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Controladores',url:'/tutorials/controladores.jade'}];	
+	- var path = [{label:'Pillars.js Tutorials',url:'/tutorials/'},{label:'Controladores',url:'/tutorials/controladores.jade'}];
 	+tutorials-layout("Pillars.js Tutorials - Controladores - 'make it easy!'",path)
 
 		#title
@@ -14,13 +14,13 @@ html(lang=gw.language)
 			:marked
 				** route controllers ** are added to the project for add a functionality to a given path.
 
-				You can create a controller instancing the **Route Class** and adding to it the `project.routes` property using the method `.add()`  
+				You can create a controller instancing the **Route Class** and adding to it the `project.routes` property using the method `.add()`
 
 				`project.routes.add(new Route(configuracion, handler));`
 
 			:marked
 				In this chapter we are going to have a general vision, to go deeper go to the [reference]("../reference/enrutado.jade").
-				
+
 		section.creacion
 			h2#creacion Controller Creation
 			:marked
@@ -40,47 +40,47 @@ html(lang=gw.language)
 				The route object configuration has many options, we will see it in the next chapter.
 
 				The *handler* will receive always the **gangway** parameter, it's a Pillars.js object that merges request and response parse them and skyrocket them.
-		
+
 
 
 		section.configuracion
 			h2#configuracion configuration
 			:marked
 				The **object route configuration** is the first parameter passed when it is instanced. It's optional and It's an object, if not passed the object will take the default configuration
-				
+
 				In the next example, we will see all the configurables properties, and we will focus too on wich properties must match with the request in order to the controller manage it.
 
 			:highlight(lang='javascript')
 					project.routes.add(new Route({
-							  // Configuración del controlador. Aquí se configura en qué casos actuará
-				
-							  id:"home", /* El identificador del controlador. Si más tarde 
-							  queremos modificarlo, necesitamos saber cómo se llama.*/
-							  active: true, /* si no está activo, no atenderá ninguna solicitud */
+							  // Controller configuration. In which cases will work
 
-					  /* ---- Parámetros que deben coincidir con la solicitud para que
-							  el controlador atienda la solicitud*/
-							  path:"/suma", /* La ruta o path en la que queremos que se ejecute */
-							  method: "GET", /* El método (string) o métodos (array) que acepta, 
+							  id:"home", /* controller identification. if we want
+							  to modify it later, we need to know the id .*/
+							  active: true, /* true: answering queries, false: not answering */
+
+					  /* ---- Which parameters must be match the query to be answered
+							  */
+                              path:"/suma", /* La ruta o path en la que queremos que se ejecute */
+							  method: "GET", /* El método (string) o métodos (array) que acepta,
 							  puede aceptar varios a la vez */
-							  port:3000, /* El puerto en el que estará disponible. Si no se especifica, 
+							  port:3000, /* El puerto en el que estará disponible. Si no se especifica,
 							  por defecto aceptará cualquiera */
-							  host: undefined, /* hostname en el que responderá, undefined responde a todos. 
+							  host: undefined, /* hostname en el que responderá, undefined responde a todos.
 							  Puedes arrancar un ejemplo configurando host en localhost y verás
 							  que si visitas 127.0.01 no responde.*/
 							  https: false, /* si responde sólo http, sólo https o ambos*/
 
-					  /* ---- Parámetros de configuración adicional, 
+					  /* ---- Parámetros de configuración adicional,
 							  no tienen porque coincidir con la solicitud para que ésta sea atendida*/
 							  multipart: false, /* si acepta envíos multipart o no, necesario activarlo para
 							  recibir archivos*/
 							  maxUploadSize: 0, /* tamaño máximo del archivo en caso de aceptarlos*/
-							  cors: true, /* si acepta solicitudes cors o no. Se pueden especificar dominios 
+							  cors: true, /* si acepta solicitudes cors o no. Se pueden especificar dominios
 							  de los que acepta estas solicitudes */
 							  session: false /* si activamos las sesiones o no*/
 						},
-						
-						/* Manejador. Esta es 'la porción de código' que se ejecuta, 
+
+						/* Manejador. Esta es 'la porción de código' que se ejecuta,
 						siempre y cuando la solicitud, coincida con los parámetros de
 						configuración que están arriba */
 						function(gw){ /*El manejador siempre recibe gw*/
@@ -103,20 +103,20 @@ html(lang=gw.language)
 		section.metodos
 			h2#metodos Métodos de project.routes.
 			:marked
-				Como hemos mencionado antes `project.routes` es una propiedad del proyecto donde están todos los controladores del proyecto, por lo que dispone de métodos para añadir, tomar y eliminar: 				
+				Como hemos mencionado antes `project.routes` es una propiedad del proyecto donde están todos los controladores del proyecto, por lo que dispone de métodos para añadir, tomar y eliminar:
 			:highlight(lang='javascript')
 				project.routes.add(myRoute);
 				project.routes.remove("example");
-				project.routes.get("example"); 
+				project.routes.get("example");
 
 		section.activar
 			h2#activar Modificar propiedades de un controlador
 			:marked
 				Veamos como ejemplo, modificar la propiedad `.active`.
-				
-				Una propiedad de los controladores es `.active`. Por defecto es true, para desactivar un controlador, seteamos la propiedad a false. Esto hará que el controlador no actúe, es decir, permanecerá "desactivado". 
+
+				Una propiedad de los controladores es `.active`. Por defecto es true, para desactivar un controlador, seteamos la propiedad a false. Esto hará que el controlador no actúe, es decir, permanecerá "desactivado".
 			:highlight(lang='javascript')
 				project.routes.get("example").active=false;
 
-	
-				
+
+
