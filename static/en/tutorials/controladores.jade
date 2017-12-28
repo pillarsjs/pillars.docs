@@ -60,14 +60,14 @@ html(lang=gw.language)
 
 					  /* ---- Which parameters must be match the query to be answered
 							  */
-                              path:"/suma", /* La ruta o path en la que queremos que se ejecute */
-							  method: "GET", /* El método (string) o métodos (array) que acepta,
-							  puede aceptar varios a la vez */
-							  port:3000, /* El puerto en el que estará disponible. Si no se especifica,
-							  por defecto aceptará cualquiera */
-							  host: undefined, /* hostname en el que responderá, undefined responde a todos.
-							  Puedes arrancar un ejemplo configurando host en localhost y verás
-							  que si visitas 127.0.01 no responde.*/
+                              path:"/suma", /* Route where we want it to be executed */
+							  method: "GET", /* Accepted method (string) or methods (array) accepted,
+							  can accept various methods */
+							  port:3000, /* working port. if not setted,
+							  will work in any port */
+							  host: undefined, /* hostname where it will answer, undefined will answer to everthing.
+							  If you set "localhost" visiting 1127.0.0.1 wont work
+							  */
 							  https: false, /* si responde sólo http, sólo https o ambos*/
 
 					  /* ---- Parámetros de configuración adicional,
