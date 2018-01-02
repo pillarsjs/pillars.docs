@@ -68,19 +68,17 @@ html(lang=gw.language)
 							  host: undefined, /* hostname where it will answer, undefined will answer to everthing.
 							  If you set "localhost" visiting 1127.0.0.1 wont work
 							  */
-							  https: false, /* si responde sólo http, sólo https o ambos*/
+							  https: false, /* if manage only http, only https or both*/
 
-					  /* ---- Parámetros de configuración adicional,
-							  no tienen porque coincidir con la solicitud para que ésta sea atendida*/
-							  multipart: false, /* si acepta envíos multipart o no, necesario activarlo para
-							  recibir archivos*/
-							  maxUploadSize: 0, /* tamaño máximo del archivo en caso de aceptarlos*/
-							  cors: true, /* si acepta solicitudes cors o no. Se pueden especificar dominios
-							  de los que acepta estas solicitudes */
-							  session: false /* si activamos las sesiones o no*/
+					  /* ---- adicional parameters,
+					  		  not necessary to match the query */	
+							  multipart: false, /* If it accepts multipart sending, necessary to receive files*/
+							  maxUploadSize: 0, /*  maximum file size if is accepted*/
+							  cors: true, /* if cors query are accepted or not, allowed url can be especified */
+							  session: false /* if we allow sessions*/
 						},
 
-						/* Manejador. Esta es 'la porción de código' que se ejecuta,
+						/* Handler. Esta es 'la porción de código' que se ejecuta,
 						siempre y cuando la solicitud, coincida con los parámetros de
 						configuración que están arriba */
 						function(gw){ /*El manejador siempre recibe gw*/
