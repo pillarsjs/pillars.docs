@@ -78,41 +78,42 @@ html(lang=gw.language)
 							  session: false /* if we allow sessions*/
 						},
 
-						/* Handler. Esta es 'la porción de código' que se ejecuta,
-						siempre y cuando la solicitud, coincida con los parámetros de
-						configuración que están arriba */
-						function(gw){ /*El manejador siempre recibe gw*/
-							gw.send("Hola Mundo");
+						/* Handler. is the 'code snippet' executed,
+						if the query match the mandatory configuration
+						described above */
+						function(gw){ /*the handler always need a gw*/
+							gw.send("Hello Pillars");
 						}
 					));
 
-					/* Nótese que hemos añadido el objeto route en la misma sentencia que lo hemos creado
-					Mediante project.routes.add() */
+					/* Look carefuly and you will realize that the route object is added on the fly 
+					using project.routes.add() */
 
 		section.manejador
-			h2#manejador Manejador
+			h2#manejador Handler
 			:marked
-				El manejador es el segundo parámetro que definimos al instanciar el objeto route. Es una función anónima.
+				The handler is the second defined parameter when a route object is instanced. It is an anonimous function
 
-				El manejador se ejecutará cuando la petición coincida con las propiedades pertinentes del controlador.
+				The handler will be executed when the query match with the indicated controller properties.
 
-				El manejador siempre recibe **gangway**.
+				Handler will always recieve **gangway**
 
 		section.metodos
-			h2#metodos Métodos de project.routes.
+			h2#metodos Project.routes methods.
 			:marked
-				Como hemos mencionado antes `project.routes` es una propiedad del proyecto donde están todos los controladores del proyecto, por lo que dispone de métodos para añadir, tomar y eliminar:
+				As said before 'project.routes' is a project property where all the project controllers are, so it has methods to add, get or delete:
+
 			:highlight(lang='javascript')
 				project.routes.add(myRoute);
 				project.routes.remove("example");
 				project.routes.get("example");
 
 		section.activar
-			h2#activar Modificar propiedades de un controlador
+			h2#activar Modify controller properties
 			:marked
-				Veamos como ejemplo, modificar la propiedad `.active`.
+				Lets see the example, modify the property `.active`.
 
-				Una propiedad de los controladores es `.active`. Por defecto es true, para desactivar un controlador, seteamos la propiedad a false. Esto hará que el controlador no actúe, es decir, permanecerá "desactivado".
+				A controller property is '.active'. It is True by default, to deactivate a controller, just set it to false. In this case the controller wont be executed
 			:highlight(lang='javascript')
 				project.routes.get("example").active=false;
 
