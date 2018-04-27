@@ -9,12 +9,12 @@ html(lang=gw.language)
 				em  Pillars.js Tutorials
 		
 			:marked
-				Pillars.js ofrece un servicio http built-in. Esto significa que, en la propiedad del proyecto `project.services`, que contiene todos los servicios añadidos al proyecto, tenemos un servicio con identificador **http** ya insertado. 
-
-				Este servicio, arranca por defecto en el puerto 8080, no obstante podemos cambiar su configuración. Para acceder a este servicio y poder actuar sobre el, primero lo tomamos mediante el método `.get(identificador)`, y posteriormente se puede: 
-				- Configurar mediante el método `.configure(objeto configuración)`
-				- Arrancar mediante el método `.start()`
-				- Para mediante el método `.stop()`
+				Pillars.js offers a http service built-in. Meaning that in the `project.services` property in the project that contains all the services added to the project, we have a service with identifier **http** inserted.
+				
+				This service, starts on port 8080 by default, of course the configuration can be change, to access to this configuration first we need to use `.get(identificator)`, and then you can:
+				- config: `.configure(objeto configuración)`
+				- start: `.start()`
+				- stop: `.stop()`
 
 			:highlight(lang='javascript')
 				const project = require("pillars");
@@ -24,10 +24,10 @@ html(lang=gw.language)
 					timeout:8000
 				}).start();
 			:marked
-				Para saber más acerca de los servicios, puedes consultar la [referencia]("../reference/servicios.jade"). 
-
-				Por otra parte, es posible crear más servicios http, y https. 
-
+				If need to know more about services, go to the [refer]("../reference/servicios.jade").
+				
+				You can create more http and https services.
+				
 		section.http
 			h2#http Creación de un servicio http
 			:marked

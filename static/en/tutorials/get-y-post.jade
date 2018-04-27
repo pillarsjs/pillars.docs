@@ -21,7 +21,9 @@ html(lang=gw.language)
 				
 				> For more info [HTTP protocl methods](http://es.wikipedia.org/wiki/Hypertext_Transfer_Protocol#M.C3.A9todos_de_petici.C3.B3n).
 
+				Pillars, can also use personal routes that will be seen in the las part
 				
+
 
 		//- Examples
 		section.example-01
@@ -29,9 +31,10 @@ html(lang=gw.language)
 
 			
 			:marked
-				Query string es todo aquello que, desde el cliente, se ejecute después de la url con el formato: *interrogación*, *variable* *igual a valor*. Ejemplo: *?q=1*.
+				A Query String is all written in the url after the main url and with this format: "?VARIABLE=VALUE", for example : ?hello=world
+				this, will pass the variable hello with the "world" value
 				
-				Estos datos los encontramos en gangway, en la [propiedad gw.query](../reference/gangway.jade#property-query).
+				this data can be found in the gangway , in [gw.query property](../reference/gangway.jade#property-query)
 				
 
 			:highlight(lang='javascript')
@@ -43,21 +46,21 @@ html(lang=gw.language)
 					gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
 				}));
 
-				// Se visita http://localhost/?q=1
-				//> Has enviado mediante Query String el valor: 1
-				// gw.query contiene un objeto:  { q: '1' }
+				// visits http://localhost/?q=1
+				//> sends throug Query String the value: 1
+				// gw.query has this object:  { q: '1' }
 				
 
 
 		//- Examples
 		section.example-02
-			h2#example-02 Contenido de la solicitud
+			h2#example-02 Query content
 
 			:marked
-				Para que un controlador pueda recibir un formulario mediante el método POST, éste debe estar configurado en su `method`, aunque recuerda que en principio el valor de `method` es *undefined*, por lo que acepta cualquier método de petición. Además si va a aceptar ficheros, `multipart` debe estar seteada a **true**.
-
-				Cuando se envía al servidor un formulario por el método POST, los datos los podemos tomar de [gw.content.params](../reference/gangway.jade#property-content). 
-	
+				A controller only can receive a form throug POST, if is configured in its 'method', remember that at the begenning 'method' = *undefined*,so will accept any query method, If its going to receive files, 'multipart' must be setted as true.
+				
+				When a form is sent to the server by POST method, data can be found at [gw.content.params](../reference/gangway.jade#property-content).
+				
 
 			:highlight(lang='javascript')
 				const project = require("pillars");
@@ -70,10 +73,10 @@ html(lang=gw.language)
 				},new Route(function(gw){
 					gw.content.params
 					gw.files
-					¿Dónde están físicamente?
-					gw.send("Has enviado mediante Query String el valor: " + gw.query['q']);
+					Where are phisically?
+					gw.send("Sent by Query String the value: " + gw.query['q']);
 				}));
 
 			:marked
-	//			**Ejemplo de envío de formulario POST con fichero adjunto**
-	//			**Ejemplo de envío de formulario POST sin fichero adjunto** 
+	//			**example of POST query with file**
+	
