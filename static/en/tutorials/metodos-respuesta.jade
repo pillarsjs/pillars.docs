@@ -6,39 +6,40 @@ html(lang=gw.language)
 	+tutorials-layout("Pillars.js Tutorials - Envío de datos de Servidor a Cliente - 'make it easy!'",path)
 
 		#title
-			h1 Métodos de respuesta
+			h1 Answer Methods
 				em  Pillars.js Tutorials
 		
 
 		//- Summary
 		section.summary
-			h2#summary Sumario
+			h2#summary Summary
 			:marked
-				El envío de datos a cliente se realiza siempre dentro del manejador de un objeto route, y siempre es la última llamada dentro de éste.
+				Data client sends its always inside the handler in a route object, and always is the last call inside it.
 
-				Los métodos que realizan envío a cliente, y por tanto componen los encabezados HTTP pertinentes, son los métodos del objeto gangway: 
-
-				+ [gw.send()](../reference/gangway.jade#method-send). Si la respuesta es un string se envía como *text/html* y si es un objeto lo envía como objeto parseado tipo *application/json*.
-				+ [gw.html()](../reference/gangway.jade#method-html). Envía al cliente la respuesta parseada como *text/html*.
-				+ [gw.text()](../reference/gangway.jade#method-text). Envía al cliente la respuesta parseada como *text/plain*.
-				+ [gw.json()](../reference/gangway.jade#method-json). Envía al cliente una respuesta en formato *application/json*.
-				+ [gw.render()](../reference/gangway.jade#method-render). Este método permite enviar al cliente un template renderizado. Hace uso de la librería Templated.
-				+ [gw.file()](../reference/gangway.jade#method-file). Compatible con byte-serving, por lo que si se envía un archivo de video, se retransmite en streaming.
-
-				Todos estos métodos finalizan el objeto gangway. Una vez se ejecute este método, no se ejecutará ningún código más que hubiese después. 
-			
+				Methods that sends things to the client , and compose the HTTP headers, are methods of gangway object
+				
+				+ [gw.send()](../reference/gangway.jade#method-send). If the response is a string, it's sent as *text/html* and if it's an object it is sent as parsed object *application/json* type.
+				+ [gw.html()](../reference/gangway.jade#method-html). Sends the response to the client parsed as *text/html*
+				+ [gw.text()](../reference/gangway.jade#method-text). Sends the response to the client parsed as *text/plain*
+				+ [gw.json()](../reference/gangway.jade#method-json). Sends the response to the client parsed as *application/json*
+				+ [gw.render()](../reference/gangway.jade#method-render). This method allow send a renderized template to the client. It uses the Templated library.
+				+ [gw.file()](../reference/gangway.jade#method-file). Supports bye-serving, so it can stream video.
+				
+				This methods ends the gangway object. Once the method has been executed, any code after won't be executed
+				
 
 		//- Examples
 		section.usos
-			h2#usos Usos
+			h2#usos Uses
 
 			//- Example
 			section.render
-				h3#render Templated, Caché y Optimización
+				h3#render Templated, Cache and Optimization
 				:marked
-					En el caso que estemos haciendo uso de motores de renderizado, usaremos el método `gw.render(template)` pare enviar el template. Este método compila el template solo en la primera petición y así optimizar el tiempo de proceso del servidor. 
-
-					Este método hace uso de la propiedad del proyecto `project.renderReload`, que por defecto es false, por lo que si no cambiamos su configuración (a true), el template sólo se compilará en la primera solicitud, mientras que éste no tenga cambios. Si lo establecemos a true, el template se compilará en cada petición.
+				
+					If we are using rendering engines, we'll use method `gw.render(template)` to send the template. This method renders the template only in the first request to optimize server process timings
+				
+					This method uses the `project.renderReload` property, that is false by default, so... if we don't change it to true, the temlate only will be rendered in the first request while is non changed, if the template is changed will be rendered again, if we set the property to true, it will be rendered every single request.				
 				:highlight(lang='javascript')
 					const project = require("pillars");
 
@@ -51,10 +52,10 @@ html(lang=gw.language)
 
 			//- Example
 			section.json
-				h3#json Envío de json
+				h3#json reply json
 				:marked
-					El fichero deberá estar bien formado, y tan sólo debemos realizar la llamada `gw.json(archivo)`
-
+					The json file must be formatted, and we only have to call `gw.json(file)`
+					
 				:highlight(lang='javascript')
 					const project = require("pillars");
 
@@ -72,16 +73,16 @@ html(lang=gw.language)
 
 			//- Example
 			section.example
-				h3#example-3 Envío de archivo gran tamaño
+				h3#example-3 Very big files send
 				:marked
-					Se envian archivos usando el método `gw.file()`. 
-
-					Dependiendo de la configuración del proyecto `project.maxCacheFileSize`, por defecto es 5MB, si el archivo a enviar en mayor, no se comprime y no entra en la caché. Sin embargo, si es menor se comprime, se mete en la caché y se envía. 
-
-					El que un archivo entre en la caché significa que la siguiente petición que se realice del mismo, no tendrá lectura de disco, ya que estará disponible en la caché. Se realizan comprobaciones para asegurar que el archivo no fue modificado, si lo hubiera sido, se volvería a leer.
-
-					Tener en cuenta que `gw.file()` admite tres parámetros, por lo que recomendamos [revisar la referencia](../reference/gangway.jade#method-file).
-
+					They are sent using `gw.file()`.
+					
+					Depending on the project configuration in `project.maxCacheFileSize`, 5MB by default, if the file is bigger, won't be compressed and will no go to the cache, but if is smaller, will be compressed and will be stored in cache before send it.
+					
+					If a file goes to the cache, the next requests about it won't read the hard disk, before send it back, Pillars, will performe some checks to ensure the file has not been modificated in the meanwhile, if the file has been compromised or modifed it will be read from the hard disk again.
+					
+					Remember that `gw.file()` only has three parameters,[review](../reference/gangway.jade#method-file). 
+					
 				:highlight(lang='javascript')
 					const project = require("pillars");
 
@@ -96,7 +97,7 @@ html(lang=gw.language)
 			section.streaming
 				h3#streaming Video Streaming
 				:marked
-					byte-serving está implementado, por lo que al enviar un video, se retransmitirá en streaming. 				
+					byte-serving is implemented, so, when you send a video it will be a streaming				
 
 				:highlight(lang='javascript')
 					const project = require("pillars");
@@ -111,9 +112,9 @@ html(lang=gw.language)
 			section.cookies
 				h3#cookies Cookies
 				:marked
-					Para trabajar con cookies disponemos de: 
-					+ [gw.setCookie()](../reference/gangway.jade#method-setCookie), método de Gangway para setear una cookie. Una vez se ejecute un método de envío *de los vistos más arriba*, la cookie será añadida a la respuesta.
-					+ [gw.cookie](../reference/gangway.jade#property-cookie). Propiedad en la que estarán seteadas las cookies recibidas, o dicho de otro modo, las que el cliente ha enviado.
+					To work with cookies we have:
+					+ [gw.setCookie()](../reference/gangway.jade#method-setCookie), Gangway method to set a cookie. when one of the previous methods are executed to send some data,the cookie will be added to the response.
+					+ [gw.cookie](../reference/gangway.jade#property-cookie). Property where the recieved cookies are seted or... cookies the client sent to us.
 
 				:highlight(lang='javascript')
 					const project = require("pillars");

@@ -29,21 +29,21 @@ html(lang=gw.language)
 				You can create more http and https services.
 				
 		section.http
-			h2#http Creación de un servicio http
+			h2#http Creating an http service
 			:marked
-				Para crear un servicio  http o https, instanciamos la Clase HttpService, y la añadimos a `project.services`. 
-				Para un servicio http, tan sólo es necesario especficar en la configuración: 
-				- id, Identificador. 
-				- port, Puerto en el que se montará el servicio creado. 
+				To create a http or https service, we need to instance HttpService class and add a `project.services`
+				For a http service, we only need to specify in the configuration:
+				- id 
+				- port 
 
 			:highlight(lang='javascript')
 				const project = require('pillars');
 
-				// Servicio http
+				// http Service
 				project.services.add((new HttpService({
 				  id:'http2',
 				  port: 3003
-				})).start()); // Se pueden encadenar métodos
+				})).start()); // you can chain methods
 				
 				//...
 
@@ -52,15 +52,15 @@ html(lang=gw.language)
 				//...
 
 		section.https
-			h2#https Creación de un servicio https
+			h2#https https service creation
 			:marked
-				Para crear un servicio https es necesario crear un certificado SSL, existen varias herramientas para crearlo, como OpenSSL. 
-				Una vez creado, tan sólo tienes que especificar en la configuración, las propiedades `key` y `cert` con los archivos creados.
-
+				To create a https service a SSL certification is needed, you can use tools like OpenSSL.
+				Once created, you only need to specify the configuration with the properties `key` and `cert` pointing to the files created.
+				
 			:highlight(lang='javascript')
 				const project = require('pillars');
 
-				// Servicio https
+				// https service
 				const fs = require('fs');
 				project.services.add((new HttpService({
 				  id:'https',

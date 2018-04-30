@@ -6,21 +6,21 @@ html(lang=gw.language)
 	+tutorials-layout("Pillars.js Tutorials - Node.js - 'make it easy!'",path)
 		#title
 			h1 Node.js
-				em  Aprendiendo Node.js con Pillars.js
+				em  Learning Node.js with Pillars.js
 	
 		section.quees
-			h2#node ¿Qué es Node.js?
+			h2#node what is Node.js?
 			:marked
-				Node.js es JavaScript que se ejecuta sobre V8, el intérprete de JavaScript creado por Google. 
-
-				JavaScript, o mejor dicho, ECMAScript o [ECMA-262](http://www.ecma-international.org/memento/TC39.htm), es un estándar internacional, a diferencia de muchos lenguajes.
-
-				Cuando se habla de JavaScript hay cierto recelo o desconocimiento, y es que, a pesar de lo mucho que se ha utilizado para el frontend, sigue siendo un gran desconocido. Son mucho más conocidas las [API's de los navegadores](https://developer.mozilla.org/es/docs/Web/API), que suelen ser confundidas con ECMAScript, pero que nada tienen que ver.
-
-				Vamos a comentar algunas peculiaridades del lenguaje: 
+				Node.js is Javascript running over V8, the engine for javascript created by Google.
 				
-				- **Tipado débil**, siempre declaramos las variables sin tipo, mediante (let o const). Cuando seteamos un valor, podemos conocer de qué tipo es. Además, una variable puede cambiar su tipo durante la ejecución *(en otros lenguajes esta acción podría causar error)*.
+				Javascript, or ECMAScript, or [ECMA-262](http://www.ecma-international.org/memento/TC39.htm), is an international standar, differing in this with lots of languages
+				
+				When Javascript comes to a conversation there is some unknown approches to the lenguage, it has been use for the frontend the last years but keep being a big unknown and unsupported language. The web suerfers API's are more known [API's](https://developer.mozilla.org/es/docs/Web/API) tend to be used instead of the standard.
 
+				lets see some language peculiarities:
+
+				- **Weakly typed**, variables are declared without type, using (let or const), when we set a value we can know the type. A variable can change its type during the execution.(In other languages this causes an error)
+				
 			:highlight(lang='javascript')
 				let myVar; 
 				console.log(typeof(myVar));
@@ -39,25 +39,26 @@ html(lang=gw.language)
 				//function
 
 			:marked
-				- **Todo en JS son objetos**, hasta las funciones son objetos, por lo que casi todas las variables tendrán propiedades y métodos. En el siguiente ejemplo, vemos como un Array tiene la propiedad length, que devuelve la longitud del mismo.
+				- **Everything is an object**, functions are objects too, so almost every variable will have properties and methods. In the next example, we'll see how an Array has the property length, that returns his own lenght.
+				
 			:highlight(lang='javascript')
 				let myVar = [3,5,6,7,9]; 
 				console.log(myVar.length);
 				//5
 			:marked
-				- **Tiene una serie de Objetos fundamentales**. Si no estás familizarizado con los tipos de objetos en JS, te recomiendo que le eches una visual al [MDN.](https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia)
-				- **Es asíncrono** y provee herramientas para manejar la asincronía, como las promesas, asyn Function y await. La asincronía repercute en que el lenguaje no siempre se ejecuta de forma lineal, por ejemplo:
+				- **Main Objects**. If you are not familiar with the object types in JS, we recommend to read this, [MDN.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference)
+				- **It's asynchronous** and give tools to manage that asynchronousity, as promises, async / await. This is very important to the language and not always is executed in line-order for example:
 			:highlight(lang='javascript')
-				setTimeout(()=>console.log("adiós a los dos segundos!"),
+				setTimeout(()=>console.log("bye at 2 seconds!"),
 					2000);
-				console.log("Hola!");
-				// Hola!!
-				// adiós a los dos segundos!!
+				console.log("Hi!");
+				// Hi!!
+				// bye at 2 seconds!!
 			:marked
-				- **y está basado en Prototipo**. Un prototipo es algo parecido a una clase. 
+				- **it is prototipe based**. A prototype is like a class. 
 				
 
 		section.instalacion
-			h2#instalacion Instalación
+			h2#instalacion Instalation
 			:marked
-				Para la instalar Node.js, tan solo tienes que [descargarlo](https://nodejs.org/en/) e instalarlo. Se instalará también con **npm** que es el sistema de gestión de paquetes de Node.
+				To install Node.js, only need to [descargarlo](https://nodejs.org/en/) and install and it will be installed with **npm** wich is the package assistant of Node.

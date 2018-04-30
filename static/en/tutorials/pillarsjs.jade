@@ -6,24 +6,23 @@ html(lang=gw.language)
 	+tutorials-layout("Pillars.js Tutorials - Pillars.js - 'make it easy!'",path)
 		#title
 			h1 Pillars.js
-				em  Aprendiendo Node.js con Pillars.js
+				em  Learning Node.js with Pillars.js
 	
 		section.quees
-			h2#node ¿Qué es Pillars.js?
+			h2#node What is Pillars.js?
 			:marked
-				Es un framework de desarrollo web en Node.js, y por lo tanto se programa en JavaScript. 
-				Para usar Pillars.js, tan solo hay que requerirlo en el proyecto. 
-
+				Pillars is a Node.js framework, so is programmed in javascript.
+				To use Pillars.js you only need to "require" it in the project
+				
 			:highlight(lang='javascript')
 				//Inclusión de la librería
 				const project = require("pillars");
 
 			:marked
-				Al incluir la librería, se instancia en la variable `project` todo nuestro proyecto web, por lo tanto `project` va a tener una serie de propiedades y métodos útiles para nuestro proyecto. 
-				- `project.config`. Propiedad donde se encuentra un objeto con la configuración del proyecto. Ver más.
-				- `project.services`. Propiedad donde se encuentran todos los servicios añadidos al proyecto; servicios http, https, mongodb, etc.
-				- `project.routes`. Propiedad que contiene todos los controladores del proyecto.
-				- `project.middleware`. Propiedad que contiene todo el middleware del proyecto.
-
-				En todo el framework se utiliza *convención sobre configuración*, por lo que no es necesario configurar todo para echar a andar proyectos sencillos o que no tengan muchos requerimientos, obviamente vamos a contar con métodos para configurar aquellas opciones que necesitemos especificar.
-
+				When the library is included, the constant `project` is instanced with all our web project, so `project` is going to have some usefull properties and methods.
+				- `project.config`. Property where the project configuration is stored.
+				- `project.services`. Property where you can find the added services to the web project; http, https, mongodb, etc.
+				- `project.routes`. Property with the project controllers.
+				- `project.middleware`. Property with the project middleware.
+				
+				All the framework uses a *default configuration*, so there is no need to config every single property to run tipical projects, but we have a lot of customitation avaliable if needed.

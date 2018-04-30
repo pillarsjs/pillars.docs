@@ -6,60 +6,59 @@ html(lang=gw.language)
 	+tutorials-layout("Pillars.js Tutorials - Rutas - 'make it easy!'",path)
 
 		#title
-			h1 Rutas
+			h1 Routes
 				em  Pillars.js Tutorials		
 	
 		//- Examples
 		section.path
-			h2#path Rutas parametrizadas
+			h2#path Routes parameters
 
 			:marked
-				Cuando declaramos un objeto route, uno de los parámetros de la configuración es el path. Éste admite varias formas de configuración, que son las siguientes: 
+				When we declare an route object, one of the paramaters is the path configuration. This can be configured in serveral ways.
 				
-				**1)** Ruta del Path a secas. *path:'pathestatico'*. Esta es la forma habitual en la que hemos declarado los path en los ejemplos.
+				**1)** Path route. *path:'staticpath'*. Tipical used in our examples
 				
-
-				**2)** Una o varias variables definidas. *path:'/:var'* para una variable, o *path:'/:var1/:var2'* para varias variables.
-			
+				**2)** One or more than one variables. *path:'/:var'* for one variable, or *path:'/:var1/:var2'* for more than one.
+				
 			:highlight(lang='javascript')
 				addRoute({path:'/:var'},function(gw){
 					gw.send(gw.pathParams['var']);
 				});
-				// http://localhost/hola , devuelve 'hola'
-				// http://localhost/users , devuelve 'users'
+				// http://localhost/hello , returns 'hello'
+				// http://localhost/world , returns 'worlds'
 
 				addRoute({path:'/:var1/:var2'},function(gw){
 					gw.send("var1: "+ gw.pathParams['var1']+", var2: "+gw.pathParams['var2'] );
 				});
-				// http://localhost/hola/maria , devuelve var1: hola, var2:maria
-				// http://localhost/users/juan , devuelve var1: users, var2:juan,
+				// http://localhost/hello/world , returns var1: hello, var2:world
+				// http://localhost/users/juan , returns var1: users, var2:juan,
 
 				
 			:marked
-				**3)** Variables sin definir en número. **path: '/*:var'**
+				**3)** Unknown number of variables. **path: '/*:var'**
 				
 			:highlight(lang='javascript')
 				addRoute({path:'/*:var'},function(gw){
 					gw.send(gw.pathParams['var']);
 				});
-				// http://localhost/hola , devuelve 'hola'
-				// http://localhost/users/juan , devuelve 'users/juan'
-				// http://localhost/users/juan/fotos , devuelve 'users/juan/fotos'
+				// http://localhost/hello , returns 'hello'
+				// http://localhost/hello/wonderful , returns 'hello/wonderful'
+				// http://localhost/hello/wonderful/world , returns 'hello/wonderful/world'
 
 			:marked
-				Para finalizar, un ejemplo de combinación de las tres rutas parametrizadas en un mismo path: 
-
+				An example of the 3 combinations in the same path
+				
 			:highlight(lang='javascript')
 				addRoute({path:'/users/:user/:dir/*:resto'},function(gw){
 					gw.send("user: "+ gw.pathParams['user']+", dir: "+gw.pathParams['dir']+
 						", resto: "+gw.pathParams['resto']);
 				});
-				// http://localhost/users/juan/fotos/2014/album1 , 
-				// devuelve 'user: juan, dir: fotos, resto: 2014/album1'
+				// http://localhost/users/jhon/photos/2014/album1 , 
+				// devuelve 'user: jhon, dir: fotos, resto: 2014/album1'
 			
 
 		section.example
-			h2#example Ejemplo
+			h2#example Example
 			:marked
 
 			:highlight(lang='javascript')
@@ -69,8 +68,8 @@ html(lang=gw.language)
 					gw.send(gw.pathParams);
 				});
 
-				// Consultando http://servidor/users/john/wayne
-				// Devuelve: {"var1":"users", "var2":"john", "var3":"wayne"}
+				// Request to http://server/users/john/wayne
+				// returns: {"var1":"users", "var2":"john", "var3":"wayne"}
 				
 
 				const myRoute2 = new Route({
@@ -79,8 +78,8 @@ html(lang=gw.language)
 					gw.send(gw.pathParams);
 				});
 
-				// Consultando http://servidor/users/john/wayne/photos
-				// Devuelve: {"restoPath": "users/john/wayne/photos"}
+				// request to http://servidor/users/john/wayne/photos
+				// returns: {"restoPath": "users/john/wayne/photos"}
 
 				const myRoute3 = new Route({
 					path: '/:var1/*:restoPath'
@@ -88,8 +87,8 @@ html(lang=gw.language)
 					gw.send(gw.pathParams);
 				});
 
-				// Consultando http://servidor/users/john/wayne/photos
-				// Devuelve: {"var1":"users", "restoPath": "john/wayne/photos"}
+				// request to http://servidor/users/john/wayne/photos
+				// returns: {"var1":"users", "restoPath": "john/wayne/photos"}
 				
 			:marked
 				
